@@ -1,0 +1,110 @@
+<form #form="ngForm" novalidate>
+
+  <div class="row">
+
+    <div class="col-md-6">
+
+      <div class="card">
+
+        <div class="card-header">
+          <h5>Στοιχεία Συμβολαίου</h5>
+        </div>
+
+        <div class="card-body">
+
+          <div class="row">
+
+            <div class="form-group col-md-6">
+              <label for="startDate">Ημερομηνία Έναρξης</label>
+              <div class="">
+                <kendo-datepicker class="form-control" [(value)]="dateStart"></kendo-datepicker>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Διάρκεια</label>
+              <div class="">
+                <select name="duration" class="form-control">
+                  <option value="1">Ετήσια</option>
+                  <option value="2">Εξαμηνιαία</option>
+                  <option value="3">Τριμηνιαία</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+      <div class="card">
+
+        <div class="card-header">
+          <h5>Στοιχεία Οχήματος</h5>
+        </div>
+
+        <div class="card-body">
+
+          <div class="form-group">
+            <label>Αριθμός Κυκλοφορίας</label>
+            <div>
+              <input type="text" required class="form-control" name="plateNo" ngModel />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Αριθμός Κυκλοφορίας 2ου Αυτοκινήτου</label>
+            <div>
+              <input type="text" required class="form-control" name="plateNo2" ngModel />
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-6">
+
+      <div class="card">
+
+        <div class="card-header">
+          <h5>Στοιχεία Ιδιοκτήτη</h5>
+        </div>
+
+        <div class="card-body">
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="publicServant" ngModel /> Δημόσιος Υπάλληλος
+            </label>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="uniformed" ngModel /> Ένστολος
+            </label>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <button type="submit" class="btn btn-success">Τιμολόγηση</button>
+
+</form>
+
+{{ form.pristine }}

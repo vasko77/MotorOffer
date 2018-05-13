@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { OfferInputComponent } from './offer-input/offer-input.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: 'offer', component: OfferInputComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
