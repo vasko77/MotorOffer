@@ -25,6 +25,7 @@
     "@ng-bootstrap/ng-bootstrap": "^2.0.0-alpha.0",
     "@ng-bootstrap/schematics": "^2.0.0-alpha.1",
     "@progress/kendo-angular-dateinputs": "^3.2.0",
+    "@progress/kendo-angular-inputs": "^3.1.0",
     "@progress/kendo-angular-intl": "^1.4.1",
     "@progress/kendo-angular-l10n": "^1.2.0",
     "@progress/kendo-theme-default": "^2.52.2",

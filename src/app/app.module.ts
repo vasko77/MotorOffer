@@ -7,6 +7,7 @@ import localeEl from '@angular/common/locales/el';
 registerLocaleData(localeEl, 'el');
 
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { IntlModule } from '@progress/kendo-angular-intl';
 import '@progress/kendo-angular-intl/locales/el/all';
@@ -34,6 +35,7 @@ import { OfferInputComponent } from './offer-input/offer-input.component';
     AppRoutingModule,
     FormsModule,
     DateInputsModule,
+    InputsModule,
     IntlModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule
