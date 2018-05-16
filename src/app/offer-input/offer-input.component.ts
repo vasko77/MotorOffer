@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { IntlService } from '@progress/kendo-angular-intl';
+import { MotorOfferRequest } from '../models/motor-offer-request';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -9,9 +10,14 @@ import { IntlService } from '@progress/kendo-angular-intl';
 })
 export class OfferInputComponent implements OnInit {
 
-  dateStart: Date = new Date();
+  offerRequest = new MotorOfferRequest();
 
-  constructor() { }
+  maxDateBirth: Date;
+
+  constructor() { 
+    this.maxDateBirth = new Date(); 
+    this.maxDateBirth.setFullYear( this.maxDateBirth.getFullYear() - 18 );
+  }
 
   ngOnInit() {
   }

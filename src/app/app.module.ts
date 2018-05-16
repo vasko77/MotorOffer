@@ -18,7 +18,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { BodyComponent } from './body/body.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OfferInputComponent } from './offer-input/offer-input.component';
 
@@ -37,7 +37,6 @@ import { OfferInputComponent } from './offer-input/offer-input.component';
     DateInputsModule,
     InputsModule,
     IntlModule,
-    NgbModule.forRoot(),
     BrowserAnimationsModule
   ],
   providers: [

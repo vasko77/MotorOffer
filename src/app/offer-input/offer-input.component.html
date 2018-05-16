@@ -4,20 +4,21 @@
 
     <div class="col-md-6">
 
-      <div class="card">
+      <div class="panel panel-primary">
 
-        <div class="card-header">
+        <div class="panel-heading">
           <h5>Στοιχεία Συμβολαίου</h5>
         </div>
 
-        <div class="card-body">
+        <div class="panel-body">
 
           <div class="row">
 
-            <div class="form-group col-md-6">
-              <label for="startDate">Ημερομηνία Έναρξης</label>
-              <div class="">
-                <kendo-datepicker class="form-control" [(value)]="dateStart"></kendo-datepicker>
+            <div class="form-group col-md-6" [class.has-error]="startDate.invalid && startDate.touched">
+              <label class="control-label">Ημερομηνία Έναρξης</label>
+              <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="offerRequest.dateStart" name="dateStart" required></kendo-datepicker>
+              <div *ngIf="startDate.invalid && startDate.touched" class="alert alert-danger">
+                <div *ngIf="startDate.errors.required">Η Ημερομηνία Έναρξης Ασφάλισης είναι απαραίτητη</div>
               </div>
             </div>
 
@@ -36,17 +37,20 @@
 
           <div class="row">
 
-            <div class="form-group col-md-6">
-              <label>Ημερομηνία Γέννησης Α' ασφαλισμένου οδηγού</label>
-              <div class="">
-                <kendo-datepicker class="form-control" [(value)]="dateBirth"></kendo-datepicker>
+            <div class="form-group col-md-6" [class.has-error]="dateBirth.invalid && dateBirth.touched">
+              <label class="control-label">Ημερομηνία Γέννησης Α' ασφαλισμένου οδηγού</label>
+              <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirth" [max]="maxDateBirth" name="dateBirth"
+                required></kendo-datepicker>
+              <div *ngIf="dateBirth.invalid && dateBirth.touched" class="alert alert-danger">
+                <div *ngIf="dateBirth.errors.required">Η Ημερομηνία Γέννησης Α' ασφαλισμένου οδηγού είναι απαραίτητη</div>
               </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label>Ημερομηνία απόκτησης διπλώματος Α' ασφαλισμένου οδηγού</label>
-              <div class="">
-                <kendo-datepicker class="form-control" [(value)]="dateDiploma"></kendo-datepicker>
+            <div class="form-group col-md-6" [class.has-error]="dateDiploma.invalid && dateDiploma.touched">
+              <label class="control-label">Ημερομηνία απόκτησης διπλώματος Α' ασφαλισμένου οδηγού</label>
+              <kendo-datepicker #dateDiploma="ngModel" class="form-control" [(ngModel)]="offerRequest.dateDiploma" name="dateDiploma" required></kendo-datepicker>
+              <div *ngIf="dateDiploma.invalid && dateDiploma.touched" class="alert alert-danger">
+                <div *ngIf="dateDiploma.errors.required">Η Ημερομηνία απόκτησης διπλώματος Α' ασφαλισμένου οδηγού είναι απαραίτητη</div>
               </div>
             </div>
 
@@ -54,10 +58,11 @@
 
           <div class="row">
 
-            <div class="form-group col-md-6">
-              <label>Ημερομηνία 1ης άδειας κυκλοφορίας</label>
-              <div class="">
-                <kendo-datepicker class="form-control" [(value)]="dateLicense"></kendo-datepicker>
+            <div class="form-group col-md-6" [class.has-error]="dateLicense.invalid && dateLicense.touched">
+              <label class="control-label">Ημερομηνία 1ης άδειας κυκλοφορίας</label>
+              <kendo-datepicker #dateLicense="ngModel" class="form-control" [(ngModel)]="offerRequest.dateLicense" name="dateLicense" required></kendo-datepicker>
+              <div *ngIf="dateLicense.invalid && dateLicense.touched" class="alert alert-danger">
+                <div *ngIf="dateLicense.errors.required">Η Ημερομηνία 1ης άδειας κυκλοφορίας είναι απαραίτητη</div>
               </div>
             </div>
 
@@ -78,20 +83,24 @@
 
     <div class="col-md-6">
 
-      <div class="card">
+      <div class="panel panel-primary">
 
-        <div class="card-header">
+        <div class="panel-heading">
           <h5>Στοιχεία Οχήματος</h5>
         </div>
 
-        <div class="card-body">
+        <div class="panel-body">
 
           <div class="row">
 
-            <div class="form-group col-md-6">
-              <label>Αριθμός Κυκλοφορίας</label>
+            <div class="form-group col-md-6" [class.has-error]="plateNo.invalid && ( plateNo.touched || mouseOverSubmit )">
+              <label class="control-label">Αριθμός Κυκλοφορίας</label>
               <div>
-                <input type="text" required class="form-control" name="plateNo" ngModel />
+                <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
+                  ngModel />
+                <div *ngIf="plateNo.invalid && ( plateNo.touched || mouseOverSubmit )" class="alert alert-danger">
+                  <div *ngIf="plateNo.errors.required">Ο Αριθμός Κυκλοφορίας είναι απαραίτητος</div>
+                </div>
               </div>
             </div>
 
@@ -111,9 +120,9 @@
               <label>Μάρκα</label>
               <div class="">
                 <select name="marka" class="form-control">
-                  <option value="1">Ετήσια</option>
-                  <option value="2">Εξαμηνιαία</option>
-                  <option value="3">Τριμηνιαία</option>
+                  <option value="0" default>Παρακαλώ επιλέξτε...</option>
+                  <option value="1">Επιβατηγό</option>
+                  <option value="2">Φορτηγό</option>
                 </select>
               </div>
             </div>
@@ -122,9 +131,7 @@
               <label>Χρήση</label>
               <div class="">
                 <select name="usage" class="form-control">
-                  <option value="1">Ετήσια</option>
-                  <option value="2">Εξαμηνιαία</option>
-                  <option value="3">Τριμηνιαία</option>
+                  <option value="0" default>Παρακαλώ επιλέξτε...</option>
                 </select>
               </div>
             </div>
@@ -154,18 +161,18 @@
 
     <div class="col-md-6">
 
-      <div class="card">
+      <div class="panel panel-primary">
 
-        <div class="card-header">
+        <div class="panel-heading">
           <h5>Στοιχεία Ιδιοκτήτη</h5>
         </div>
 
-        <div class="card-body">
+        <div class="panel-body">
 
           <div class="row">
 
             <div class="form-group col-md-6">
-              <label>Ταχιδρομικός Κωδικός</label>
+              <label>Ταχυδρομικός Κωδικός</label>
               <div>
                 <input type="text" required class="form-control" name="zip" ngModel />
               </div>
@@ -195,8 +202,10 @@
 
   </div>
 
-  <button type="submit" class="btn btn-success">Τιμολόγηση</button>
+  <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
+    <button type="submit" [disabled]="form.invalid" class="btn btn-success">Τιμολόγηση</button>
+  </span>
+
+  <h3>{{ form.valid }}</h3>
 
 </form>
-
-{{ form.pristine }}
