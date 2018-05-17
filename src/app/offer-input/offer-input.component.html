@@ -1,152 +1,166 @@
 <form #form="ngForm" novalidate>
 
-  <div class="row" style="padding: 10px">
+  <div class="panel panel-primary">
 
-    <div class="col-md-6">
+    <div class="panel-heading">
+      <h5>Στοιχεία Συμβολαίου</h5>
+    </div>
 
-      <div class="panel panel-primary">
+    <div class="panel-body">
 
-        <div class="panel-heading">
-          <h5>Στοιχεία Συμβολαίου</h5>
+      <div class="row">
+
+        <div class="form-group col-md-6" [class.has-error]="startDate.invalid && ( startDate.touched || mouseOverSubmit )">
+          <label class="control-label">Ημερομηνία Έναρξης</label>
+          <em *ngIf="startDate.invalid && startDate.touched">Πεδίο απαραίτητο</em>
+          <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="offerRequest.dateStart" name="dateStart" required></kendo-datepicker>
         </div>
 
-        <div class="panel-body">
-
-          <div class="row">
-
-            <div class="form-group col-md-6" [class.has-error]="startDate.invalid && startDate.touched">
-              <label class="control-label">Ημερομηνία Έναρξης</label>
-              <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="offerRequest.dateStart" name="dateStart" required></kendo-datepicker>
-              <div *ngIf="startDate.invalid && startDate.touched" class="alert alert-danger">
-                <div *ngIf="startDate.errors.required">Η Ημερομηνία Έναρξης Ασφάλισης είναι απαραίτητη</div>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label>Διάρκεια Ασφάλισης</label>
-              <div class="">
-                <select name="duration" class="form-control">
-                  <option value="1">Ετήσια</option>
-                  <option value="2">Εξαμηνιαία</option>
-                  <option value="3">Τριμηνιαία</option>
-                </select>
-              </div>
-            </div>
-
+        <div class="form-group col-md-6">
+          <label>Διάρκεια Ασφάλισης</label>
+          <div class="">
+            <select name="duration" class="form-control">
+              <option value="1">Ετήσια</option>
+              <option value="2">Εξαμηνιαία</option>
+              <option value="3">Τριμηνιαία</option>
+            </select>
           </div>
+        </div>
 
-          <div class="row">
+      </div>
 
-            <div class="form-group col-md-6" [class.has-error]="dateBirth.invalid && dateBirth.touched">
-              <label class="control-label">Ημερομηνία Γέννησης Α' ασφαλισμένου οδηγού</label>
-              <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirth" [max]="maxDateBirth" name="dateBirth"
-                required></kendo-datepicker>
-              <div *ngIf="dateBirth.invalid && dateBirth.touched" class="alert alert-danger">
-                <div *ngIf="dateBirth.errors.required">Η Ημερομηνία Γέννησης Α' ασφαλισμένου οδηγού είναι απαραίτητη</div>
-              </div>
-            </div>
+      <div class="row">
 
-            <div class="form-group col-md-6" [class.has-error]="dateDiploma.invalid && dateDiploma.touched">
-              <label class="control-label">Ημερομηνία απόκτησης διπλώματος Α' ασφαλισμένου οδηγού</label>
-              <kendo-datepicker #dateDiploma="ngModel" class="form-control" [(ngModel)]="offerRequest.dateDiploma" name="dateDiploma" required></kendo-datepicker>
-              <div *ngIf="dateDiploma.invalid && dateDiploma.touched" class="alert alert-danger">
-                <div *ngIf="dateDiploma.errors.required">Η Ημερομηνία απόκτησης διπλώματος Α' ασφαλισμένου οδηγού είναι απαραίτητη</div>
-              </div>
-            </div>
+        <div class="form-group col-md-6" [class.has-error]="dateBirth.invalid && ( dateBirth.touched || mouseOverSubmit )">
+          <label class="control-label">Ημερομηνία Γέννησης οδηγού</label>
+          <em *ngIf="dateBirth.invalid && dateBirth.touched">Πεδίο απαραίτητο</em>
+          <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirth" [max]="maxDateBirth" name="dateBirth"
+            required></kendo-datepicker>
+        </div>
 
-          </div>
+        <div class="form-group col-md-6" [class.has-error]="dateDiploma.invalid && ( dateDiploma.touched || mouseOverSubmit )">
+          <label class="control-label">Ημερομηνία Διπλώματος οδηγού</label>
+          <em *ngIf="dateDiploma.invalid && dateDiploma.touched">Πεδίο απαραίτητο</em>
+          <kendo-datepicker #dateDiploma="ngModel" class="form-control" [(ngModel)]="offerRequest.dateDiploma" name="dateDiploma" required></kendo-datepicker>
+        </div>
 
-          <div class="row">
+      </div>
 
-            <div class="form-group col-md-6" [class.has-error]="dateLicense.invalid && dateLicense.touched">
-              <label class="control-label">Ημερομηνία 1ης άδειας κυκλοφορίας</label>
-              <kendo-datepicker #dateLicense="ngModel" class="form-control" [(ngModel)]="offerRequest.dateLicense" name="dateLicense" required></kendo-datepicker>
-              <div *ngIf="dateLicense.invalid && dateLicense.touched" class="alert alert-danger">
-                <div *ngIf="dateLicense.errors.required">Η Ημερομηνία 1ης άδειας κυκλοφορίας είναι απαραίτητη</div>
-              </div>
-            </div>
+      <div class="row">
 
-            <div class="form-group col-md-6">
-              <label>Ασφαλιζόμενη Αξία</label>
-              <div class="">
-                <kendo-numerictextbox class="form-control" format="c"></kendo-numerictextbox>
-              </div>
-            </div>
+        <div class="form-group col-md-6" [class.has-error]="dateLicense.invalid && ( dateLicense.touched || mouseOverSubmit )">
+          <label class="control-label">Ημερομηνία 1ης άδειας κυκλοφορίας</label>
+          <em *ngIf="dateLicense.invalid && dateLicense.touched">Πεδίο απαραίτητο</em>
+          <kendo-datepicker #dateLicense="ngModel" class="form-control" [(ngModel)]="offerRequest.dateLicense" name="dateLicense" required></kendo-datepicker>
+        </div>
 
-          </div>
-
+        <div class="form-group col-md-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue.touched || mouseOverSubmit )">
+          <label class="control-label">Ασφαλιζόμενη Αξία</label>
+          <em *ngIf="vehicleValue.invalid && vehicleValue.touched">Πεδίο απαραίτητο</em>
+          <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="offerRequest.vehicleValue"
+            format="c" required></kendo-numerictextbox>
         </div>
 
       </div>
 
     </div>
 
-    <div class="col-md-6">
+  </div>
 
-      <div class="panel panel-primary">
+  <div class="panel panel-primary">
 
-        <div class="panel-heading">
-          <h5>Στοιχεία Οχήματος</h5>
+    <div class="panel-heading">
+      <h5>Στοιχεία Οχήματος</h5>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="row">
+
+        <div class="form-group col-md-6" [class.has-error]="plateNo.invalid && ( plateNo.touched || mouseOverSubmit )">
+          <label class="control-label">Αριθμός Κυκλοφορίας</label>
+          <em *ngIf="plateNo.invalid && plateNo.touched">Πεδίο απαραίτητο</em>
+          <div>
+            <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
+              ngModel />
+          </div>
         </div>
 
-        <div class="panel-body">
+        <div class="form-group col-md-6">
+          <label>Αριθμός Κυκλοφορίας 2ου Αυτοκινήτου</label>
+          <div>
+            <input type="text" class="form-control" name="plateNo2" ngModel />
+          </div>
+        </div>
 
-          <div class="row">
+      </div>
 
-            <div class="form-group col-md-6" [class.has-error]="plateNo.invalid && ( plateNo.touched || mouseOverSubmit )">
-              <label class="control-label">Αριθμός Κυκλοφορίας</label>
-              <div>
-                <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                  ngModel />
-                <div *ngIf="plateNo.invalid && ( plateNo.touched || mouseOverSubmit )" class="alert alert-danger">
-                  <div *ngIf="plateNo.errors.required">Ο Αριθμός Κυκλοφορίας είναι απαραίτητος</div>
-                </div>
-              </div>
-            </div>
+      <div class="row">
 
-            <div class="form-group col-md-6">
-              <label>Αριθμός Κυκλοφορίας 2ου Αυτοκινήτου</label>
-              <div>
-                <input type="text" required class="form-control" name="plateNo2" ngModel />
-              </div>
+        <div class="form-group col-md-6">
+          <label class="control-label">Μάρκα</label>
+          <div class="">
+            <select name="marka" class="form-control">
+              <option value="0" default>Παρακαλώ επιλέξτε...</option>
+              <option *ngFor="let marka of markes" [value]="marka.id">{{ marka.description }}</option>
+            </select>
+          </div>
+        </div>
 
-            </div>
+        <div class="form-group col-md-6">
+          <label class="control-label">Χρήση</label>
+          <div class="">
+            <select name="usage" class="form-control">
+              <option value="0" default>Παρακαλώ επιλέξτε...</option>
+              <option value="1">Επιβατηγό</option>
+              <option value="2">Φορτηγό</option>
+            </select>
+          </div>
+        </div>
 
+      </div>
+
+      <div class="row">
+
+        <div class="form-group col-md-6" [class.has-error]="cc.invalid && ( cc.touched || mouseOverSubmit )">
+          <label class="control-label">Κυβισμός</label>
+          <em *ngIf="cc.invalid && cc.touched">Πεδίο απαραίτητο</em>
+          <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" ngModel required></kendo-numerictextbox>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="panel panel-primary">
+
+    <div class="panel-heading">
+      <h5>Στοιχεία Ιδιοκτήτη</h5>
+    </div>
+
+    <div class="panel-body">
+
+      <div class="row">
+
+        <div class="form-group col-md-6">
+          <label>Ταχυδρομικός Κωδικός</label>
+          <div>
+            <input type="text" required class="form-control" name="zip" ngModel />
+          </div>
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="publicServant" name="publicServant" ngModel>
+            <label class="form-check-label" for="publicServant">Δημόσιος Υπάλληλος</label>
           </div>
 
-          <div class="row">
-
-            <div class="form-group col-md-6">
-              <label>Μάρκα</label>
-              <div class="">
-                <select name="marka" class="form-control">
-                  <option value="0" default>Παρακαλώ επιλέξτε...</option>
-                  <option value="1">Επιβατηγό</option>
-                  <option value="2">Φορτηγό</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="form-group col-md-6">
-              <label>Χρήση</label>
-              <div class="">
-                <select name="usage" class="form-control">
-                  <option value="0" default>Παρακαλώ επιλέξτε...</option>
-                </select>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="row">
-
-            <div class="form-group col-md-6">
-              <label>Κυβισμός</label>
-              <div class="">
-                <kendo-numerictextbox class="form-control" format="n0"></kendo-numerictextbox>
-              </div>
-            </div>
-
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="uniformed" name="publicServant" ngModel>
+            <label class="form-check-label" for="uniformed">Ένστολος</label>
           </div>
 
         </div>
@@ -157,55 +171,31 @@
 
   </div>
 
-  <div class="row" style="padding: 10px">
+  <div style="margin: 20px">
+    <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
+      <button type="submit" [disabled]="form.invalid" class="btn btn-success">Τιμολόγηση</button>
+    </span>
+  </div>
 
-    <div class="col-md-6">
+  <div class="panel panel-primary">
 
-      <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h5>Καλύψεις</h5>
+    </div>
 
-        <div class="panel-heading">
-          <h5>Στοιχεία Ιδιοκτήτη</h5>
-        </div>
+    <div class="panel-body">
 
-        <div class="panel-body">
+      <div *ngFor="let cover of covers" class="row">
 
-          <div class="row">
-
-            <div class="form-group col-md-6">
-              <label>Ταχυδρομικός Κωδικός</label>
-              <div>
-                <input type="text" required class="form-control" name="zip" ngModel />
-              </div>
-            </div>
-
-            <div class="col-md-6">
-
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="publicServant" name="publicServant" ngModel>
-                <label class="form-check-label" for="publicServant">Δημόσιος Υπάλληλος</label>
-              </div>
-
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="uniformed" name="publicServant" ngModel>
-                <label class="form-check-label" for="uniformed">Ένστολος</label>
-              </div>
-
-            </div>
-
-          </div>
-
+        <div class="form-group col-md-6">
+          <label class="form-group col-md-6">{{ cover.description }}</label>
+          <label class="form-group col-md-3">{{ cover.price }}</label>
+          <input type="checkbox" class="form-check-input col-md-3" name="publicServant" ngModel>
         </div>
 
       </div>
-
     </div>
-
   </div>
 
-  <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-    <button type="submit" [disabled]="form.invalid" class="btn btn-success">Τιμολόγηση</button>
-  </span>
-
-  <h3>{{ form.valid }}</h3>
 
 </form>

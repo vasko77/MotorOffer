@@ -22,6 +22,10 @@ import { BodyComponent } from './body/body.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OfferInputComponent } from './offer-input/offer-input.component';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from './services/in-memory-data.service';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,9 +38,11 @@ import { OfferInputComponent } from './offer-input/offer-input.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     DateInputsModule,
     InputsModule,
     IntlModule,
+    HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, { dataEncapsulation: false } ),
     BrowserAnimationsModule
   ],
   providers: [
