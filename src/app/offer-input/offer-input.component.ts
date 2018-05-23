@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { IntlService } from '@progress/kendo-angular-intl';
 import { MotorOfferRequest } from '../models/motor-offer-request';
 import { OnlineIssueService } from '../services/online-issue.service';
-import { Marka } from '../models/Marka';
+import { IMarka } from '../models/Marka';
 import { ICover } from '../models/cover';
 
 @Component({
@@ -15,8 +15,22 @@ export class OfferInputComponent implements OnInit {
 
   offerRequest = new MotorOfferRequest();
 
-  markes: Marka[];
+  markes: IMarka[];
   covers: ICover[];
+
+  private _coversAmount: number;
+  get coversAmount(): number {
+
+    let sum = 0;
+
+    this.covers.forEach(element => {
+      if( element.selected) {
+      sum += element.price;
+      }
+    });
+
+    return sum;
+  }
 
   maxDateBirth: Date;
 
@@ -28,10 +42,10 @@ export class OfferInputComponent implements OnInit {
   ngOnInit() {
 
     this.onlineIssueService.getMarkes()
-      .subscribe( data => this.markes = data );
+      .subscribe(data => this.markes = data);
 
-      this.onlineIssueService.getCovers()
-      .subscribe( data => this.covers = data );
-    }
+    this.onlineIssueService.getCovers()
+      .subscribe(data => this.covers = data);
+  }
 
 }
