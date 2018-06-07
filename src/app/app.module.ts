@@ -11,7 +11,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { IntlModule } from '@progress/kendo-angular-intl';
 import '@progress/kendo-angular-intl/locales/el/all';
-import '@progress/kendo-angular-intl/locales/el/calendar'
+import '@progress/kendo-angular-intl/locales/el/calendar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,9 +22,11 @@ import { BodyComponent } from './body/body.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OfferInputComponent } from './offer-input/offer-input.component';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './services/in-memory-data.service';
-import { HttpClientModule } from '@angular/common/http';
+// import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+// import { InMemoryDataService } from './services/in-memory-data.service';
+
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GeneralInterceptor } from './services/general-interceptor';
 
 @NgModule({
   declarations: [
@@ -42,11 +44,12 @@ import { HttpClientModule } from '@angular/common/http';
     DateInputsModule,
     InputsModule,
     IntlModule,
-    HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, { dataEncapsulation: false } ),
+    // HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, { dataEncapsulation: false } ),
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'el' }
+    { provide: LOCALE_ID, useValue: 'el' },
+    { provide: HTTP_INTERCEPTORS, useClass: GeneralInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

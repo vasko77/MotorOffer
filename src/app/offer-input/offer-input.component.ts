@@ -13,6 +13,8 @@ import { ICover } from '../models/cover';
 })
 export class OfferInputComponent implements OnInit {
 
+  activeTab = 1;
+
   offerRequest = new MotorOfferRequest();
 
   markes: IMarka[];
@@ -24,8 +26,8 @@ export class OfferInputComponent implements OnInit {
     let sum = 0;
 
     this.covers.forEach(element => {
-      if( element.selected) {
-      sum += element.price;
+      if (element.selected) {
+        sum += element.price;
       }
     });
 
@@ -35,17 +37,28 @@ export class OfferInputComponent implements OnInit {
   maxDateBirth: Date;
 
   constructor(private onlineIssueService: OnlineIssueService) {
+    this.offerRequest.marka = 0;
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
   }
 
   ngOnInit() {
 
+    // this.onlineIssueService.getAuthenticationInfo()
+    //  .subscribe();
+
     this.onlineIssueService.getMarkes()
-      .subscribe(data => this.markes = data);
+      .subscribe(data => { this.markes = data; console.log( data ); });
 
     this.onlineIssueService.getCovers()
       .subscribe(data => this.covers = data);
   }
 
+  setActiveTab( tab: number ) {
+    this.activeTab = tab;
+  }
+
+  validateMarka(event): boolean {
+    return this.offerRequest.marka !== 0;
+  }
 }

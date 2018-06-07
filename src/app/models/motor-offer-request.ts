@@ -2,7 +2,7 @@ export class MotorOfferRequest {
     dateStart: Date;
     duration: number;
     dateBirth: Date;
-    dateDiploma: Date;
+    diplomaYear: Number;
     dateLicense: Date;
     vehicleValue: number;
     plateNo: string;
