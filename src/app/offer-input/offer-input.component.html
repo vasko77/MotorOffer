@@ -86,15 +86,12 @@
                   <label class="control-label">Μάρκα</label>
                   <em *ngIf="offerRequest.marka === 0  && ( marka?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div class="">
-                    <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="offerRequest.marka" 
-                           (blur)="validateMarka($event)" (change)="validateMarka($event)">
-                      <option value="0">Παρακαλώ επιλέξτε...</option>
-                      <option *ngFor="let marka of markes" [value]="marka.id">{{ marka.description }}</option>
+                    <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="offerRequest.marka" (blur)="validateMarka($event)"
+                      (change)="validateMarka($event)">
+                      <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
                     </select>
                   </div>
                 </div>
-
-                {{offerRequest.marka}}
 
               </div>
 
@@ -250,10 +247,52 @@
             <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
               <button type="submit" [disabled]="form.invalid" class="btn btn-success">Τιμολόγηση</button>
             </span>
+
           </div>
 
           <div class="row">
-            <div class="col-sm-6">
+
+            <div class="col-sm-4">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h4>Ετήσιο</h4>
+                </div>
+                <div class="panel-body">
+                    <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[0].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                    <h1 style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h4>Εξαμηνιαίο</h4>
+                  </div>
+                  <div class="panel-body">
+                      <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[1].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                      <h1 style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-sm-4">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h4>Τριμηνιαίο</h4>
+                    </div>
+                    <div class="panel-body">
+                    <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[2].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                    <h1 style="text-align: right;">{{ coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                    </div>
+                  </div>
+                </div>
+    
+                </div>
+
+          <div class="row">
+
+            <div class="col-sm-12">
               <div class="panel panel-primary">
 
                 <div class="panel-heading">
@@ -262,12 +301,14 @@
 
                 <div class="panel-body">
 
-                  <div *ngFor="let cover of covers; let i = index;" class="row">
+                  <div *ngFor="let cover of quotationResponse?.CalculatedQuotationsResult[0]?.Covers; let i = index;" class="row">
 
-                    <div class="form-group col-sm-6">
-                      <label class="form-group col-sm-6">{{ cover.description }}</label>
-                      <label class="form-group col-sm-3">{{ cover.price }}</label>
-                      <input type="checkbox" class="form-check-input col-sm-3" name="{{cover+i}}" [(ngModel)]="covers[i].selected">
+                    <div class="form-group">
+                      <label class="col-sm-5">{{ cover.Description }}</label>
+                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                      <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i}}" [(ngModel)]="cover.Selected">
                     </div>
 
                   </div>
@@ -275,10 +316,6 @@
                 </div>
               </div>
 
-            </div>
-
-            <div class="col-sm-6">
-              <h1>{{ coversAmount }}</h1>
             </div>
 
           </div>

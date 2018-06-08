@@ -3,3 +3,7 @@ export interface IMotorItem {
     ItemName: string;
     ItemCode: string;
 }
+
+export interface IMotorItemsData {
+    MotorItems: IMotorItem[];
+}
