@@ -28,9 +28,11 @@
     "@progress/kendo-angular-l10n": "^1.2.0",
     "@progress/kendo-theme-default": "^2.52.2",
     "angular-font-awesome": "^3.1.2",
+    "angular2-busy": "^2.0.4",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
+    "ngx-toastr": "^8.8.0",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.1.0",
     "zone.js": "^0.8.26"

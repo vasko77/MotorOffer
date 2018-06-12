@@ -1,6 +1,6 @@
 import { IHeader } from './header';
 
-export interface IFastQuotationResponse {
+export interface IQuotationResponse {
     CalculatedQuotationsResult: ICalculatedQuotationsResult;
     Header: IHeader;
 }
@@ -11,6 +11,7 @@ export interface ICalculatedQuotationsResult {
     Allow: boolean;
     Errors: IError[];
     NumberOfClaims: number;
+    PremiumsPayable: IPremiumsPayable[];
     Covers: ICover[];
     Discounts: IDiscount[];
 }
@@ -18,6 +19,12 @@ export interface ICalculatedQuotationsResult {
 export interface IError {
     ErrorCode: string;
     ErrorString: string;
+}
+
+export interface IPremiumsPayable {
+    MotorInsurancePackage: string;
+    DurationInMonths: number;
+    GrossPremiums: number;
 }
 
 export interface ICover {

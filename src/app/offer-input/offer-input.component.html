@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" [ngBusy]="busyMarkes">
 
   <div class="panel-body" style="background-color: white">
 
@@ -34,21 +34,25 @@
                 <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
                   <label class="control-label">Ημερομηνία Γέννησης</label>
                   <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirth" [max]="maxDateBirth" name="dateBirth"
+                  <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
                     required></kendo-datepicker>
                 </div>
 
                 <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
                   <label class="control-label">Έτος άδειας οδήγησης</label>
                   <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="offerRequest.diplomaYear" name="diplomaYear"
-                    format="n0" required></kendo-numerictextbox>
+                  <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
+                    format="####" required></kendo-numerictextbox>
                 </div>
 
               </div>
 
             </div>
 
+          </div>
+
+          <div style="text-align: center" [hidden]="activeTab !== 1">
+            <button class="btn btn-success" (click)="setActiveTab(2)">Επόμενο βήμα</button>
           </div>
 
           <div class="panel panel-primary">
@@ -77,16 +81,16 @@
                   <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div>
                     <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                      ngModel />
+                      [(ngModel)]="quotationInput.plateNo" autofocus/>
                   </div>
 
                 </div>
 
-                <div class="form-group col-sm-6" [class.has-error]="offerRequest.marka === 0  && ( marka?.touched || mouseOverSubmit )">
+                <div class="form-group col-sm-6" [class.has-error]="quotationInput.markaCode === 0  && ( marka?.touched || mouseOverSubmit )">
                   <label class="control-label">Μάρκα</label>
-                  <em *ngIf="offerRequest.marka === 0  && ( marka?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                  <em *ngIf="quotationInput.markaCode === 0  && ( marka?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div class="">
-                    <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="offerRequest.marka" (blur)="validateMarka($event)"
+                    <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                       (change)="validateMarka($event)">
                       <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
                     </select>
@@ -100,15 +104,15 @@
                 <div class="form-group col-sm-6" [class.has-error]="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">
                   <label class="control-label">Έτος 1ης άδειας</label>
                   <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-numerictextbox #licenseYear="ngModel" class="form-control" [(ngModel)]="offerRequest.licenseYear" name="licenseYear"
-                    format="n0" required></kendo-numerictextbox>
+                  <kendo-numerictextbox #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
+                    format="####" required></kendo-numerictextbox>
                 </div>
 
                 <div class="form-group col-sm-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">
                   <label class="control-label">Τρέχουσα Αξία</label>
                   <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="offerRequest.vehicleValue"
-                    format="c" required></kendo-numerictextbox>
+                  <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
+                    format="c0" required></kendo-numerictextbox>
                 </div>
 
               </div>
@@ -118,14 +122,14 @@
                 <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                   <label class="control-label">Κυβισμός</label>
                   <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" ngModel required></kendo-numerictextbox>
+                  <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
                 </div>
 
                 <div class="form-group col-sm-6" [class.has-error]="zip.invalid && ( zip?.touched || mouseOverSubmit )">
                   <label class="control-label">Ταχυδρομικός Κωδικός</label>
                   <em *ngIf="zip.invalid && ( zip?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div>
-                    <input #zip="ngModel" type="text" class="form-control" name="zip" ngModel required/>
+                    <input #zip="ngModel" type="text" class="form-control" name="zip" [(ngModel)]="quotationInput.zip" required/>
                   </div>
                 </div>
 
@@ -137,20 +141,25 @@
                   <label class="control-label">Νομός</label>
                   <em *ngIf="county.invalid && ( county?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div>
-                    <input #county="ngModel" type="text" required class="form-control" name="county" ngModel required/>
+                    <input #county="ngModel" type="text" required class="form-control" name="county" [(ngModel)]="quotationInput.county" required/>
                   </div>
                 </div>
 
                 <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                   <label class="control-label">Έναρξη Συμβολαίου</label>
                   <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="offerRequest.dateStart" name="dateStart" required></kendo-datepicker>
+                  <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
+                    required></kendo-datepicker>
                 </div>
 
               </div>
 
             </div>
 
+          </div>
+
+          <div style="text-align: center" [hidden]="activeTab !== 2">
+            <button class="btn btn-success" (click)="setActiveTab(3)">Επόμενο βήμα</button>
           </div>
 
           <div class="panel panel-primary">
@@ -174,18 +183,20 @@
 
             <div class="panel-body" [hidden]="activeTab !== 3">
 
+              <!--button (click)="diplomaYearYoungest.focus()">FOCUS</button-->
+
               <div class="row">
 
                 <div class="form-group col-sm-6">
                   <label class="control-label">Ημερομηνία Γέννησης νεότερου σε ηλικία οδηγού</label>
-                  <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirthYoungest" [max]="maxDateBirth"
-                    name="dateBirthYoungest"></kendo-datepicker>
+                  <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverBirthDate"
+                    [max]="maxDateBirth" name="dateBirthYoungest"></kendo-datepicker>
                 </div>
 
                 <div class="form-group col-sm-6">
                   <label class="control-label">Έτος απόκτησης άδειας οδήγησης νεότερου σε ηλικία οδηγού</label>
-                  <kendo-numerictextbox #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="offerRequest.diplomaYearYoungest"
-                    format="n0" name="diplomaYearYoungest"></kendo-numerictextbox>
+                  <kendo-numerictextbox #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear"
+                    format="####" name="diplomaYearYoungest"></kendo-numerictextbox>
                 </div>
 
               </div>
@@ -194,14 +205,14 @@
 
                 <div class="form-group col-sm-6">
                   <label class="control-label">Ημερομηνία Γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
-                  <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="offerRequest.dateBirthOldest" [max]="maxDateBirth"
+                  <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" [max]="maxDateBirth"
                     name="dateBirthOldest"></kendo-datepicker>
                 </div>
 
                 <div class="form-group col-sm-6">
                   <label class="control-label">Έτος απόκτησης άδειας οδήγησης μεγαλύτερου σε ηλικία οδηγού</label>
-                  <kendo-numerictextbox #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="offerRequest.diplomaYearOldest" name="diplomaYearOldest"
-                    format="n0"></kendo-numerictextbox>
+                  <kendo-numerictextbox #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear"
+                    name="diplomaYearOldest" format="####"></kendo-numerictextbox>
                 </div>
 
               </div>
@@ -243,84 +254,112 @@
   </div>
 -->
 
-          <div style="margin: 20px">
+          <div style="text-align: center" [hidden]="activeTab !== 3">
             <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-              <button type="submit" [disabled]="form.invalid" class="btn btn-success">Τιμολόγηση</button>
+              <button type="submit" [disabled]="form.invalid" class="btn btn-success" (click)="quotation()">Τιμολόγηση</button>
             </span>
-
           </div>
 
-          <div class="row">
+          <div *ngIf="quotationResult?.Allow">
 
-            <div class="col-sm-4">
-              <div class="panel panel-primary">
-                <div class="panel-heading">
-                  <h4>Ετήσιο</h4>
-                </div>
-                <div class="panel-body">
-                    <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[0].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+            <div class="row">
+
+              <div class="col-sm-4">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h4>Ετήσιο</h4>
+                  </div>
+                  <div class="panel-body">
+                    <h1 style="text-align: right;">{{ quotationResult?.PremiumsPayable[0]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                     <h1 style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-sm-4">
+              <div class="col-sm-4">
                 <div class="panel panel-primary">
                   <div class="panel-heading">
                     <h4>Εξαμηνιαίο</h4>
                   </div>
                   <div class="panel-body">
-                      <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[1].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                      <h1 style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                    <h1 style="text-align: right;">{{ quotationResult?.PremiumsPayable[1]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                    <h1 style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                   </div>
                 </div>
               </div>
-  
+
               <div class="col-sm-4">
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
-                      <h4>Τριμηνιαίο</h4>
-                    </div>
-                    <div class="panel-body">
-                    <h1 style="text-align: right;">{{ quotationResponse?.CalculatedQuotationsResult[0]?.PremiumsPayable[2].GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h4>Τριμηνιαίο</h4>
+                  </div>
+                  <div class="panel-body">
+                    <h1 style="text-align: right;">{{ quotationResult?.PremiumsPayable[2]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                     <h1 style="text-align: right;">{{ coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                    </div>
                   </div>
                 </div>
-    
-                </div>
+              </div>
 
-          <div class="row">
+            </div>
 
-            <div class="col-sm-12">
-              <div class="panel panel-primary">
+            <div class="row">
 
-                <div class="panel-heading">
-                  <h4>Καλύψεις</h4>
-                </div>
+              <div class="col-sm-12">
+                <div class="panel panel-primary">
 
-                <div class="panel-body">
+                  <div class="panel-heading">
+                    <div class="row">
+                      <h4 class="col-sm-5">Καλύψεις</h4>
+                      <h4 class="col-sm-2" style="text-align: right;">Ετήσιο</h4>
+                      <h4 class="col-sm-2" style="text-align: right;">Εξαμηνιαίο</h4>
+                      <h4 class="col-sm-2" style="text-align: right;">Τριμηνιαίο</h4>
+                    </div>
+                  </div>
 
-                  <div *ngFor="let cover of quotationResponse?.CalculatedQuotationsResult[0]?.Covers; let i = index;" class="row">
+                  <div class="panel-body">
 
-                    <div class="form-group">
-                      <label class="col-sm-5">{{ cover.Description }}</label>
-                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                      <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                      <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i}}" [(ngModel)]="cover.Selected">
+                    <div *ngFor="let cover of covers; let i = index;" class="row">
+
+                      <div class="form-group">
+                        <label class="col-sm-5">{{ cover.Description }}</label>
+                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                      </div>
+
                     </div>
 
                   </div>
-
                 </div>
+
               </div>
 
             </div>
 
           </div>
 
+          <br/>
+
+          <div *ngIf="!quotationResult?.Allow">
+            <div *ngFor="let error of errors" class="alert alert-danger" role="alert">
+              <p>{{ error.ErrorCode }} - {{ error.ErrorString }}</p>
+            </div>
+          </div>
+
         </form>
+
+
+        <div *ngFor="let cover of coverItems; let i = index;" class="row">
+
+          <div class="form-group">
+            <label class="col-sm-5">{{ cover.Description }}</label>
+            <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+          </div>
+
+        </div>
+
+
 
       </div>
 

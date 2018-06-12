@@ -58,6 +58,12 @@
               },
               {
                 "input": "./node_modules/@progress/kendo-theme-default/dist/all.css"
+              },
+              {
+                "input": "./node_modules/angular2-busy/build/style/busy.css"
+              },
+              {
+                "input": "./node_modules/ngx-toastr/toastr.css"
               }
             ],
             "scripts": []

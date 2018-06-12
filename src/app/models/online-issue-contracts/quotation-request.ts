@@ -1,5 +1,10 @@
 import { IHeader } from './header';
 
+export interface IQuotationRequest {
+    Header: IHeader;
+    motorQuotationParams: IMotorQuorationParams;
+}
+
 export interface IMainDriverInfo {
     BirthDate: string;
     LicenseDate: string;
@@ -19,7 +24,7 @@ export interface IMotorDiscount {
 export interface IVehicleInfo {
     AssemblyDate: string;
     PurchaseDate: string;
-    HP: string;
+    CC: string;
     PlateNumber: string;
     UsageType: string;
     VehicleValue: number;
@@ -30,15 +35,18 @@ export interface IVehicleInfo {
     EurotaxModelGroupCode: number;
 }
 
+export interface IOtherDriverInfo {
+    BirthDate: string;
+    LicenseDate: string;
+    TypeOfDriver: number;
+}
+
 export interface IMotorQuorationParams {
+    MotorInsurancePackage: string;
     InsuranceStartDate: string;
     MainDriverInfo: IMainDriverInfo;
     VehicleInfo: IVehicleInfo;
     MotorCovers: IMotorCover[];
     MotorDiscounts: IMotorDiscount[];
-}
-
-export interface IFastQuotationRequest {
-    Header: IHeader;
-    motorQuotationParams: IMotorQuorationParams;
+    OtherDrivers: IOtherDriverInfo[];
 }
