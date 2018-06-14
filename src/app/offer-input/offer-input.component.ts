@@ -9,6 +9,8 @@ import { QuotationInputParams } from '../models/quotation-input-params';
 import { ICoversResponse, ICoverItem } from '../models/online-issue-contracts/covers-response';
 import { Subscription } from 'rxjs';
 import { ErrorInfo } from '../models/errorInfo';
+import { MvpApiService } from '../services/mvp-api.service';
+import { IQuotationInfo } from '../models/mvp-contracts/quotation-info';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -46,7 +48,9 @@ export class OfferInputComponent implements OnInit {
   maxDateBirth: Date;
 
   constructor(private onlineIssueService: OnlineIssueService,
-    private toastr: ToastrService) {
+    private mvpApiService: MvpApiService,
+    private toastr: ToastrService,
+    private intlService: IntlService) {
 
     this.quotationInput.markaCode = 0;
     this.maxDateBirth = new Date();
@@ -60,7 +64,7 @@ export class OfferInputComponent implements OnInit {
     if (this.covers) {
       this.covers.forEach(element => {
         // console.log( JSON.stringify( element ));
-        if (element.Selected && element.CoverPremia.length >= duration) {
+        if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
           sum += element.CoverPremia[duration].CoverPremium;
         }
       });
@@ -73,8 +77,6 @@ export class OfferInputComponent implements OnInit {
 
     // this.onlineIssueService.getAuthenticationInfo()
     //  .subscribe();
-
-    setTimeout(() => this.toastr.info('Kisses', 'Hi there'));
 
     this.busyMarkes = this.onlineIssueService.getMarkes()
       .subscribe(
@@ -98,6 +100,31 @@ export class OfferInputComponent implements OnInit {
       );
   }
 
+  loadQuotationInfo(): void {
+    this.mvpApiService.getQuotation(this.quotationInput.plateNo)
+      .subscribe(
+        (quot: IQuotationInfo) => {
+          this.quotationInput.markaCode = quot.MarkaCode;
+          this.quotationInput.birthDate = new Date(quot.BirthDate);
+          this.quotationInput.cc = quot.CC;
+          this.quotationInput.contractStartDate = new Date(quot.ContractStartDate);
+          this.quotationInput.county = quot.County;
+          this.quotationInput.driverLicenseYear = quot.LicenseYear;
+          if (quot.OldestDriverBirthDate) {
+            this.quotationInput.oldestDriverBirthDate = new Date(quot.OldestDriverBirthDate);
+          }
+          this.quotationInput.oldestDriverLicenseYear = quot.OldestDriverLicenseYear;
+          this.quotationInput.vehicleLicenseYear = quot.VehicleLicenseYear;
+          this.quotationInput.vehicleValue = quot.VehicleValue;
+          if (quot.YoungestDriverBirthDate) {
+            this.quotationInput.youngestDriverBirthDate = new Date(quot.YoungestDriverBirthDate);
+          }
+          this.quotationInput.youngestDriverLicenseYear = quot.YoungestDriverLicenseYear;
+          this.quotationInput.zip = quot.Zip;
+        },
+        (err: ErrorInfo) => { console.log('Plate not found'); }
+      );
+  }
 
   quotation(): void {
 
@@ -132,22 +159,22 @@ export class OfferInputComponent implements OnInit {
         MotorCovers: [
         ],
         MotorDiscounts: [
-          ],
+        ],
         OtherDrivers: [
         ]
       }
     };
 
-    if ( this.quotationInput.youngestDriverBirthDate ) {
-      quotationRerquest.motorQuotationParams.OtherDrivers.push( {
+    if (this.quotationInput.youngestDriverBirthDate) {
+      quotationRerquest.motorQuotationParams.OtherDrivers.push({
         BirthDate: this.quotationInput.youngestDriverBirthDate.toISOString().split('T')[0],
         LicenseDate: `${this.quotationInput.youngestDriverLicenseYear}-01-01`,
         TypeOfDriver: 2
       });
     }
 
-    if ( this.quotationInput.oldestDriverBirthDate ) {
-      quotationRerquest.motorQuotationParams.OtherDrivers.push( {
+    if (this.quotationInput.oldestDriverBirthDate) {
+      quotationRerquest.motorQuotationParams.OtherDrivers.push({
         BirthDate: this.quotationInput.oldestDriverBirthDate.toISOString().split('T')[0],
         LicenseDate: `${this.quotationInput.oldestDriverLicenseYear}-01-01`,
         TypeOfDriver: 3
@@ -156,7 +183,7 @@ export class OfferInputComponent implements OnInit {
 
     console.log(JSON.stringify(quotationRerquest));
 
-    this.onlineIssueService.getInitialQuotation(quotationRerquest)
+    this.busyQuotations = this.onlineIssueService.getInitialQuotation(quotationRerquest)
       .subscribe(
         (data: IQuotationResponse) => {
 

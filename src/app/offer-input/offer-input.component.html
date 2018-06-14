@@ -1,4 +1,4 @@
-<div class="panel panel-default" [ngBusy]="busyMarkes">
+<div class="panel panel-default" [ngBusy]="[busyMarkes,busyQuotations]">
 
   <div class="panel-body" style="background-color: white">
 
@@ -15,7 +15,7 @@
             <div class="panel-heading">
               <div class="row">
                 <div class="col-sm-11">
-                  <h4>Για εσάς</h4>
+                  <h4>Για το αυτοκίνητό σας</h4>
                 </div>
                 <div class="col-sm-1">
                   <h4 [hidden]="activeTab === 1">
@@ -31,56 +31,12 @@
 
               <div class="row">
 
-                <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
-                  <label class="control-label">Ημερομηνία Γέννησης</label>
-                  <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
-                    required></kendo-datepicker>
-                </div>
-
-                <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
-                  <label class="control-label">Έτος άδειας οδήγησης</label>
-                  <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                  <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
-                    format="####" required></kendo-numerictextbox>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <div style="text-align: center" [hidden]="activeTab !== 1">
-            <button class="btn btn-success" (click)="setActiveTab(2)">Επόμενο βήμα</button>
-          </div>
-
-          <div class="panel panel-primary">
-
-            <div class="panel-heading">
-              <div class="row">
-                <div class="col-sm-11">
-                  <h4>Για το αυτοκίνητό σας</h4>
-                </div>
-                <div class="col-sm-1">
-                  <h4 [hidden]="activeTab === 2">
-                    <button class="btn btn-primary">
-                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" (click)="setActiveTab(2)"></span>
-                    </button>
-                  </h4>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel-body" [hidden]="activeTab !== 2">
-
-              <div class="row">
-
                 <div class="form-group col-sm-6" [class.has-error]="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">
                   <label class="control-label">Αριθμός Κυκλοφορίας</label>
                   <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div>
                     <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
+                      (blur)="loadQuotationInfo()"
                       [(ngModel)]="quotationInput.plateNo" autofocus/>
                   </div>
 
@@ -150,6 +106,51 @@
                   <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
                     required></kendo-datepicker>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div style="text-align: center" [hidden]="activeTab !== 1">
+            <button class="btn btn-success" (click)="setActiveTab(2)">Επόμενο βήμα</button>
+          </div>
+
+          <div class="panel panel-primary">
+
+            <div class="panel-heading">
+              <div class="row">
+                <div class="col-sm-11">
+                  <h4>Για εσάς</h4>
+                </div>
+                <div class="col-sm-1">
+                  <h4 [hidden]="activeTab === 2">
+                    <button class="btn btn-primary">
+                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" (click)="setActiveTab(2)"></span>
+                    </button>
+                  </h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-body" [hidden]="activeTab !== 2">
+
+              <div class="row">
+
+                <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
+                  <label class="control-label">Ημερομηνία Γέννησης</label>
+                  <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                  <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
+                    required ></kendo-datepicker>
+                </div>
+
+                <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
+                  <label class="control-label">Έτος άδειας οδήγησης</label>
+                  <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                  <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
+                    format="####" required></kendo-numerictextbox>
                 </div>
 
               </div>
@@ -350,6 +351,7 @@
         </form>
 
 
+        <!--
         <div *ngFor="let cover of coverItems; let i = index;" class="row">
 
           <div class="form-group">
@@ -358,7 +360,7 @@
           </div>
 
         </div>
-
+        -->
 
 
       </div>

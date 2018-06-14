@@ -14,6 +14,7 @@ import { IQuotationResponse } from '../models/online-issue-contracts/quotation-r
 import { IQuotationRequest } from '../models/online-issue-contracts/quotation-request';
 import { ICoversResponse, ICoverItem } from '../models/online-issue-contracts/covers-response';
 import { ICoversRequest } from '../models/online-issue-contracts/covers-request';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class OnlineIssueService {
       ItemListSelector: 32
     };
 
-    const url = 'http://eh017ins178/MotorApiNoauth/api/Motor/GetListItems';
+    const url = environment.urlGetListItems;
 
     return this.httpClient.post<IMotorItemsData>(url, request)
       .pipe(
@@ -41,13 +42,13 @@ export class OnlineIssueService {
 
   getInitialQuotation(request: IQuotationRequest): Observable<IQuotationResponse | ErrorInfo> {
 
-    const url = 'http://eh017ins178/MotorApiNoauth/api/Motor/FastQuotation';
+    const url = environment.urlFastQuotation;
 
     this.covers.forEach( (cover: ICoverItem ) => {
       request.motorQuotationParams.MotorCovers.push(
         {
           MotorCoverItem: cover.MotorCoverItem,
-          Selected: true
+          Selected: false
         }
        );
     } );
@@ -61,7 +62,8 @@ export class OnlineIssueService {
   }
 
   getPackageCovers(): Observable<ICoversResponse | ErrorInfo> {
-    const url = 'http://eh017ins178/MotorApiNoauth/api/Motor/GetPackageCovers';
+
+    const url = environment.urlGetPackageCovers;
 
     const request: ICoversRequest = {
       Header: {
