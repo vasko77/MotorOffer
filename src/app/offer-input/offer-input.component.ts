@@ -11,6 +11,8 @@ import { Subscription } from 'rxjs';
 import { ErrorInfo } from '../models/errorInfo';
 import { MvpApiService } from '../services/mvp-api.service';
 import { IQuotationInfo } from '../models/mvp-contracts/quotation-info';
+import { AuthenticationService } from '../services/authentication.service';
+import { IAuthentication } from '../models/authentication';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -22,6 +24,8 @@ export class OfferInputComponent implements OnInit {
 
   busyMarkes: Subscription;
   busyQuotations: Subscription;
+
+  authenticationInfo: IAuthentication;
 
   quotationInput = new QuotationInputParams();
   mouseOverSubmit: boolean;
@@ -50,7 +54,7 @@ export class OfferInputComponent implements OnInit {
   constructor(private onlineIssueService: OnlineIssueService,
     private mvpApiService: MvpApiService,
     private toastr: ToastrService,
-    private intlService: IntlService) {
+    private authenticationService: AuthenticationService) {
 
     this.quotationInput.markaCode = 0;
     this.maxDateBirth = new Date();
@@ -75,8 +79,17 @@ export class OfferInputComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.onlineIssueService.getAuthenticationInfo()
-    //  .subscribe();
+    this.authenticationService.getAuthenticationInfo()
+      .subscribe(
+        (data: IAuthentication) => {
+          console.log(JSON.stringify(data));
+          this.authenticationInfo = data;
+        },
+        (err: any) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+        }
+      );
 
     this.busyMarkes = this.onlineIssueService.getMarkes()
       .subscribe(
@@ -101,6 +114,10 @@ export class OfferInputComponent implements OnInit {
   }
 
   loadQuotationInfo(): void {
+    if (!this.quotationInput.plateNo) {
+      return;
+    }
+
     this.mvpApiService.getQuotation(this.quotationInput.plateNo)
       .subscribe(
         (quot: IQuotationInfo) => {
@@ -128,7 +145,7 @@ export class OfferInputComponent implements OnInit {
 
   quotation(): void {
 
-    console.log(JSON.stringify(this.quotationInput));
+    // Prepare quotation request
 
     const quotationRerquest: IQuotationRequest = {
       Header: {
@@ -181,7 +198,57 @@ export class OfferInputComponent implements OnInit {
       });
     }
 
+    if (this.quotationInput.publicServant) {
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 2, Selected: true });
+    }
+    if (this.quotationInput.uniformed) {
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 3, Selected: true });
+    }
+    if (this.quotationInput.secondVehicle) {
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true });
+    }
+
+    this.coverItems.forEach(element => {
+      quotationRerquest.motorQuotationParams.MotorCovers.push( {
+        MotorCoverItem: element.MotorCoverItem,
+        Selected: true
+      });
+    });
+
     console.log(JSON.stringify(quotationRerquest));
+
+
+    // Prepare MVP quotation data save
+
+    const mvpQuotation: IQuotationInfo = {
+      BirthDate: this.quotationInput.birthDate,
+      CC: this.quotationInput.cc,
+      ContractStartDate: this.quotationInput.contractStartDate,
+      County: this.quotationInput.county,
+      LicenseYear: this.quotationInput.driverLicenseYear,
+      MarkaCode: this.quotationInput.markaCode,
+      OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
+      OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
+      PlateNo: this.quotationInput.plateNo,
+      VehicleLicenseYear: this.quotationInput.vehicleLicenseYear,
+      VehicleValue: this.quotationInput.vehicleValue,
+      YoungestDriverBirthDate: this.quotationInput.youngestDriverBirthDate,
+      YoungestDriverLicenseYear: this.quotationInput.youngestDriverLicenseYear,
+      Zip: this.quotationInput.zip,
+    };
+
+    // MVP quotation data save
+
+    this.mvpApiService.postQuotation( mvpQuotation )
+      .subscribe(
+        () => {},
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
+
+    // Perform actual quotation
 
     this.busyQuotations = this.onlineIssueService.getInitialQuotation(quotationRerquest)
       .subscribe(
@@ -215,6 +282,13 @@ export class OfferInputComponent implements OnInit {
           this.toastr.error(err.friendlyMessage, 'Σφάλμα');
         }
       );
+  }
+
+  updatePublicServant(value: boolean): void {
+    this.quotationInput.publicServant = value;
+    if (!value) {
+      this.quotationInput.uniformed = false;
+    }
   }
 
   setActiveTab(tab: number) {

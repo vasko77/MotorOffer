@@ -10,7 +10,10 @@ export class QuotationInputParams {
     county: string;
     contractStartDate: Date;
     youngestDriverBirthDate: Date;
-    youngestDriverLicenseYear: Number;
+    youngestDriverLicenseYear: number;
     oldestDriverBirthDate: Date;
-    oldestDriverLicenseYear: Number;
+    oldestDriverLicenseYear: number;
+    publicServant: boolean;
+    uniformed: boolean;
+    secondVehicle: boolean;
 }

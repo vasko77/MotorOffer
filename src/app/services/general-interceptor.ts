@@ -14,7 +14,7 @@ export class GeneralInterceptor implements HttpInterceptor {
                 'Accept': 'application/json',
                 'Cache-Control': 'no-cache',
                 // tslint:disable-next-line:max-line-length
-                // Authorization: 'NTLM TlRMTVNTUAADAAAAGAAYAGwAAAAYABgAhAAAABIAEgBIAAAAEgASAFoAAAAAAAAAbAAAAAAAAACcAAAABYKIogUBKAoAAAAPRQBGAEcASQBOAFMALgBHAFIAbQBvAHMAcwBhAGQAbQBpAG4A33beO0LZVHkAAAAAAAAAAAAAAAAAAAAAYVsDWLoKGHkjfoGasNYcen1rHI+fYjOa'
+                // Authorization: 'NTLM TlRMTVNTUAADAAAAGAAYAGwAAAAYABgAhAAAABIAEgBIAAAAEgASAFoAAAAAAAAAbAAAAAAAAACcAAAABYKIogUBKAoAAAAPRQBGAEcASQBOAFMALgBHAFIAbQBvAHMAcwBhAGQAbQBpAG4A6dtgjcmEMb4AAAAAAAAAAAAAAAAAAAAAd7a3WnUGiRak4O3GUnxIPh7gbyTS0ayT'
             },
             withCredentials: true
         });

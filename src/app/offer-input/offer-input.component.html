@@ -10,24 +10,19 @@
 
         <form #form="ngForm" novalidate>
 
-          <div class="panel panel-primary">
+          <div class="panel panel-default">
 
             <div class="panel-heading">
               <div class="row">
                 <div class="col-sm-11">
-                  <h4>Για το αυτοκίνητό σας</h4>
-                </div>
-                <div class="col-sm-1">
-                  <h4 [hidden]="activeTab === 1">
-                    <button class="btn btn-primary">
-                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" (click)="setActiveTab(1)"></span>
-                    </button>
-                  </h4>
+                  <h1 style="float: left" class="bg-primary text-white">&nbsp;1&nbsp;</h1>
+                  <h1 style="float: left">&nbsp;</h1>
+                  <h4 style="margin-top: 30px">Για το αυτοκίνητό σας</h4>
                 </div>
               </div>
             </div>
 
-            <div class="panel-body" [hidden]="activeTab !== 1">
+            <div class="panel-body">
 
               <div class="row">
 
@@ -36,8 +31,7 @@
                   <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <div>
                     <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                      (blur)="loadQuotationInfo()"
-                      [(ngModel)]="quotationInput.plateNo" autofocus/>
+                      (blur)="loadQuotationInfo()" [(ngModel)]="quotationInput.plateNo" autofocus/>
                   </div>
 
                 </div>
@@ -114,28 +108,19 @@
 
           </div>
 
-          <div style="text-align: center" [hidden]="activeTab !== 1">
-            <button class="btn btn-success" (click)="setActiveTab(2)">Επόμενο βήμα</button>
-          </div>
-
-          <div class="panel panel-primary">
+          <div class="panel panel-default">
 
             <div class="panel-heading">
               <div class="row">
                 <div class="col-sm-11">
-                  <h4>Για εσάς</h4>
-                </div>
-                <div class="col-sm-1">
-                  <h4 [hidden]="activeTab === 2">
-                    <button class="btn btn-primary">
-                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" (click)="setActiveTab(2)"></span>
-                    </button>
-                  </h4>
+                  <h1 style="float: left" class="bg-primary text-white">&nbsp;2&nbsp;</h1>
+                  <h1 style="float: left">&nbsp;</h1>
+                  <h4 style="margin-top: 30px">Για εσάς</h4>
                 </div>
               </div>
             </div>
 
-            <div class="panel-body" [hidden]="activeTab !== 2">
+            <div class="panel-body">
 
               <div class="row">
 
@@ -143,7 +128,7 @@
                   <label class="control-label">Ημερομηνία Γέννησης</label>
                   <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                   <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
-                    required ></kendo-datepicker>
+                    required></kendo-datepicker>
                 </div>
 
                 <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
@@ -159,32 +144,19 @@
 
           </div>
 
-          <div style="text-align: center" [hidden]="activeTab !== 2">
-            <button class="btn btn-success" (click)="setActiveTab(3)">Επόμενο βήμα</button>
-          </div>
-
-          <div class="panel panel-primary">
+          <div class="panel panel-default">
 
             <div class="panel-heading">
               <div class="row">
                 <div class="col-sm-11">
-                  <h4>
-                    <h4>Για τους υπόλοιπους οδηγούς του αυτοκινήτου σας</h4>
-                  </h4>
-                </div>
-                <div class="col-sm-1">
-                  <h4 [hidden]="activeTab === 3">
-                    <button class="btn btn-primary">
-                      <span class="glyphicon glyphicon-chevron-down" aria-hidden="true" (click)="setActiveTab(3)"></span>
-                    </button>
-                  </h4>
+                  <h1 style="float: left" class="bg-primary text-white">&nbsp;3&nbsp;</h1>
+                  <h1 style="float: left">&nbsp;</h1>
+                  <h4 style="margin-top: 30px">Για τους υπόλοιπους οδηγούς του αυτοκινήτου σας</h4>
                 </div>
               </div>
             </div>
 
-            <div class="panel-body" [hidden]="activeTab !== 3">
-
-              <!--button (click)="diplomaYearYoungest.focus()">FOCUS</button-->
+            <div class="panel-body">
 
               <div class="row">
 
@@ -222,44 +194,57 @@
 
           </div>
 
-          <!--
-  <div class="panel panel-primary">
+          <div class="panel panel-default">
 
-    <div class="panel-heading">
-      <h5>Στοιχεία Ιδιοκτήτη</h5>
-    </div>
+            <div class="panel-heading">
+                <h1 style="float: left" class="bg-primary text-white">&nbsp;4&nbsp;</h1>
+                <h1 style="float: left">&nbsp;</h1>
+                <h4 style="margin-top: 30px">Εκπτώσεις</h4>
+            </div>
 
-    <div class="panel-body">
+            <div class="panel-body">
 
-      <div class="row">
+              <div class="row">
 
+                <div class="col-sm-6">
 
-        <div class="col-sm-6">
+                  <div class="form-check">
+                    <input #publicServant="ngModel" type="checkbox" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
+                      (ngModelChange)="updatePublicServant($event)">
+                    <label class="form-check-label" for="publicServant">&nbsp;Δημόσιος Υπάλληλος</label>
+                  </div>
 
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="publicServant" name="publicServant" ngModel>
-            <label class="form-check-label" for="publicServant">Δημόσιος Υπάλληλος</label>
+                  <div class="form-check">
+                    <input #uniformed="ngModel" type="checkbox" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
+                      [disabled]="!publicServant.value">
+                    <label class="form-check-label" for="uniformed">&nbsp;Ένστολος</label>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-6">
+
+                  <div class="form-check">
+                    <input type="checkbox" class="form-check-input" name="secondVehicle" [(ngModel)]="quotationInput.secondVehicle">
+                    <label class="form-check-label" for="secondVehicle">&nbsp;Δεύτερο Αυτοκίνητο</label>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="uniformed" name="publicServant" ngModel>
-            <label class="form-check-label" for="uniformed">Ένστολος</label>
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
--->
-
-          <div style="text-align: center" [hidden]="activeTab !== 3">
+          <div style="text-align: center">
             <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-              <button type="submit" [disabled]="form.invalid" class="btn btn-success" (click)="quotation()">Τιμολόγηση</button>
+              <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="quotation()">Τιμολόγηση</button>
             </span>
           </div>
+
+          <br/>
+          <br/>
 
           <div *ngIf="quotationResult?.Allow">
 
@@ -349,7 +334,6 @@
           </div>
 
         </form>
-
 
         <!--
         <div *ngFor="let cover of coverItems; let i = index;" class="row">

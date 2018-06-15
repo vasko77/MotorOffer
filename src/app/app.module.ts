@@ -9,7 +9,7 @@ registerLocaleData(localeEl, 'el');
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { BusyModule } from 'angular2-busy';
+import { NgBusyModule } from 'ng-busy';
 import { ToastrModule } from 'ngx-toastr';
 
 import { IntlModule } from '@progress/kendo-angular-intl';
@@ -47,7 +47,7 @@ import { GeneralInterceptor } from './services/general-interceptor';
     DateInputsModule,
     InputsModule,
     IntlModule,
-    BusyModule,
+    NgBusyModule,
     // HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, { dataEncapsulation: false } ),
     BrowserAnimationsModule,
     ToastrModule.forRoot({

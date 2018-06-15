@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { IQuotationInfo } from '../models/mvp-contracts/quotation-info';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -17,14 +18,33 @@ export class MvpApiService {
 
   getQuotation(plateNo: string): Observable<IQuotationInfo | ErrorInfo> {
 
-    const url = environment.urlGetMvpQuotation + plateNo;
+    const url = environment.urlMvpQuotation + plateNo;
 
-    console.log( url );
+    console.log(url);
 
     return this.httpClient.get<IQuotationInfo>(url)
       .pipe(
-         catchError(err => this.HandleHttpError(err))
-    );
+        catchError(err => {
+          console.log(err.status);
+          if (err.status !== 404) {
+            return this.HandleHttpError(err);
+          } else {
+            return new EmptyObservable();
+          }
+        })
+      );
+  }
+
+  postQuotation(quotation: IQuotationInfo): Observable<IQuotationInfo | ErrorInfo> {
+
+    const url = environment.urlMvpQuotation;
+
+    console.log(url);
+
+    return this.httpClient.post<IQuotationInfo>(url, quotation)
+      .pipe(
+        catchError(err => this.HandleHttpError(err) )
+      );
   }
 
   private HandleHttpError(err: HttpErrorResponse): Observable<ErrorInfo> {
@@ -34,4 +54,5 @@ export class MvpApiService {
     error.message = err.statusText;
     error.friendlyMessage = 'Error occured';
     return ErrorObservable.create(error);
-  }}
+  }
+}
