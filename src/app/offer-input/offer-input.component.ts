@@ -34,8 +34,10 @@ export class OfferInputComponent implements OnInit {
 
   markesData: IMotorItemsData;
   quotationResult: ICalculatedQuotationsResult;
-  covers: ICover[];
-  packageCoverItems: ICoverItem[];
+  optionalCovers: ICover[];
+  mandatoryCovers: ICover[];
+  packageOptionalCoverItems: ICoverItem[];
+  packageAllCoverItems: ICoverItem[];
   errors: IError[];
 
   get coversAmount12(): number {
@@ -66,8 +68,8 @@ export class OfferInputComponent implements OnInit {
   private calculateSum(duration: number): number {
     let sum = 0;
 
-    if (this.covers) {
-      this.covers.forEach(element => {
+    if (this.optionalCovers) {
+      this.optionalCovers.forEach(element => {
         // console.log( JSON.stringify( element ));
         if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
           sum += element.CoverPremia[duration].CoverPremium;
@@ -105,9 +107,9 @@ export class OfferInputComponent implements OnInit {
     this.busyQuotations = this.onlineIssueService.getPackageCovers()
       .subscribe(
         (data: ICoversResponse) => {
-          this.packageCoverItems = data.CoversCollection[0].CoverItem;
-          console.log( 'Covers Data' );
-          console.log( this.packageCoverItems );
+          // tslint:disable-next-line:max-line-length
+          this.packageOptionalCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.Allowed && !item.IsMandatory);
+          this.packageAllCoverItems = data.CoversCollection[0].CoverItem;
         },
         (err: ErrorInfo) => {
           console.error('Component log: ' + JSON.stringify(err));
@@ -211,7 +213,7 @@ export class OfferInputComponent implements OnInit {
       quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true });
     }
 
-    this.packageCoverItems.forEach(element => {
+    this.packageOptionalCoverItems.forEach(element => {
       quotationRerquest.motorQuotationParams.MotorCovers.push( {
         MotorCoverItem: element.MotorCoverItem,
         Selected: true
@@ -265,12 +267,26 @@ export class OfferInputComponent implements OnInit {
 
             if (this.quotationResult.Allow) {
 
-              this.covers = this.quotationResult.Covers
+              this.optionalCovers = this.quotationResult.Covers
                 .filter((cover: ICover) => { if (cover.Allowed) { return cover; } })
                 .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
 
+                this.optionalCovers.forEach( cover => {
+                  // tslint:disable-next-line:max-line-length
+                  cover.ShortDescription = this.packageAllCoverItems.find( c => c.MotorCoverItem === cover.MotorCoverItem ).ShortDescription;
+                } );
+
+                this.mandatoryCovers = this.quotationResult.Covers
+                .filter((cover: ICover) => { if (cover.IsMandatory) { return cover; } })
+                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+                this.mandatoryCovers.forEach( cover => {
+                  // tslint:disable-next-line:max-line-length
+                  cover.ShortDescription = this.packageAllCoverItems.find( c => c.MotorCoverItem === cover.MotorCoverItem ).ShortDescription;
+                } );
+
                 console.log( 'Covers returned' );
-                console.log( this.covers );
+                console.log( this.optionalCovers );
 
             } else {
 
@@ -280,7 +296,7 @@ export class OfferInputComponent implements OnInit {
 
           } else {
 
-            this.covers = [];
+            this.optionalCovers = [];
 
           }
         },

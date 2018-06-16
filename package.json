@@ -26,6 +26,7 @@
     "@progress/kendo-angular-inputs": "^3.1.0",
     "@progress/kendo-angular-intl": "^1.4.1",
     "@progress/kendo-angular-l10n": "^1.2.0",
+    "@progress/kendo-angular-tooltip": "^0.4.0",
     "@progress/kendo-theme-default": "^2.52.2",
     "angular-font-awesome": "^3.1.2",
     "angular2-busy": "^2.0.4",

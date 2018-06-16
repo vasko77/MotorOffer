@@ -295,7 +295,48 @@
             </div>
           </div>
 
-          <!-- COVERS -->
+          <!-- MANDATORY COVERS -->
+
+          <div *ngIf="quotationResult?.Allow">
+
+              <div class="row">
+  
+                <div class="col-sm-12">
+                  <div class="panel panel-primary">
+  
+                    <div class="panel-heading">
+                      <div class="row">
+                        <h4 class="col-sm-7">Καλύψεις Πακέτου</h4>
+                        <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
+                      </div>
+                    </div>
+  
+                    <div class="panel-body">
+  
+                      <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row">
+  
+                        <div class="form-group">
+                          <label class="col-sm-6">{{ cover.Description }}</label>
+                          <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
+                              <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                          </div>
+                          <label *ngIf="duration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="duration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="duration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        </div>
+  
+                      </div>
+  
+                    </div>
+                  </div>
+  
+                </div>
+  
+              </div>
+  
+            </div>
+
+            <!-- OPTIONAL COVERS -->
 
           <div *ngIf="quotationResult?.Allow">
 
@@ -349,7 +390,7 @@
 
                   <div class="panel-heading">
                     <div class="row">
-                      <h4 class="col-sm-7">Κάλυψη</h4>
+                      <h4 class="col-sm-7">Προεραιτικές Καλύψεις</h4>
                       <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
                       <h4 class="col-sm-2">Επιλογή</h4>
                     </div>
@@ -357,10 +398,13 @@
 
                   <div class="panel-body">
 
-                    <div *ngFor="let cover of covers; let i = index;" class="row">
+                    <div *ngFor="let cover of optionalCovers; let i = index;" class="row">
 
                       <div class="form-group">
-                        <label class="col-sm-7">{{ cover.Description }}</label>
+                        <label class="col-sm-6">{{ cover.Description }}</label>
+                        <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                        </div>
                         <label *ngIf="duration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                         <label *ngIf="duration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                         <label *ngIf="duration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>

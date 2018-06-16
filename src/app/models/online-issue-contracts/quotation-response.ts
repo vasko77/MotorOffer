@@ -32,6 +32,7 @@ export interface ICover {
     Selected: boolean;
     IsMandatory: boolean;
     Description: string;
+    ShortDescription: string;
     CanCombineWithPackage: boolean;
     MotorCoverItem: number;
     VisibilityOrder: number;

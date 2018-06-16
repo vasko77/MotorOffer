@@ -21,8 +21,6 @@ import { environment } from '../../environments/environment';
 })
 export class OnlineIssueService {
 
-  // packageCovers: ICoverItem[];
-
   constructor(private httpClient: HttpClient) { }
 
   getMarkes(): Observable<IMotorItemsData | ErrorInfo> {
@@ -43,17 +41,6 @@ export class OnlineIssueService {
   getQuotation(request: IQuotationRequest): Observable<IQuotationResponse | ErrorInfo> {
 
     const url = environment.urlFastQuotation;
-
-    /*
-    this.packageCovers.forEach( (cover: ICoverItem ) => {
-      request.motorQuotationParams.MotorCovers.push(
-        {
-          MotorCoverItem: cover.MotorCoverItem,
-          Selected: true
-        }
-       );
-    } );
-    */
 
     return this.httpClient.post<IQuotationResponse>(url, request)
       .pipe(
@@ -85,7 +72,6 @@ export class OnlineIssueService {
       .pipe(
         tap((data: ICoversResponse) => {
              data.CoversCollection[0].CoverItem = data.CoversCollection[0].CoverItem
-            .filter((item: ICoverItem) => item.Allowed)
             .sort((c1: ICoverItem, c2: ICoverItem) => c1.VisibilityOrder - c2.VisibilityOrder);
         }),
         catchError(err => this.HandleHttpError(err)),
@@ -100,20 +86,4 @@ export class OnlineIssueService {
     error.friendlyMessage = 'Error occured';
     return ErrorObservable.create(error);
   }
-
-  /*
-  getAuthenticationInfo(): Observable<ITestInfo | ErrorInfo> {
-
-    const url = 'http://localhost:64205/api/Authorize';
-
-    const request: ITestInfo = { name: 'vasko' };
-
-    return this.httpClient.post<ITestInfo>(url, request)
-      .do(data => { console.log('Service Response' + JSON.stringify(data)); })
-      .pipe(
-        catchError(err => this.HandleHttpError(err)),
-    );
-
-  }
-  */
 }

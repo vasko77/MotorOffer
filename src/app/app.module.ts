@@ -15,6 +15,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { IntlModule } from '@progress/kendo-angular-intl';
 import '@progress/kendo-angular-intl/locales/el/all';
 import '@progress/kendo-angular-intl/locales/el/calendar';
+import { TooltipModule } from '@progress/kendo-angular-tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,6 +49,7 @@ import { GeneralInterceptor } from './services/general-interceptor';
     InputsModule,
     IntlModule,
     NgBusyModule,
+    TooltipModule,
     // HttpClientInMemoryWebApiModule.forRoot( InMemoryDataService, { dataEncapsulation: false } ),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
