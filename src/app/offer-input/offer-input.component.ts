@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { IntlService } from '@progress/kendo-angular-intl';
 import { IQuotationRequest } from '../models/online-issue-contracts/quotation-request';
-import { IMotorItem, IMotorItemsData } from '../models/online-issue-contracts/motor-item';
+import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { ToastrService } from 'ngx-toastr';
 import { IQuotationResponse, ICover, ICalculatedQuotationsResult, IError } from '../models/online-issue-contracts/quotation-response';
 import { OnlineIssueService } from '../services/online-issue.service';
@@ -26,15 +25,17 @@ export class OfferInputComponent implements OnInit {
   busyQuotations: Subscription;
 
   authenticationInfo: IAuthentication;
+  efginsUser: boolean;
 
   quotationInput = new QuotationInputParams();
   mouseOverSubmit: boolean;
   activeTab = 1;
+  duration = '12';
 
   markesData: IMotorItemsData;
   quotationResult: ICalculatedQuotationsResult;
   covers: ICover[];
-  coverItems: ICoverItem[];
+  packageCoverItems: ICoverItem[];
   errors: IError[];
 
   get coversAmount12(): number {
@@ -82,8 +83,9 @@ export class OfferInputComponent implements OnInit {
     this.authenticationService.getAuthenticationInfo()
       .subscribe(
         (data: IAuthentication) => {
-          console.log(JSON.stringify(data));
+          console.log(data);
           this.authenticationInfo = data;
+          this.efginsUser = data.efginsUser;
         },
         (err: any) => {
           console.error('Component log: ' + JSON.stringify(err));
@@ -103,8 +105,9 @@ export class OfferInputComponent implements OnInit {
     this.busyQuotations = this.onlineIssueService.getPackageCovers()
       .subscribe(
         (data: ICoversResponse) => {
-          this.coverItems = data.CoversCollection[0].CoverItem;
-          // console.log('Covers Data: ' + JSON.stringify(data));
+          this.packageCoverItems = data.CoversCollection[0].CoverItem;
+          console.log( 'Covers Data' );
+          console.log( this.packageCoverItems );
         },
         (err: ErrorInfo) => {
           console.error('Component log: ' + JSON.stringify(err));
@@ -153,7 +156,7 @@ export class OfferInputComponent implements OnInit {
         ServiceVersion: '1'
       },
       motorQuotationParams: {
-        MotorInsurancePackage: 'SP7',
+        MotorInsurancePackage: 'MVP',
         InsuranceStartDate: this.quotationInput.contractStartDate.toISOString().split('T')[0],
         MainDriverInfo: {
           BirthDate: this.quotationInput.birthDate.toISOString().split('T')[0],
@@ -208,15 +211,15 @@ export class OfferInputComponent implements OnInit {
       quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true });
     }
 
-    this.coverItems.forEach(element => {
+    this.packageCoverItems.forEach(element => {
       quotationRerquest.motorQuotationParams.MotorCovers.push( {
         MotorCoverItem: element.MotorCoverItem,
         Selected: true
       });
     });
 
-    console.log(JSON.stringify(quotationRerquest));
-
+    console.log( 'Quotation Request' );
+    console.log(quotationRerquest);
 
     // Prepare MVP quotation data save
 
@@ -250,12 +253,13 @@ export class OfferInputComponent implements OnInit {
 
     // Perform actual quotation
 
-    this.busyQuotations = this.onlineIssueService.getInitialQuotation(quotationRerquest)
+    this.busyQuotations = this.onlineIssueService.getQuotation(quotationRerquest)
       .subscribe(
         (data: IQuotationResponse) => {
 
           this.quotationResult = data.CalculatedQuotationsResult[0];
-          console.log('quotationResult Data: ' + JSON.stringify(this.quotationResult));
+          console.log('quotationResult Data:');
+          console.log(this.quotationResult);
 
           if (this.quotationResult) {
 
@@ -264,6 +268,9 @@ export class OfferInputComponent implements OnInit {
               this.covers = this.quotationResult.Covers
                 .filter((cover: ICover) => { if (cover.Allowed) { return cover; } })
                 .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+                console.log( 'Covers returned' );
+                console.log( this.covers );
 
             } else {
 

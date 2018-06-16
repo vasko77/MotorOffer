@@ -9,7 +9,7 @@ registerLocaleData(localeEl, 'el');
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { NgBusyModule } from 'ng-busy';
+import { NgBusyModule, BusyConfig } from 'ng-busy';
 import { ToastrModule } from 'ngx-toastr';
 
 import { IntlModule } from '@progress/kendo-angular-intl';

@@ -9,4 +9,5 @@ export interface ICoversRequest {
 export interface ICoverParameter {
     MotorInsurancePackage: string;
     VehicleUsage: string;
+    InsuranceStartDate: string;
 }

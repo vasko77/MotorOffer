@@ -2,13 +2,13 @@
 
   <div class="panel-body" style="background-color: white">
 
-    <h4 class="title"></h4>
-
     <div class="row">
 
       <div class="col-sm-8">
 
         <form #form="ngForm" novalidate>
+
+          <!-- PANEL 1 Vehicle -->
 
           <div class="panel panel-default">
 
@@ -108,6 +108,8 @@
 
           </div>
 
+          <!-- PANEL 2 For you -->
+
           <div class="panel panel-default">
 
             <div class="panel-heading">
@@ -143,6 +145,8 @@
             </div>
 
           </div>
+
+          <!-- PANEL 3 Rest drivers -->
 
           <div class="panel panel-default">
 
@@ -194,12 +198,14 @@
 
           </div>
 
+          <!-- PANEL 4 Discounts -->
+
           <div class="panel panel-default">
 
             <div class="panel-heading">
-                <h1 style="float: left" class="bg-primary text-white">&nbsp;4&nbsp;</h1>
-                <h1 style="float: left">&nbsp;</h1>
-                <h4 style="margin-top: 30px">Εκπτώσεις</h4>
+              <h1 style="float: left" class="bg-primary text-white">&nbsp;4&nbsp;</h1>
+              <h1 style="float: left">&nbsp;</h1>
+              <h4 style="margin-top: 30px">Εκπτώσεις</h4>
             </div>
 
             <div class="panel-body">
@@ -237,6 +243,8 @@
 
           </div>
 
+          <!-- QUOTATION Button -->
+
           <div style="text-align: center">
             <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
               <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="quotation()">Τιμολόγηση</button>
@@ -246,8 +254,52 @@
           <br/>
           <br/>
 
+          <div class="panel panel-primary" *ngIf="quotationResult?.Allow">
+            <div class="panel-heading">
+              <h4>
+                <select name="duration" class="form-control" name="duration" [(ngModel)]="duration">
+                  <option value="12">Ετήσιο</option>
+                  <option value="6">Εξαμηνιαίο</option>
+                  <option value="3">Τριμηνιαίο</option>
+                </select>
+              </h4>
+            </div>
+
+            <div class="panel-body">
+              <div>
+                <h3 class="col-sm-4" style="text-align: right;">Βασικά Ασφάλιστρα</h3>
+                <h3 class="col-sm-4" style="text-align: right;">Ασφάλιστρα Προεραιτικών</h3>
+                <h3 class="col-sm-4" style="text-align: right;">Συνολικά Ασφάλιστρα</h3>
+              </div>
+              <div *ngIf="duration === '12'">
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[0]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[0]?.GrossPremiums + coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2'
+                  }}
+                </h1>
+              </div>
+              <div *ngIf="duration === '6'">
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[1]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[1]?.GrossPremiums + coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2'
+                  }}
+                </h1>
+              </div>
+              <div *ngIf="duration === '3'">
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[2]?.GrossPremiums | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
+                <h1 class="col-sm-4" style="text-align: right;">{{ quotationResult?.PremiumsPayable[2]?.GrossPremiums + coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2'
+                  }}
+                </h1>
+              </div>
+            </div>
+          </div>
+
+          <!-- COVERS -->
+
           <div *ngIf="quotationResult?.Allow">
 
+            <!--
             <div class="row">
 
               <div class="col-sm-4">
@@ -288,6 +340,8 @@
 
             </div>
 
+          -->
+
             <div class="row">
 
               <div class="col-sm-12">
@@ -295,10 +349,9 @@
 
                   <div class="panel-heading">
                     <div class="row">
-                      <h4 class="col-sm-5">Καλύψεις</h4>
-                      <h4 class="col-sm-2" style="text-align: right;">Ετήσιο</h4>
-                      <h4 class="col-sm-2" style="text-align: right;">Εξαμηνιαίο</h4>
-                      <h4 class="col-sm-2" style="text-align: right;">Τριμηνιαίο</h4>
+                      <h4 class="col-sm-7">Κάλυψη</h4>
+                      <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
+                      <h4 class="col-sm-2">Επιλογή</h4>
                     </div>
                   </div>
 
@@ -307,11 +360,11 @@
                     <div *ngFor="let cover of covers; let i = index;" class="row">
 
                       <div class="form-group">
-                        <label class="col-sm-5">{{ cover.Description }}</label>
-                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label class="col-sm-2" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                        <label class="col-sm-7">{{ cover.Description }}</label>
+                        <label *ngIf="duration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="duration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="duration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <input type="checkbox" class="form-check-input col-sm-2" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
                       </div>
 
                     </div>
@@ -321,6 +374,12 @@
 
               </div>
 
+            </div>
+
+            <div class="row" style="text-align: center" *ngIf="authenticationInfo?.efginsUser">
+              <div class="col-sm-12">
+                <button class="btn btn-lg btn-success">Δημιουργία Αίτησης</button>
+              </div>
             </div>
 
           </div>
@@ -335,19 +394,10 @@
 
         </form>
 
-        <!--
-        <div *ngFor="let cover of coverItems; let i = index;" class="row">
-
-          <div class="form-group">
-            <label class="col-sm-5">{{ cover.Description }}</label>
-            <input type="checkbox" class="form-check-input col-sm-1" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
-          </div>
-
-        </div>
-        -->
-
-
       </div>
+
+
+      <!-- SIDEBAR -->
 
       <div class="col-sm-4">
 

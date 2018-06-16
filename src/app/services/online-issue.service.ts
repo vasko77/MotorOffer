@@ -21,7 +21,7 @@ import { environment } from '../../environments/environment';
 })
 export class OnlineIssueService {
 
-  covers: ICoverItem[];
+  // packageCovers: ICoverItem[];
 
   constructor(private httpClient: HttpClient) { }
 
@@ -40,19 +40,20 @@ export class OnlineIssueService {
     );
   }
 
-  getInitialQuotation(request: IQuotationRequest): Observable<IQuotationResponse | ErrorInfo> {
+  getQuotation(request: IQuotationRequest): Observable<IQuotationResponse | ErrorInfo> {
 
     const url = environment.urlFastQuotation;
 
-    this.covers.forEach( (cover: ICoverItem ) => {
+    /*
+    this.packageCovers.forEach( (cover: ICoverItem ) => {
       request.motorQuotationParams.MotorCovers.push(
         {
           MotorCoverItem: cover.MotorCoverItem,
-          Selected: false
+          Selected: true
         }
        );
     } );
-
+    */
 
     return this.httpClient.post<IQuotationResponse>(url, request)
       .pipe(
@@ -73,8 +74,9 @@ export class OnlineIssueService {
       AgentCode: 20170,
       CoverParameters: [
         {
-          MotorInsurancePackage: 'SP7',
-          VehicleUsage: '00'
+          MotorInsurancePackage: 'MVP',
+          VehicleUsage: '00',
+          InsuranceStartDate: '2018-06-30'
         }
       ]
     };
@@ -82,7 +84,7 @@ export class OnlineIssueService {
     return this.httpClient.post<ICoversResponse>(url, request)
       .pipe(
         tap((data: ICoversResponse) => {
-          this.covers = data.CoversCollection[0].CoverItem = data.CoversCollection[0].CoverItem
+             data.CoversCollection[0].CoverItem = data.CoversCollection[0].CoverItem
             .filter((item: ICoverItem) => item.Allowed)
             .sort((c1: ICoverItem, c2: ICoverItem) => c1.VisibilityOrder - c2.VisibilityOrder);
         }),
