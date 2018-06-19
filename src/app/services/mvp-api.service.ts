@@ -6,12 +6,17 @@ import { IQuotationInfo } from '../models/mvp-contracts/quotation-info';
 import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MvpApiService {
+
+  private _quotationInfo: IQuotationInfo;
+  get quotationInfo(): IQuotationInfo {
+    return this._quotationInfo;
+  }
 
   constructor(private httpClient: HttpClient) {
   }
@@ -43,6 +48,7 @@ export class MvpApiService {
 
     return this.httpClient.post<IQuotationInfo>(url, quotation)
       .pipe(
+        tap( (data: IQuotationInfo) => { this._quotationInfo = quotation; } ),
         catchError(err => this.HandleHttpError(err) )
       );
   }

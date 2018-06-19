@@ -15,7 +15,6 @@ import { IAuthentication } from '../models/authentication';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'app-offer-input',
   templateUrl: './offer-input.component.html',
   styleUrls: ['./offer-input.component.scss']
 })
@@ -34,6 +33,7 @@ export class OfferInputComponent implements OnInit {
 
   markesData: IMotorItemsData;
   quotationResult: ICalculatedQuotationsResult;
+  setCovers: ICover[];
   optionalCovers: ICover[];
   mandatoryCovers: ICover[];
   packageOptionalCoverItems: ICoverItem[];
@@ -62,6 +62,26 @@ export class OfferInputComponent implements OnInit {
     this.quotationInput.markaCode = 0;
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
+
+    if (this.mvpApiService.quotationInfo) {
+      this.quotationInput.birthDate = this.mvpApiService.quotationInfo.BirthDate;
+      this.quotationInput.cc = this.mvpApiService.quotationInfo.CC;
+      this.quotationInput.contractStartDate = this.mvpApiService.quotationInfo.ContractStartDate;
+      this.quotationInput.county = this.mvpApiService.quotationInfo.County;
+      this.quotationInput.driverLicenseYear = this.mvpApiService.quotationInfo.DriverLicenseYear;
+      this.quotationInput.markaCode = this.mvpApiService.quotationInfo.MarkaCode;
+      this.quotationInput.oldestDriverBirthDate = this.mvpApiService.quotationInfo.OldestDriverBirthDate;
+      this.quotationInput.oldestDriverLicenseYear = this.mvpApiService.quotationInfo.OldestDriverLicenseYear;
+      this.quotationInput.plateNo = this.mvpApiService.quotationInfo.PlateNo;
+      this.quotationInput.publicServant = this.mvpApiService.quotationInfo.PublicServant;
+      this.quotationInput.secondVehicle = this.mvpApiService.quotationInfo.SecondVehicle;
+      this.quotationInput.uniformed = this.mvpApiService.quotationInfo.Uniformed;
+      this.quotationInput.vehicleLicenseYear = this.mvpApiService.quotationInfo.VehicleLicenseYear;
+      this.quotationInput.vehicleValue = this.mvpApiService.quotationInfo.VehicleValue;
+      this.quotationInput.youngestDriverBirthDate = this.mvpApiService.quotationInfo.YoungestDriverBirthDate;
+      this.quotationInput.youngestDriverLicenseYear = this.mvpApiService.quotationInfo.YoungestDriverLicenseYear;
+      this.quotationInput.zip = this.mvpApiService.quotationInfo.Zip;
+    }
   }
 
 
@@ -70,6 +90,15 @@ export class OfferInputComponent implements OnInit {
 
     if (this.optionalCovers) {
       this.optionalCovers.forEach(element => {
+        // console.log( JSON.stringify( element ));
+        if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
+          sum += element.CoverPremia[duration].CoverPremium;
+        }
+      });
+    }
+
+    if (this.setCovers) {
+      this.setCovers.forEach(element => {
         // console.log( JSON.stringify( element ));
         if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
           sum += element.CoverPremia[duration].CoverPremium;
@@ -131,7 +160,7 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.cc = quot.CC;
           this.quotationInput.contractStartDate = new Date(quot.ContractStartDate);
           this.quotationInput.county = quot.County;
-          this.quotationInput.driverLicenseYear = quot.LicenseYear;
+          this.quotationInput.driverLicenseYear = quot.DriverLicenseYear;
           if (quot.OldestDriverBirthDate) {
             this.quotationInput.oldestDriverBirthDate = new Date(quot.OldestDriverBirthDate);
           }
@@ -143,6 +172,12 @@ export class OfferInputComponent implements OnInit {
           }
           this.quotationInput.youngestDriverLicenseYear = quot.YoungestDriverLicenseYear;
           this.quotationInput.zip = quot.Zip;
+          this.quotationInput.publicServant = quot.PublicServant;
+          this.quotationInput.uniformed = quot.Uniformed;
+          this.quotationInput.secondVehicle = quot.SecondVehicle;
+
+          // tslint:disable-next-line:max-line-length
+          quot.SelectedMotorCoverItems.forEach( motorCoverItem => { this.packageOptionalCoverItems.find( c => c.MotorCoverItem === motorCoverItem ).Selected = true; } );
         },
         (err: ErrorInfo) => { console.log('Plate not found'); }
       );
@@ -213,15 +248,17 @@ export class OfferInputComponent implements OnInit {
       quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true });
     }
 
+    // Decide which cover is selected
+
     this.packageOptionalCoverItems.forEach(element => {
-      quotationRerquest.motorQuotationParams.MotorCovers.push( {
+      quotationRerquest.motorQuotationParams.MotorCovers.push({
         MotorCoverItem: element.MotorCoverItem,
-        Selected: true
+        Selected: element.Selected
       });
     });
 
-    console.log( 'Quotation Request' );
-    console.log(quotationRerquest);
+    console.log('Quotation Request');
+    console.log( JSON.stringify( quotationRerquest ) );
 
     // Prepare MVP quotation data save
 
@@ -230,7 +267,7 @@ export class OfferInputComponent implements OnInit {
       CC: this.quotationInput.cc,
       ContractStartDate: this.quotationInput.contractStartDate,
       County: this.quotationInput.county,
-      LicenseYear: this.quotationInput.driverLicenseYear,
+      DriverLicenseYear: this.quotationInput.driverLicenseYear,
       MarkaCode: this.quotationInput.markaCode,
       OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
@@ -240,13 +277,24 @@ export class OfferInputComponent implements OnInit {
       YoungestDriverBirthDate: this.quotationInput.youngestDriverBirthDate,
       YoungestDriverLicenseYear: this.quotationInput.youngestDriverLicenseYear,
       Zip: this.quotationInput.zip,
+      PublicServant: this.quotationInput.publicServant,
+      Uniformed: this.quotationInput.uniformed,
+      SecondVehicle: this.quotationInput.secondVehicle,
+      SelectedMotorCoverItems: []
     };
+
+    quotationRerquest.motorQuotationParams.MotorCovers.forEach( cover => {
+      mvpQuotation.SelectedMotorCoverItems.push( cover.MotorCoverItem );
+    });
+
+    console.log('mvpQuotation');
+    console.log(JSON.stringify( mvpQuotation));
 
     // MVP quotation data save
 
-    this.mvpApiService.postQuotation( mvpQuotation )
+    this.mvpApiService.postQuotation(mvpQuotation)
       .subscribe(
-        () => {},
+        () => { },
         (err: ErrorInfo) => {
           console.error('Component log: ' + JSON.stringify(err));
           this.toastr.error(err.friendlyMessage, 'Σφάλμα');
@@ -268,25 +316,42 @@ export class OfferInputComponent implements OnInit {
             if (this.quotationResult.Allow) {
 
               this.optionalCovers = this.quotationResult.Covers
-                .filter((cover: ICover) => { if (cover.Allowed) { return cover; } })
+                .filter((cover: ICover) => {
+                  if (cover.Allowed && cover.Code !== 'C' && cover.Code !== 'Z' && cover.Code !== 'U' && cover.Code !== '008') {
+                    return cover;
+                  }
+                })
                 .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
 
-                this.optionalCovers.forEach( cover => {
-                  // tslint:disable-next-line:max-line-length
-                  cover.ShortDescription = this.packageAllCoverItems.find( c => c.MotorCoverItem === cover.MotorCoverItem ).ShortDescription;
-                } );
+              this.optionalCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+              });
 
-                this.mandatoryCovers = this.quotationResult.Covers
+              this.setCovers = this.quotationResult.Covers
+                .filter((cover: ICover) => {
+                  if (cover.Allowed && ( cover.Code === 'C' || cover.Code === 'Z' || cover.Code === 'U' || cover.Code === '008' ) ) {
+                    return cover;
+                  }
+                })
+                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+              this.setCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+              });
+
+              this.mandatoryCovers = this.quotationResult.Covers
                 .filter((cover: ICover) => { if (cover.IsMandatory) { return cover; } })
                 .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
 
-                this.mandatoryCovers.forEach( cover => {
-                  // tslint:disable-next-line:max-line-length
-                  cover.ShortDescription = this.packageAllCoverItems.find( c => c.MotorCoverItem === cover.MotorCoverItem ).ShortDescription;
-                } );
+              this.mandatoryCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+              });
 
-                console.log( 'Covers returned' );
-                console.log( this.optionalCovers );
+              console.log('Covers returned');
+              console.log(this.optionalCovers);
 
             } else {
 

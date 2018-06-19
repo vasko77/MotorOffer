@@ -31,6 +31,7 @@ import { OfferInputComponent } from './offer-input/offer-input.component';
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GeneralInterceptor } from './services/general-interceptor';
+import { ApplicationInputComponent } from './application-input/application-input.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { GeneralInterceptor } from './services/general-interceptor';
     HeaderComponent,
     FooterComponent,
     BodyComponent,
-    OfferInputComponent
+    OfferInputComponent,
+    ApplicationInputComponent
   ],
   imports: [
     BrowserModule,

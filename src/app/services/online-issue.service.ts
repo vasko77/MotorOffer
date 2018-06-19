@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
-import { map, tap, flatMap, catchError, filter } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
 import { IGetListItemsRequest } from '../models/online-issue-contracts/get-list-items-request';
@@ -20,6 +20,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class OnlineIssueService {
+
+  quotationResponse: IQuotationResponse;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -44,6 +46,7 @@ export class OnlineIssueService {
 
     return this.httpClient.post<IQuotationResponse>(url, request)
       .pipe(
+        tap( (data: IQuotationResponse) => { this.quotationResponse = data; } ),
         catchError(err => this.HandleHttpError(err)),
     );
 
