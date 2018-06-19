@@ -12,6 +12,8 @@ import { MvpApiService } from '../services/mvp-api.service';
 import { IQuotationInfo } from '../models/mvp-contracts/quotation-info';
 import { AuthenticationService } from '../services/authentication.service';
 import { IAuthentication } from '../models/authentication';
+import { ContactInputParams } from '../models/contact-input-params';
+import { IContactInfo } from '../models/mvp-contracts/contact-info';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -24,9 +26,10 @@ export class OfferInputComponent implements OnInit {
   busyQuotations: Subscription;
 
   authenticationInfo: IAuthentication;
-  efginsUser: boolean;
+  enterContactInfo = true;
 
   quotationInput = new QuotationInputParams();
+  contactInput = new ContactInputParams();
   mouseOverSubmit: boolean;
   activeTab = 1;
   duration = '12';
@@ -84,24 +87,23 @@ export class OfferInputComponent implements OnInit {
     }
   }
 
-
   private calculateSum(duration: number): number {
     let sum = 0;
 
     if (this.optionalCovers) {
-      this.optionalCovers.forEach(element => {
+      this.optionalCovers.forEach(cover => {
         // console.log( JSON.stringify( element ));
-        if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
-          sum += element.CoverPremia[duration].CoverPremium;
+        if (cover.Selected && cover.CoverPremia.length >= duration && cover.CoverPremia[duration]) {
+          sum += cover.CoverPremia[duration].CoverPremium;
         }
       });
     }
 
     if (this.setCovers) {
-      this.setCovers.forEach(element => {
+      this.setCovers.forEach(cover => {
         // console.log( JSON.stringify( element ));
-        if (element.Selected && element.CoverPremia.length >= duration && element.CoverPremia[duration]) {
-          sum += element.CoverPremia[duration].CoverPremium;
+        if (cover.Selected && cover.CoverPremia.length >= duration && cover.CoverPremia[duration]) {
+          sum += cover.CoverPremia[duration].CoverPremium;
         }
       });
     }
@@ -116,7 +118,7 @@ export class OfferInputComponent implements OnInit {
         (data: IAuthentication) => {
           console.log(data);
           this.authenticationInfo = data;
-          this.efginsUser = data.efginsUser;
+          // this.efginsUser = data.efginsUser;
         },
         (err: any) => {
           console.error('Component log: ' + JSON.stringify(err));
@@ -176,14 +178,34 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.uniformed = quot.Uniformed;
           this.quotationInput.secondVehicle = quot.SecondVehicle;
 
-          // tslint:disable-next-line:max-line-length
-          quot.SelectedMotorCoverItems.forEach( motorCoverItem => { this.packageOptionalCoverItems.find( c => c.MotorCoverItem === motorCoverItem ).Selected = true; } );
+          this.quotation(quot.SelectedMotorCoverItems);
         },
         (err: ErrorInfo) => { console.log('Plate not found'); }
       );
+
+    console.log('this.quotationInput.plateNo');
+    console.log(this.quotationInput.plateNo);
+    this.mvpApiService.getContact(this.quotationInput.plateNo)
+      .subscribe(
+        (data: IContactInfo) => {
+          this.contactInput = {
+            firstName: data.FirstName,
+            lastName: data.LastName,
+            phone: data.Phone,
+            eMail: data.EMail
+          };
+          this.enterContactInfo = false;
+          console.log('this.contactInput');
+          console.log(this.contactInput);
+        },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
   }
 
-  quotation(): void {
+  quotation(selectedMotorCoverItems: number[]): void {
 
     // Prepare quotation request
 
@@ -250,15 +272,112 @@ export class OfferInputComponent implements OnInit {
 
     // Decide which cover is selected
 
-    this.packageOptionalCoverItems.forEach(element => {
+    // Load Covers from Initial Package Covers
+    this.packageOptionalCoverItems.forEach(cover => {
       quotationRerquest.motorQuotationParams.MotorCovers.push({
-        MotorCoverItem: element.MotorCoverItem,
-        Selected: element.Selected
+        MotorCoverItem: cover.MotorCoverItem,
+        Selected: true
       });
     });
-
+    /*
+        } else {
+          // Load Covers from GUI (Optional & Set Covers)
+          this.optionalCovers.forEach(cover => {
+            quotationRerquest.motorQuotationParams.MotorCovers.push({
+              MotorCoverItem: cover.MotorCoverItem,
+              Selected: cover.Selected
+            });
+          });
+          this.setCovers.forEach(cover => {
+            quotationRerquest.motorQuotationParams.MotorCovers.push({
+              MotorCoverItem: cover.MotorCoverItem,
+              Selected: cover.Selected
+            });
+          });
+        }
+    */
     console.log('Quotation Request');
-    console.log( JSON.stringify( quotationRerquest ) );
+    console.log(JSON.stringify(quotationRerquest));
+
+    // Perform actual quotation
+
+    this.busyQuotations = this.onlineIssueService.getQuotation(quotationRerquest)
+      .subscribe(
+        (data: IQuotationResponse) => {
+
+          this.quotationResult = data.CalculatedQuotationsResult[0];
+          console.log('quotationResult Data:');
+          console.log(this.quotationResult);
+
+          if (this.quotationResult) {
+
+            if (this.quotationResult.Allow) {
+
+              console.log('selectedMotorCoverItems');
+              console.log(selectedMotorCoverItems);
+
+              this.optionalCovers = this.quotationResult.Covers
+                .filter((cover: ICover) => {
+                  if (cover.Allowed && cover.Code !== 'C' && cover.Code !== 'Z' && cover.Code !== 'U' && cover.Code !== '008') {
+                    return cover;
+                  }
+                })
+                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+              this.optionalCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.includes(cover.MotorCoverItem) : true;
+              });
+
+              this.setCovers = this.quotationResult.Covers
+                .filter((cover: ICover) => {
+                  if (cover.Allowed && (cover.Code === 'C' || cover.Code === 'Z' || cover.Code === 'U' || cover.Code === '008')) {
+                    return cover;
+                  }
+                })
+                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+              this.setCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.includes(cover.MotorCoverItem) : true;
+              });
+
+              this.mandatoryCovers = this.quotationResult.Covers
+                .filter((cover: ICover) => { if (cover.IsMandatory) { return cover; } })
+                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
+
+              this.mandatoryCovers.forEach(cover => {
+                // tslint:disable-next-line:max-line-length
+                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
+              });
+
+              console.log('Covers returned');
+              console.log(this.setCovers);
+              console.log(this.optionalCovers);
+
+            } else {
+
+              this.errors = this.quotationResult.Errors;
+
+            }
+
+          } else {
+
+            this.optionalCovers = [];
+
+          }
+        },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
+  }
+
+  insertContact(): void {
+    console.log(this.contactInput);
 
     // Prepare MVP quotation data save
 
@@ -283,93 +402,56 @@ export class OfferInputComponent implements OnInit {
       SelectedMotorCoverItems: []
     };
 
-    quotationRerquest.motorQuotationParams.MotorCovers.forEach( cover => {
-      mvpQuotation.SelectedMotorCoverItems.push( cover.MotorCoverItem );
+    this.optionalCovers.forEach(cover => {
+      if (cover.Selected) {
+        mvpQuotation.SelectedMotorCoverItems.push(cover.MotorCoverItem);
+      }
+    });
+    this.setCovers.forEach(cover => {
+      if (cover.Selected) {
+        mvpQuotation.SelectedMotorCoverItems.push(cover.MotorCoverItem);
+      }
     });
 
     console.log('mvpQuotation');
-    console.log(JSON.stringify( mvpQuotation));
+    console.log(JSON.stringify(mvpQuotation));
 
     // MVP quotation data save
 
     this.mvpApiService.postQuotation(mvpQuotation)
       .subscribe(
-        () => { },
-        (err: ErrorInfo) => {
-          console.error('Component log: ' + JSON.stringify(err));
-          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
-        }
-      );
+        (data: IQuotationInfo) => {
+          this.enterContactInfo = false;
+          this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
 
-    // Perform actual quotation
+          // MVP contact data save
+          const contactInfo: IContactInfo = {
+            PlateNo: this.quotationInput.plateNo,
+            FirstName: this.contactInput.firstName,
+            LastName: this.contactInput.lastName,
+            EMail: this.contactInput.eMail,
+            Phone: this.contactInput.phone
+          };
 
-    this.busyQuotations = this.onlineIssueService.getQuotation(quotationRerquest)
-      .subscribe(
-        (data: IQuotationResponse) => {
+          this.mvpApiService.postContact(contactInfo)
+            .subscribe(
+              () => { },
+              (err: ErrorInfo) => {
+                console.error('Component log: ' + JSON.stringify(err));
+                this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+              }
+            );
 
-          this.quotationResult = data.CalculatedQuotationsResult[0];
-          console.log('quotationResult Data:');
-          console.log(this.quotationResult);
-
-          if (this.quotationResult) {
-
-            if (this.quotationResult.Allow) {
-
-              this.optionalCovers = this.quotationResult.Covers
-                .filter((cover: ICover) => {
-                  if (cover.Allowed && cover.Code !== 'C' && cover.Code !== 'Z' && cover.Code !== 'U' && cover.Code !== '008') {
-                    return cover;
-                  }
-                })
-                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
-
-              this.optionalCovers.forEach(cover => {
-                // tslint:disable-next-line:max-line-length
-                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-              });
-
-              this.setCovers = this.quotationResult.Covers
-                .filter((cover: ICover) => {
-                  if (cover.Allowed && ( cover.Code === 'C' || cover.Code === 'Z' || cover.Code === 'U' || cover.Code === '008' ) ) {
-                    return cover;
-                  }
-                })
-                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
-
-              this.setCovers.forEach(cover => {
-                // tslint:disable-next-line:max-line-length
-                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-              });
-
-              this.mandatoryCovers = this.quotationResult.Covers
-                .filter((cover: ICover) => { if (cover.IsMandatory) { return cover; } })
-                .sort((c1: ICover, c2: ICover) => c1.VisibilityOrder - c2.VisibilityOrder);
-
-              this.mandatoryCovers.forEach(cover => {
-                // tslint:disable-next-line:max-line-length
-                cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-              });
-
-              console.log('Covers returned');
-              console.log(this.optionalCovers);
-
-            } else {
-
-              this.errors = this.quotationResult.Errors;
-
-            }
-
-          } else {
-
-            this.optionalCovers = [];
-
-          }
         },
         (err: ErrorInfo) => {
           console.error('Component log: ' + JSON.stringify(err));
           this.toastr.error(err.friendlyMessage, 'Σφάλμα');
         }
       );
+
+  }
+
+  getContact(): void {
   }
 
   updatePublicServant(value: boolean): void {

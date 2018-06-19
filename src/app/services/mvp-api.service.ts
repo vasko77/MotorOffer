@@ -7,6 +7,7 @@ import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { catchError, tap } from 'rxjs/operators';
+import { IContactInfo } from '../models/mvp-contracts/contact-info';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,38 @@ export class MvpApiService {
     return this.httpClient.post<IQuotationInfo>(url, quotation)
       .pipe(
         tap( (data: IQuotationInfo) => { this._quotationInfo = quotation; } ),
+        catchError(err => this.HandleHttpError(err) )
+      );
+  }
+
+  getContact(plateNo: string): Observable<IContactInfo | ErrorInfo> {
+
+    const url = environment.urlMvpContact + plateNo;
+
+    console.log(url);
+
+    return this.httpClient.get<IContactInfo>(url)
+      .pipe(
+        catchError(err => {
+          console.log(err.status);
+          if (err.status !== 404) {
+            return this.HandleHttpError(err);
+          } else {
+            return new EmptyObservable();
+          }
+        })
+      );
+  }
+
+  postContact(contact: IContactInfo): Observable<IContactInfo | ErrorInfo> {
+
+    const url = environment.urlMvpContact;
+
+    console.log(url);
+
+    return this.httpClient.post<IContactInfo>(url, contact)
+      .pipe(
+        // tap( (data: IContactInfo) => { this._quotationInfo = quotation; } ),
         catchError(err => this.HandleHttpError(err) )
       );
   }
