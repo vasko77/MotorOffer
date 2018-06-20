@@ -14,6 +14,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { IAuthentication } from '../models/authentication';
 import { ContactInputParams } from '../models/contact-input-params';
 import { IContactInfo } from '../models/mvp-contracts/contact-info';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -23,18 +24,25 @@ import { IContactInfo } from '../models/mvp-contracts/contact-info';
 export class OfferInputComponent implements OnInit {
 
   busyMarkes: Subscription;
+  busyUniformed: Subscription;
   busyQuotations: Subscription;
 
   authenticationInfo: IAuthentication;
   enterContactInfo = true;
+  setCoversCheck: boolean;
+  optionalCoversCheck: boolean;
+
+  GrossPremiums12: number;
+  GrossPremiums6: number;
+  GrossPremiums3: number;
 
   quotationInput = new QuotationInputParams();
   contactInput = new ContactInputParams();
   mouseOverSubmit: boolean;
-  activeTab = 1;
-  duration = '12';
+  initialInfo = true;
 
   markesData: IMotorItemsData;
+  uniformedData: IMotorItemsData;
   quotationResult: ICalculatedQuotationsResult;
   setCovers: ICover[];
   optionalCovers: ICover[];
@@ -63,6 +71,8 @@ export class OfferInputComponent implements OnInit {
     private authenticationService: AuthenticationService) {
 
     this.quotationInput.markaCode = 0;
+    this.quotationInput.uniformedCode = 0;
+    this.quotationInput.contractDuration = '12';
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
 
@@ -135,6 +145,15 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
+    this.busyUniformed = this.onlineIssueService.getUniformed()
+      .subscribe(
+        (data: IMotorItemsData) => { this.uniformedData = data; },
+        (err: any) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+        }
+      );
+
     this.busyQuotations = this.onlineIssueService.getPackageCovers()
       .subscribe(
         (data: ICoversResponse) => {
@@ -177,8 +196,12 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.publicServant = quot.PublicServant;
           this.quotationInput.uniformed = quot.Uniformed;
           this.quotationInput.secondVehicle = quot.SecondVehicle;
+          this.quotationInput.plateNo2 = quot.PlateNo2;
+          this.quotationInput.uniformedCode = quot.UniformedCode;
+          this.quotationInput.taxNumber = quot.TaxNumber;
 
           this.quotation(quot.SelectedMotorCoverItems);
+
         },
         (err: ErrorInfo) => { console.log('Plate not found'); }
       );
@@ -261,16 +284,32 @@ export class OfferInputComponent implements OnInit {
     }
 
     if (this.quotationInput.publicServant) {
-      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 2, Selected: true });
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 2, Selected: true, DiscountValue: '' });
     }
     if (this.quotationInput.uniformed) {
-      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 3, Selected: true });
+      // tslint:disable-next-line:max-line-length
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 3, Selected: true, DiscountValue: this.quotationInput.uniformedCode.toString() });
     }
     if (this.quotationInput.secondVehicle) {
-      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true });
+      // tslint:disable-next-line:max-line-length
+      quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true, DiscountValue: this.quotationInput.plateNo2 });
     }
 
-    // Decide which cover is selected
+    // 1st call to quotation wihtout Optional Covers
+    this.busyQuotations = this.onlineIssueService.getQuotation(quotationRerquest)
+      .subscribe(
+        (data: IQuotationResponse) => {
+          if (data.CalculatedQuotationsResult && data.CalculatedQuotationsResult[0].PremiumsPayable) {
+            this.GrossPremiums12 = data.CalculatedQuotationsResult[0].PremiumsPayable[0].GrossPremiums;
+            this.GrossPremiums6 = data.CalculatedQuotationsResult[0].PremiumsPayable[1].GrossPremiums;
+            this.GrossPremiums3 = data.CalculatedQuotationsResult[0].PremiumsPayable[2].GrossPremiums;
+          }
+        },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
 
     // Load Covers from Initial Package Covers
     this.packageOptionalCoverItems.forEach(cover => {
@@ -279,23 +318,6 @@ export class OfferInputComponent implements OnInit {
         Selected: true
       });
     });
-    /*
-        } else {
-          // Load Covers from GUI (Optional & Set Covers)
-          this.optionalCovers.forEach(cover => {
-            quotationRerquest.motorQuotationParams.MotorCovers.push({
-              MotorCoverItem: cover.MotorCoverItem,
-              Selected: cover.Selected
-            });
-          });
-          this.setCovers.forEach(cover => {
-            quotationRerquest.motorQuotationParams.MotorCovers.push({
-              MotorCoverItem: cover.MotorCoverItem,
-              Selected: cover.Selected
-            });
-          });
-        }
-    */
     console.log('Quotation Request');
     console.log(JSON.stringify(quotationRerquest));
 
@@ -327,7 +349,10 @@ export class OfferInputComponent implements OnInit {
               this.optionalCovers.forEach(cover => {
                 // tslint:disable-next-line:max-line-length
                 cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.includes(cover.MotorCoverItem) : true;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : true;
+                if (cover.Selected) {
+                  this.optionalCoversCheck = true;
+                }
               });
 
               this.setCovers = this.quotationResult.Covers
@@ -341,7 +366,10 @@ export class OfferInputComponent implements OnInit {
               this.setCovers.forEach(cover => {
                 // tslint:disable-next-line:max-line-length
                 cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.includes(cover.MotorCoverItem) : true;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : true;
+                if (cover.Selected) {
+                  this.setCoversCheck = true;
+                }
               });
 
               this.mandatoryCovers = this.quotationResult.Covers
@@ -356,6 +384,14 @@ export class OfferInputComponent implements OnInit {
               console.log('Covers returned');
               console.log(this.setCovers);
               console.log(this.optionalCovers);
+
+              if (selectedMotorCoverItems) {
+                this.initialInfo = true;
+              } else {
+                // this.initialInfo = false;
+                this.mouseOverSubmit = false;
+              }
+
 
             } else {
 
@@ -399,6 +435,10 @@ export class OfferInputComponent implements OnInit {
       PublicServant: this.quotationInput.publicServant,
       Uniformed: this.quotationInput.uniformed,
       SecondVehicle: this.quotationInput.secondVehicle,
+      PlateNo2: this.quotationInput.plateNo2,
+      TaxNumber: this.quotationInput.taxNumber,
+      ContractDuration: this.quotationInput.contractDuration,
+      UniformedCode: this.quotationInput.uniformedCode,
       SelectedMotorCoverItems: []
     };
 
@@ -451,6 +491,18 @@ export class OfferInputComponent implements OnInit {
 
   }
 
+  updateSetCovers(selected: boolean): void {
+    this.setCovers.forEach(cover => {
+      cover.Selected = selected;
+    });
+  }
+
+  updateOptionalCovers(selected: boolean): void {
+    this.optionalCovers.forEach(cover => {
+      cover.Selected = selected;
+    });
+  }
+
   getContact(): void {
   }
 
@@ -461,11 +513,23 @@ export class OfferInputComponent implements OnInit {
     }
   }
 
-  setActiveTab(tab: number) {
-    this.activeTab = tab;
+  updateSecondVehicle(value: boolean): void {
+    this.quotationInput.secondVehicle = value;
+    if (!value) {
+      this.quotationInput.plateNo2 = '';
+      this.quotationInput.taxNumber = '';
+    }
   }
 
   validateMarka(event): boolean {
     return this.quotationInput.markaCode !== 0;
+  }
+
+  validateUniformed(event): boolean {
+    if (this.quotationInput.uniformed) {
+      return this.quotationInput.uniformedCode !== 0;
+    } else {
+      return true;
+    }
   }
 }

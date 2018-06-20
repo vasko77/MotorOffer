@@ -40,6 +40,21 @@ export class OnlineIssueService {
     );
   }
 
+  getUniformed(): Observable<IMotorItemsData | ErrorInfo> {
+
+    const request: IGetListItemsRequest = {
+      Header: { CultureName: 'GR', ServiceVersion: '1' },
+      ItemListSelector: 256
+    };
+
+    const url = environment.urlGetListItems;
+
+    return this.httpClient.post<IMotorItemsData>(url, request)
+      .pipe(
+        catchError(err => this.HandleHttpError(err)),
+    );
+  }
+
   getQuotation(request: IQuotationRequest): Observable<IQuotationResponse | ErrorInfo> {
 
     const url = environment.urlFastQuotation;

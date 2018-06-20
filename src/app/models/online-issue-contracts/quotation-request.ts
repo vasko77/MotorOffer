@@ -19,6 +19,7 @@ export interface IMotorCover {
 export interface IMotorDiscount {
     Selected: boolean;
     MotorDiscountItem: number;
+    DiscountValue: string;
 }
 
 export interface IVehicleInfo {

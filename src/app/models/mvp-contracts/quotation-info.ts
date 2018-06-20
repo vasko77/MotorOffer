@@ -16,6 +16,10 @@ export interface IQuotationInfo {
     PublicServant: boolean;
     SecondVehicle: boolean;
     Uniformed: boolean;
+    UniformedCode: number;
+    PlateNo2: string;
+    TaxNumber: string;
+    ContractDuration: string;
     SelectedMotorCoverItems: number[];
 }
 

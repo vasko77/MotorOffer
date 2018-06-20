@@ -15,5 +15,9 @@ export class QuotationInputParams {
     oldestDriverLicenseYear: number;
     publicServant: boolean;
     uniformed: boolean;
+    uniformedCode: number;
     secondVehicle: boolean;
+    plateNo2: string;
+    taxNumber: string;
+    contractDuration: string;
 }
