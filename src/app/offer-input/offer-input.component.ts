@@ -221,7 +221,6 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.secondVehicle = quot.SecondVehicle;
           this.quotationInput.plateNo2 = quot.PlateNo2;
           this.quotationInput.uniformedCode = quot.UniformedCode;
-          this.quotationInput.taxNumber = quot.TaxNumber;
 
           this.quotationInput.contractDuration = quot.ContractDuration;
 
@@ -268,7 +267,8 @@ export class OfferInputComponent implements OnInit {
         MainDriverInfo: {
           BirthDate: this.quotationInput.birthDate.toISOString().split('T')[0],
           LicenseDate: `${this.quotationInput.driverLicenseYear}-01-01`,
-          PostalCode: this.quotationInput.zip
+          PostalCode: this.quotationInput.zip,
+          TaxIdentificationNumber: ''
         },
         VehicleInfo: {
           PlateNumber: this.quotationInput.plateNo,
@@ -462,7 +462,6 @@ export class OfferInputComponent implements OnInit {
       Uniformed: this.quotationInput.uniformed,
       SecondVehicle: this.quotationInput.secondVehicle,
       PlateNo2: this.quotationInput.plateNo2,
-      TaxNumber: this.quotationInput.taxNumber,
       ContractDuration: this.quotationInput.contractDuration,
       UniformedCode: this.quotationInput.uniformedCode,
       SelectedMotorCoverItems: []
@@ -538,7 +537,6 @@ export class OfferInputComponent implements OnInit {
       Uniformed: this.quotationInput.uniformed,
       SecondVehicle: this.quotationInput.secondVehicle,
       PlateNo2: this.quotationInput.plateNo2,
-      TaxNumber: this.quotationInput.taxNumber,
       ContractDuration: this.quotationInput.contractDuration,
       UniformedCode: this.quotationInput.uniformedCode,
       SelectedMotorCoverItems: []
@@ -569,6 +567,14 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
+    this.onlineIssueService.quotationInput = this.quotationInput;
+    switch ( this.quotationInput.contractDuration ) {
+      case '12': this.onlineIssueService.amountPayable = this.GrossPremiums12; break;
+      case '6': this.onlineIssueService.amountPayable = this.GrossPremiums6; break;
+      case '3': this.onlineIssueService.amountPayable = this.GrossPremiums3; break;
+      default: this.onlineIssueService.amountPayable = 0;
+    }
+
     this.router.navigate(['/application']);
   }
 
@@ -598,7 +604,6 @@ export class OfferInputComponent implements OnInit {
     this.quotationInput.secondVehicle = value;
     if (!value) {
       this.quotationInput.plateNo2 = '';
-      this.quotationInput.taxNumber = '';
     }
   }
 

@@ -19,6 +19,5 @@ export class QuotationInputParams {
     uniformedCode: number;
     secondVehicle: boolean;
     plateNo2: string;
-    taxNumber: string;
     contractDuration: string;
 }

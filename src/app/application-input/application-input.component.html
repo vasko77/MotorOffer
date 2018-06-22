@@ -1,6 +1,6 @@
 <br/>
 
-<form #form="ngForm" (ngSubmit)="saveProposal()" autocomplete="off" novalidate [ngBusy]="busy">
+<form #form="ngForm" (ngSubmit)="saveProposal()" autocomplete="off" novalidate [ngBusy]="busyProposal">
 
   <div class="row">
 
@@ -105,15 +105,6 @@
     </div>
 
     <div class="form-group col-sm-4">
-      <div class="form-group has-error" [ngClass]="{'has-error': phone2?.invalid && ( phone2?.touched || mouseOverSubmit === true ) }">
-        <label for="phone2">Τηλέφωνο 2</label>
-        <em class="text-danger" *ngIf="phone2.invalid && ( phone2.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #phone2="ngModel" id="phone2" name="phone2" [(ngModel)]="applicationInput.phone2" class="form-control" type="text"
-          required>
-      </div>
-    </div>
-
-    <div class="form-group col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -127,8 +118,16 @@
 
   <div style="text-align: center">
     <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="saveProposal()">Τιμολόγηση</button>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="saveProposal()">Καταχώρηση Αίτησης</button>
     </span>
   </div>
 
 </form>
+
+<br/>
+
+<div *ngIf="!quotationResult?.Allow">
+  <div *ngFor="let error of errors" class="alert alert-danger" role="alert">
+    <p>{{ error.ErrorCode }} - {{ error.ErrorString }}</p>
+  </div>
+</div>

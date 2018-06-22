@@ -15,6 +15,7 @@ export interface IMainDriverInfo {
     BirthDate: string;
     LicenseDate: string;
     PostalCode: string;
+    TaxIdentificationNumber: string;
 }
 
 export interface IMotorCover {
@@ -69,4 +70,5 @@ export interface ICustomerDetails {
     IdentityNumber: string;
     TaxIdentificationNumber: string;
     HasAcceptedConditions: boolean;
+    InitialPaymentType: number;
 }

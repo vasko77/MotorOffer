@@ -44,7 +44,7 @@
                     <div class="">
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
-                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
+                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName + ' - ' + marka.ItemCode }}</option>
                       </select>
                     </div>
                   </div>
@@ -264,21 +264,13 @@
 
                 <div class="row">
 
-                  <div class="col-sm-6">
-
-                    <div class="form-check">
-                      <input #secondVehicle="ngModel" type="checkbox" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
-                        (ngModelChange)="updateSecondVehicle($event)">
-                      <label class="form-check-label" for="secondVehicle">&nbsp;Δεύτερο Αυτοκίνητο</label>
-                    </div>
-
+                  <div class="form-check col-sm-6">
+                    <input #secondVehicle="ngModel" type="checkbox" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
+                      (ngModelChange)="updateSecondVehicle($event)">
+                    <label class="form-check-label" for="secondVehicle">&nbsp;Δεύτερο Αυτοκίνητο</label>
                   </div>
 
-                </div>
-
-                <div class="row" *ngIf="secondVehicle.value">
-
-                  <div class="form-group col-sm-6">
+                  <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
                     <label class="control-label">Αριθμός Κυκλοφορίας</label>
                     <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <div>
@@ -287,14 +279,6 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-sm-6">
-                    <label class="control-label">Α.Φ.Μ.</label>
-                    <em *ngIf="!quotationInput.taxNumber  && ( taxNumber?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                    <div>
-                      <input #taxNumber="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="taxNumber"
-                        [(ngModel)]="quotationInput.taxNumber" />
-                    </div>
-                  </div>
 
                 </div>
 

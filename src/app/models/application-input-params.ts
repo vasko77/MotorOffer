@@ -11,6 +11,5 @@ export interface IApplicationInputParams {
     city: string;
     zip: string;
     phone1: string;
-    phone2: string;
     eMail: string;
 }

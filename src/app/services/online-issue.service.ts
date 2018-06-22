@@ -16,6 +16,7 @@ import { ICoversResponse, ICoverItem } from '../models/online-issue-contracts/co
 import { ICoversRequest } from '../models/online-issue-contracts/covers-request';
 import { environment } from '../../environments/environment';
 import { IApplicationInputParams } from '../models/application-input-params';
+import { QuotationInputParams } from '../models/quotation-input-params';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,8 @@ export class OnlineIssueService {
   // quotationResponse: IQuotationResponse;
   packageOptionalCoverItems: ICoverItem[];
   packageAllCoverItems: ICoverItem[];
+  quotationInput: QuotationInputParams;
+  amountPayable: number;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -70,7 +73,7 @@ export class OnlineIssueService {
 
   }
 
-  insertApplication(request: IApplicationRequest): Observable<IApplicationResponse | ErrorInfo> {
+  insertProposal(request: IApplicationRequest): Observable<IApplicationResponse | ErrorInfo> {
     const url = environment.urlApplication;
 
     return this.httpClient.post<IApplicationResponse>(url, request)

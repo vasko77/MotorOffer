@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { IApplicationInputParams } from '../models/application-input-params';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { IApplicationRequest } from '../models/online-issue-contracts/quotation-request';
+import { OnlineIssueService } from '../services/online-issue.service';
+import { MvpApiService } from '../services/mvp-api.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
+import { ErrorInfo } from '../models/errorInfo';
+import { IApplicationResponse, IError } from '../models/online-issue-contracts/quotation-response';
 
 @Component({
   templateUrl: './application-input.component.html',
@@ -10,26 +17,30 @@ import { IApplicationRequest } from '../models/online-issue-contracts/quotation-
 export class ApplicationInputComponent implements OnInit {
 
   mouseOverSubmit: boolean;
-  busy: Subscription;
+  busyProposal: Subscription;
 
   applicationInput: IApplicationInputParams;
+  errors: IError[];
 
-  constructor() {
+  constructor(private onlineIssueService: OnlineIssueService,
+    private mvpApiService: MvpApiService,
+    private toastr: ToastrService,
+    private router: Router,
+    public authenticationService: AuthenticationService) {
     this.applicationInput = {
-      firstName: '',
-      lastName: '',
-      fatherName: '',
-      address: '',
-      city: '',
-      eMail: '',
-      phone1: '',
-      phone2: '',
-      profession: '',
+      firstName: 'ΒΑΣΙΛΗΣ',
+      lastName: 'ΚΟΝΤΟΠΑΝΟΣ',
+      fatherName: 'ΓΕΩΡΓΙΟΣ',
+      address: 'ΝΕΦΕΛΗΣ 6',
+      city: 'ΒΟΥΛΙΑΓΜΕΝΗ',
+      eMail: 'VASKO77@YAHOO.GR',
+      phone1: '2109303964',
+      profession: 'PROGRAMMER',
       sex: 0,
-      taxNumber: '',
+      taxNumber: '035447589',
       idCardNumber: '',
-      taxOffice: '',
-      zip: ''
+      taxOffice: 'ΑΓ.ΔΗΜΗΤΡΙΟΥ',
+      zip: '16671'
     };
    }
 
@@ -38,32 +49,33 @@ export class ApplicationInputComponent implements OnInit {
 
   saveProposal(): void {
 
-    const applicationReuest: IApplicationRequest = {
+    const applicationRequest: IApplicationRequest = {
       Header: {
         CultureName: 'GR',
         ServiceVersion: '1'
       },
 
       MotorQuotationParams: {
-        InsuranceStartDate: '',
-        MotorInsurancePackage: '',
+        InsuranceStartDate: this.onlineIssueService.quotationInput.contractStartDate.toISOString().split('T')[0],
+        MotorInsurancePackage: 'MVP',
         MainDriverInfo: {
-          BirthDate: '',
-          LicenseDate: '',
-          PostalCode: ''
+          BirthDate: this.onlineIssueService.quotationInput.birthDate.toISOString().split('T')[0],
+          LicenseDate: `${this.onlineIssueService.quotationInput.driverLicenseYear}-01-01`,
+          PostalCode: this.onlineIssueService.quotationInput.zip,
+          TaxIdentificationNumber: this.applicationInput.taxNumber
         },
         VehicleInfo: {
-          AssemblyDate: '',
-          PurchaseDate: '',
-          CC: '',
-          EurotaxBrandCode: 0,
+          AssemblyDate: `${this.onlineIssueService.quotationInput.vehicleLicenseYear}-01-01`,
+          PurchaseDate: this.onlineIssueService.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
+          CC: this.onlineIssueService.quotationInput.cc.toString(),
+          EurotaxBrandCode: this.onlineIssueService.quotationInput.markaCode,
           EurotaxModelCode: 0,
           EurotaxModelGroupCode: 0,
           HasAlarmImmobilizer: false,
           IsKeptInGarage: false,
-          PlateNumber: '',
+          PlateNumber: this.onlineIssueService.quotationInput.plateNo,
           UsageType: '00',
-          VehicleValue: 0
+          VehicleValue: this.onlineIssueService.quotationInput.vehicleValue
         },
         MotorCovers: [
         ],
@@ -71,22 +83,67 @@ export class ApplicationInputComponent implements OnInit {
         ],
         OtherDrivers: [
         ]
-      }
-      ,
+      },
       CustomerDetails: {
-        FirstName: '',
-        LastName: '',
-        FatherName: '',
-        Email: '',
-        PhoneNumber1: '',
-        IdentityNumber: '',
-        TaxIdentificationNumber: '',
-        AmountPayable: 0,
-        HasAcceptedConditions: false,
-        InsuranceDuration: '12'
+        FirstName: this.applicationInput.firstName,
+        LastName: this.applicationInput.lastName,
+        FatherName: this.applicationInput.fatherName,
+        Email: this.applicationInput.eMail,
+        PhoneNumber1: this.applicationInput.phone1,
+        IdentityNumber: this.applicationInput.idCardNumber,
+        TaxIdentificationNumber: this.applicationInput.taxNumber,
+        AmountPayable: this.onlineIssueService.amountPayable,
+        HasAcceptedConditions: true,
+        InsuranceDuration: this.onlineIssueService.quotationInput.contractDuration,
+        InitialPaymentType: 3 // Cach
       }
     };
 
-  }
+    if (this.onlineIssueService.quotationInput.youngestDriverBirthDate) {
+      applicationRequest.MotorQuotationParams.OtherDrivers.push({
+        BirthDate: this.onlineIssueService.quotationInput.youngestDriverBirthDate.toISOString().split('T')[0],
+        LicenseDate: `${this.onlineIssueService.quotationInput.youngestDriverLicenseYear}-01-01`,
+        TypeOfDriver: 2
+      });
+    }
 
+    if (this.onlineIssueService.quotationInput.oldestDriverBirthDate) {
+      applicationRequest.MotorQuotationParams.OtherDrivers.push({
+        BirthDate: this.onlineIssueService.quotationInput.oldestDriverBirthDate.toISOString().split('T')[0],
+        LicenseDate: `${this.onlineIssueService.quotationInput.oldestDriverLicenseYear}-01-01`,
+        TypeOfDriver: 3
+      });
+    }
+
+    if (this.onlineIssueService.quotationInput.publicServant) {
+      applicationRequest.MotorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 2, Selected: true, DiscountValue: '' });
+    }
+    if (this.onlineIssueService.quotationInput.uniformed) {
+      // tslint:disable-next-line:max-line-length
+      applicationRequest.MotorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 3, Selected: true, DiscountValue: this.onlineIssueService.quotationInput.uniformedCode.toString() });
+    }
+    if (this.onlineIssueService.quotationInput.secondVehicle) {
+      // tslint:disable-next-line:max-line-length
+      applicationRequest.MotorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true, DiscountValue: this.onlineIssueService.quotationInput.plateNo2 });
+    }
+
+    console.log( 'applicationRequest' );
+    console.log( JSON.stringify(applicationRequest) );
+
+    this.busyProposal = this.onlineIssueService.insertProposal(applicationRequest)
+      .subscribe(
+        ( data: IApplicationResponse ) => {
+          if ( data.Sucess ) {
+
+          } else {
+            this.errors = data.Errors;
+          }
+        },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
+
+  }
 }
