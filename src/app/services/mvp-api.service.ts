@@ -14,6 +14,8 @@ import { IContactInfo } from '../models/mvp-contracts/contact-info';
 })
 export class MvpApiService {
 
+  public plateNo: string;
+
   private _quotationInfo: IQuotationInfo;
   get quotationInfo(): IQuotationInfo {
     return this._quotationInfo;

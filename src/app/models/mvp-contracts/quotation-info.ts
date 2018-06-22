@@ -4,6 +4,7 @@ export interface IQuotationInfo {
     DriverLicenseYear: number;
     MarkaCode: number;
     VehicleLicenseYear: number;
+    VehiclePurchaseDate: Date;
     VehicleValue: number;
     CC: number;
     Zip: string;

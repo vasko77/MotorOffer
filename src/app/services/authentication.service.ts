@@ -4,13 +4,15 @@ import { IAuthentication } from '../models/authentication';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../environments/environment';
 import { ErrorInfo } from '../models/errorInfo';
-import { catchError } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+
+  public authenticationInfo: IAuthentication;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -22,6 +24,7 @@ export class AuthenticationService {
 
     return this.httpClient.get<IAuthentication>(url)
       .pipe(
+        tap( (data: IAuthentication) => { this.authenticationInfo = data; } ),
         catchError(err => this.HandleHttpError(err))
       );
 

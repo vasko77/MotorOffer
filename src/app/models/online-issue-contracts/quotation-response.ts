@@ -5,6 +5,18 @@ export interface IQuotationResponse {
     Header: IHeader;
 }
 
+export interface IApplicationResponse {
+    Sucess: boolean;
+    Header: IHeader;
+    Errors: IError[];
+    ProposalNumber: number;
+    CustomerID: number;
+    ProposalID: number;
+    ReferenseNumber: number;
+    AAReferenseID: number;
+    IsPrintPay: boolean;
+}
+
 export interface ICalculatedQuotationsResult {
     InsurancePackage: string;
     OrderId: number;

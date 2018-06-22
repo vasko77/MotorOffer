@@ -4,6 +4,7 @@ export class QuotationInputParams {
     plateNo: string;
     markaCode: number;
     vehicleLicenseYear: number;
+    vehiclePurchaseDate: Date;
     vehicleValue: number;
     cc: number;
     zip: string;

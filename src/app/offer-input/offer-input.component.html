@@ -33,7 +33,7 @@
                     <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                        (blur)="loadQuotationInfo()" [(ngModel)]="quotationInput.plateNo" autofocus/>
+                        (ngModelChange)="loadQuotationInfo($event)" [ngModel]="quotationInput.plateNo" autofocus/>
                     </div>
 
                   </div>
@@ -60,6 +60,17 @@
                       format="####" required></kendo-numerictextbox>
                   </div>
 
+                  <div class="form-group col-sm-6" [class.has-error]="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">
+                    <label class="control-label">Ημ. Αγοράς</label>
+                    <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
+                      required></kendo-datepicker>
+                  </div>
+
+                </div>
+
+                <div class="row">
+
                   <div class="form-group col-sm-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">
                     <label class="control-label">Τρέχουσα Αξία</label>
                     <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
@@ -67,15 +78,15 @@
                       format="c0" required></kendo-numerictextbox>
                   </div>
 
-                </div>
-
-                <div class="row">
-
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
                     <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
                   </div>
+
+                </div>
+
+                <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="zip.invalid && ( zip?.touched || mouseOverSubmit )">
                     <label class="control-label">Ταχυδρομικός Κωδικός</label>
@@ -85,10 +96,6 @@
                     </div>
                   </div>
 
-                </div>
-
-                <div class="row">
-
                   <div class="form-group col-sm-6" [class.has-error]="county.invalid && ( county?.touched || mouseOverSubmit )">
                     <label class="control-label">Νομός</label>
                     <em *ngIf="county.invalid && ( county?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
@@ -96,6 +103,10 @@
                       <input #county="ngModel" type="text" required class="form-control" name="county" [(ngModel)]="quotationInput.county" required/>
                     </div>
                   </div>
+
+                </div>
+
+                <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
@@ -242,8 +253,8 @@
                     <label class="control-label">Κατηγορία Ένστολου</label>
                     <em *ngIf="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <div class="">
-                      <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" 
-                        (blur)="validateUniformed($event)" (change)="validateUniformed($event)">
+                      <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" (blur)="validateUniformed($event)"
+                        (change)="validateUniformed($event)">
                         <option *ngFor="let uniformed of uniformedData?.MotorItems" [value]="uniformed.ItemCode">{{ uniformed.ItemName }}</option>
                       </select>
                     </div>
@@ -299,6 +310,7 @@
                 <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="quotation(undefined)">Τιμολόγηση</button>
               </span>
             </div>
+
 
             <br/>
             <br/>
@@ -479,9 +491,10 @@
 
             </div>
 
-            <div class="row" style="text-align: center" *ngIf="authenticationInfo?.efginsUser">
+            <div class="row" style="text-align: center" *ngIf="authenticationService?.authenticationInfo?.efginsUser">
               <div class="col-sm-12">
-                <a class="btn btn-lg btn-success" [routerLink]="['/application']">Δημιουργία Αίτησης</a>
+                <!--a class="btn btn-lg btn-success" [routerLink]="['/application']">Δημιουργία Αίτησης</a-->
+                <button class="btn btn-lg btn-success" (click)="applicationInput()">Δημιουργία Αίτησης</button>
               </div>
             </div>
 

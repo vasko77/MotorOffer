@@ -5,6 +5,12 @@ export interface IQuotationRequest {
     motorQuotationParams: IMotorQuorationParams;
 }
 
+export interface IApplicationRequest {
+    Header: IHeader;
+    MotorQuotationParams: IMotorQuorationParams;
+    CustomerDetails: ICustomerDetails;
+}
+
 export interface IMainDriverInfo {
     BirthDate: string;
     LicenseDate: string;
@@ -50,4 +56,17 @@ export interface IMotorQuorationParams {
     MotorCovers: IMotorCover[];
     MotorDiscounts: IMotorDiscount[];
     OtherDrivers: IOtherDriverInfo[];
+}
+
+export interface ICustomerDetails {
+    LastName: string;
+    FirstName: string;
+    FatherName: string;
+    Email: string;
+    PhoneNumber1: string;
+    InsuranceDuration: string;
+    AmountPayable: number;
+    IdentityNumber: string;
+    TaxIdentificationNumber: string;
+    HasAcceptedConditions: boolean;
 }

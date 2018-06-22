@@ -17,8 +17,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': firstName?.invalid && ( firstName?.touched || mouseOverSubmit === true ) }">
         <label for="firstName">Όνομα</label>
         <em class="text-danger" *ngIf="firstName.invalid && ( firstName.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #firstName="ngModel" id="firstName" name="firstName" [(ngModel)]="applicationInput.firstName" class="form-control" type="text"
-          required>
+        <input #firstName="ngModel" id="firstName" name="firstName" [(ngModel)]="applicationInput.firstName" class="form-control"
+          type="text" required>
       </div>
     </div>
 
@@ -26,8 +26,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': fatherName?.invalid && ( fatherName?.touched || mouseOverSubmit === true ) }">
         <label for="fatherName">Πατρώνυμο</label>
         <em class="text-danger" *ngIf="fatherName.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #fatherName="ngModel" id="fatherName" name="fatherName" [(ngModel)]="applicationInput.fatherName" class="form-control" type="text"
-          required>
+        <input #fatherName="ngModel" id="fatherName" name="fatherName" [(ngModel)]="applicationInput.fatherName" class="form-control"
+          type="text" required>
       </div>
     </div>
 
@@ -39,8 +39,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': taxNumber?.invalid && ( taxNumber?.touched || mouseOverSubmit === true ) }">
         <label for="taxNumber">Α.Φ.Μ.</label>
         <em class="text-danger" *ngIf="taxNumber.invalid && ( taxNumber.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #taxNumber="ngModel" id="taxNumber" name="taxNumber" [(ngModel)]="applicationInput.taxNumber" class="form-control" type="text"
-          required>
+        <input #taxNumber="ngModel" id="taxNumber" name="taxNumber" [(ngModel)]="applicationInput.taxNumber" class="form-control"
+          type="text" required>
       </div>
     </div>
 
@@ -48,8 +48,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': taxOffice?.invalid && ( taxOffice?.touched || mouseOverSubmit === true ) }">
         <label for="taxOffice">Δ.Ο.Υ.</label>
         <em class="text-danger" *ngIf="taxOffice.invalid && ( taxOffice.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #taxOffice="ngModel" id="taxOffice" name="taxOffice" [(ngModel)]="applicationInput.taxOffice" class="form-control" type="text"
-          required>
+        <input #taxOffice="ngModel" id="taxOffice" name="taxOffice" [(ngModel)]="applicationInput.taxOffice" class="form-control"
+          type="text" required>
       </div>
     </div>
 
@@ -57,8 +57,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': profession?.invalid && ( profession?.touched || mouseOverSubmit === true ) }">
         <label for="profession">Επάγγελμα</label>
         <em class="text-danger" *ngIf="profession.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #profession="ngModel" id="profession" name="profession" [(ngModel)]="applicationInput.profession" class="form-control" type="text"
-          required>
+        <input #profession="ngModel" id="profession" name="profession" [(ngModel)]="applicationInput.profession" class="form-control"
+          type="text" required>
       </div>
     </div>
 
@@ -79,8 +79,7 @@
       <div class="form-group has-error" [ngClass]="{'has-error': city?.invalid && ( city?.touched || mouseOverSubmit === true ) }">
         <label for="city">Πόλη</label>
         <em class="text-danger" *ngIf="city.invalid && ( city.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #city="ngModel" id="city" name="city" [(ngModel)]="applicationInput.city" class="form-control" type="text"
-          required>
+        <input #city="ngModel" id="city" name="city" [(ngModel)]="applicationInput.city" class="form-control" type="text" required>
       </div>
     </div>
 
@@ -88,8 +87,7 @@
       <div class="form-group has-error" [ngClass]="{'has-error': zip?.invalid && ( zip?.touched || mouseOverSubmit === true ) }">
         <label for="zip">Ταχ. Κωδικός</label>
         <em class="text-danger" *ngIf="zip.invalid && ( zip.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #zip="ngModel" id="zip" name="zip" [(ngModel)]="applicationInput.zip" class="form-control" type="text"
-          required>
+        <input #zip="ngModel" id="zip" name="zip" [(ngModel)]="applicationInput.zip" class="form-control" type="text" required>
       </div>
     </div>
 
@@ -119,11 +117,18 @@
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #eMail="ngModel" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" type="text"
-          required>
+        <input #eMail="ngModel" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" type="text" required>
       </div>
     </div>
 
+  </div>
+
+  <!-- QUOTATION Button -->
+
+  <div style="text-align: center">
+    <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
+      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="saveProposal()">Τιμολόγηση</button>
+    </span>
   </div>
 
 </form>

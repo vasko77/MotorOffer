@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { IQuotationRequest } from '../models/online-issue-contracts/quotation-request';
 import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +15,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { IAuthentication } from '../models/authentication';
 import { ContactInputParams } from '../models/contact-input-params';
 import { IContactInfo } from '../models/mvp-contracts/contact-info';
-import { forEach } from '@angular/router/src/utils/collection';
+
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -27,7 +28,7 @@ export class OfferInputComponent implements OnInit {
   busyUniformed: Subscription;
   busyQuotations: Subscription;
 
-  authenticationInfo: IAuthentication;
+  // authenticationInfo: IAuthentication;
   enterContactInfo = true;
   setCoversCheck: boolean;
   optionalCoversCheck: boolean;
@@ -68,7 +69,8 @@ export class OfferInputComponent implements OnInit {
   constructor(private onlineIssueService: OnlineIssueService,
     private mvpApiService: MvpApiService,
     private toastr: ToastrService,
-    private authenticationService: AuthenticationService) {
+    private router: Router,
+    public authenticationService: AuthenticationService) {
 
     this.quotationInput.markaCode = 0;
     this.quotationInput.uniformedCode = 0;
@@ -123,18 +125,19 @@ export class OfferInputComponent implements OnInit {
 
   ngOnInit() {
 
-    this.authenticationService.getAuthenticationInfo()
-      .subscribe(
-        (data: IAuthentication) => {
-          console.log(data);
-          this.authenticationInfo = data;
-          // this.efginsUser = data.efginsUser;
-        },
-        (err: any) => {
-          console.error('Component log: ' + JSON.stringify(err));
-          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
-        }
-      );
+    if (!this.authenticationService.authenticationInfo) {
+      this.authenticationService.getAuthenticationInfo()
+        .subscribe(
+          (data: IAuthentication) => {
+            console.log(data);
+            // this.authenticationInfo = data;
+          },
+          (err: any) => {
+            console.error('Component log: ' + JSON.stringify(err));
+            setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+          }
+        );
+    }
 
     this.busyMarkes = this.onlineIssueService.getMarkes()
       .subscribe(
@@ -154,24 +157,43 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
-    this.busyQuotations = this.onlineIssueService.getPackageCovers()
-      .subscribe(
-        (data: ICoversResponse) => {
-          // tslint:disable-next-line:max-line-length
-          this.packageOptionalCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.Allowed && !item.IsMandatory);
-          this.packageAllCoverItems = data.CoversCollection[0].CoverItem;
-        },
-        (err: ErrorInfo) => {
-          console.error('Component log: ' + JSON.stringify(err));
-          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
-        }
-      );
+    if (this.onlineIssueService.packageOptionalCoverItems) {
+      this.packageOptionalCoverItems = this.onlineIssueService.packageOptionalCoverItems;
+      this.packageAllCoverItems = this.onlineIssueService.packageAllCoverItems;
+    } else {
+      this.busyQuotations = this.onlineIssueService.getPackageCovers()
+        .subscribe(
+          (data: ICoversResponse) => {
+            // tslint:disable-next-line:max-line-length
+            this.packageOptionalCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.Allowed && !item.IsMandatory);
+            this.packageAllCoverItems = data.CoversCollection[0].CoverItem;
+          },
+          (err: ErrorInfo) => {
+            console.error('Component log: ' + JSON.stringify(err));
+            setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+          }
+        );
+    }
+
+    console.log('this.mvpApiService.plateNo:' + this.mvpApiService.plateNo);
+    if (this.mvpApiService.plateNo) {
+      this.loadQuotationInfo(this.mvpApiService.plateNo);
+    }
   }
 
-  loadQuotationInfo(): void {
-    if (!this.quotationInput.plateNo) {
+  loadQuotationInfo(plateNo: string): void {
+
+    console.log('plateNo: ' + plateNo);
+    console.log('this.quotationInput.plateNo: ' + this.quotationInput.plateNo);
+
+    this.mvpApiService.plateNo = plateNo;
+
+    if (!this.authenticationService.authenticationInfo || !this.authenticationService.authenticationInfo.efginsUser || !plateNo) {
+      this.quotationInput.plateNo = plateNo;
       return;
     }
+
+    this.quotationInput.plateNo = plateNo;
 
     this.mvpApiService.getQuotation(this.quotationInput.plateNo)
       .subscribe(
@@ -180,6 +202,7 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.birthDate = new Date(quot.BirthDate);
           this.quotationInput.cc = quot.CC;
           this.quotationInput.contractStartDate = new Date(quot.ContractStartDate);
+          this.quotationInput.vehiclePurchaseDate = new Date(quot.VehiclePurchaseDate);
           this.quotationInput.county = quot.County;
           this.quotationInput.driverLicenseYear = quot.DriverLicenseYear;
           if (quot.OldestDriverBirthDate) {
@@ -199,6 +222,8 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.plateNo2 = quot.PlateNo2;
           this.quotationInput.uniformedCode = quot.UniformedCode;
           this.quotationInput.taxNumber = quot.TaxNumber;
+
+          this.quotationInput.contractDuration = quot.ContractDuration;
 
           this.quotation(quot.SelectedMotorCoverItems);
 
@@ -248,7 +273,7 @@ export class OfferInputComponent implements OnInit {
         VehicleInfo: {
           PlateNumber: this.quotationInput.plateNo,
           AssemblyDate: `${this.quotationInput.vehicleLicenseYear}-01-01`,
-          PurchaseDate: `${this.quotationInput.vehicleLicenseYear}-01-01`,
+          PurchaseDate: this.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
           CC: this.quotationInput.cc.toString(),
           EurotaxBrandCode: this.quotationInput.markaCode,
           EurotaxModelCode: 0,
@@ -423,6 +448,7 @@ export class OfferInputComponent implements OnInit {
       ContractStartDate: this.quotationInput.contractStartDate,
       County: this.quotationInput.county,
       DriverLicenseYear: this.quotationInput.driverLicenseYear,
+      VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
       MarkaCode: this.quotationInput.markaCode,
       OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
@@ -489,6 +515,61 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
+  }
+
+  applicationInput(): void {
+    const mvpQuotation: IQuotationInfo = {
+      BirthDate: this.quotationInput.birthDate,
+      CC: this.quotationInput.cc,
+      ContractStartDate: this.quotationInput.contractStartDate,
+      County: this.quotationInput.county,
+      DriverLicenseYear: this.quotationInput.driverLicenseYear,
+      VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
+      MarkaCode: this.quotationInput.markaCode,
+      OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
+      OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
+      PlateNo: this.quotationInput.plateNo,
+      VehicleLicenseYear: this.quotationInput.vehicleLicenseYear,
+      VehicleValue: this.quotationInput.vehicleValue,
+      YoungestDriverBirthDate: this.quotationInput.youngestDriverBirthDate,
+      YoungestDriverLicenseYear: this.quotationInput.youngestDriverLicenseYear,
+      Zip: this.quotationInput.zip,
+      PublicServant: this.quotationInput.publicServant,
+      Uniformed: this.quotationInput.uniformed,
+      SecondVehicle: this.quotationInput.secondVehicle,
+      PlateNo2: this.quotationInput.plateNo2,
+      TaxNumber: this.quotationInput.taxNumber,
+      ContractDuration: this.quotationInput.contractDuration,
+      UniformedCode: this.quotationInput.uniformedCode,
+      SelectedMotorCoverItems: []
+    };
+
+    this.optionalCovers.forEach(cover => {
+      if (cover.Selected) {
+        mvpQuotation.SelectedMotorCoverItems.push(cover.MotorCoverItem);
+      }
+    });
+    this.setCovers.forEach(cover => {
+      if (cover.Selected) {
+        mvpQuotation.SelectedMotorCoverItems.push(cover.MotorCoverItem);
+      }
+    });
+
+    console.log('mvpQuotation');
+    console.log(JSON.stringify(mvpQuotation));
+
+    // MVP quotation data save
+
+    this.mvpApiService.postQuotation(mvpQuotation)
+      .subscribe(
+        (data: IQuotationInfo) => { },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
+
+    this.router.navigate(['/application']);
   }
 
   updateSetCovers(selected: boolean): void {

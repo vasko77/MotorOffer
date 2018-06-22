@@ -10,18 +10,21 @@ import { IGetListItemsRequest } from '../models/online-issue-contracts/get-list-
 import { ITestInfo } from '../models/test/test-info';
 import { IMotorItem, IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { ErrorInfo } from '../models/errorInfo';
-import { IQuotationResponse } from '../models/online-issue-contracts/quotation-response';
-import { IQuotationRequest } from '../models/online-issue-contracts/quotation-request';
+import { IQuotationResponse, IApplicationResponse } from '../models/online-issue-contracts/quotation-response';
+import { IQuotationRequest, IApplicationRequest } from '../models/online-issue-contracts/quotation-request';
 import { ICoversResponse, ICoverItem } from '../models/online-issue-contracts/covers-response';
 import { ICoversRequest } from '../models/online-issue-contracts/covers-request';
 import { environment } from '../../environments/environment';
+import { IApplicationInputParams } from '../models/application-input-params';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OnlineIssueService {
 
-  quotationResponse: IQuotationResponse;
+  // quotationResponse: IQuotationResponse;
+  packageOptionalCoverItems: ICoverItem[];
+  packageAllCoverItems: ICoverItem[];
 
   constructor(private httpClient: HttpClient) { }
 
@@ -61,10 +64,20 @@ export class OnlineIssueService {
 
     return this.httpClient.post<IQuotationResponse>(url, request)
       .pipe(
-        tap( (data: IQuotationResponse) => { this.quotationResponse = data; } ),
+        // tap( (data: IQuotationResponse) => { this.quotationResponse = data; } ),
         catchError(err => this.HandleHttpError(err)),
     );
 
+  }
+
+  insertApplication(request: IApplicationRequest): Observable<IApplicationResponse | ErrorInfo> {
+    const url = environment.urlApplication;
+
+    return this.httpClient.post<IApplicationResponse>(url, request)
+      .pipe(
+        // tap( (data: IQuotationResponse) => { this.quotationResponse = data; } ),
+        catchError(err => this.HandleHttpError(err)),
+    );
   }
 
   getPackageCovers(): Observable<ICoversResponse | ErrorInfo> {
@@ -89,9 +102,13 @@ export class OnlineIssueService {
     return this.httpClient.post<ICoversResponse>(url, request)
       .pipe(
         tap((data: ICoversResponse) => {
-             data.CoversCollection[0].CoverItem = data.CoversCollection[0].CoverItem
+          data.CoversCollection[0].CoverItem = data.CoversCollection[0].CoverItem
             .sort((c1: ICoverItem, c2: ICoverItem) => c1.VisibilityOrder - c2.VisibilityOrder);
-        }),
+
+            // tslint:disable-next-line:max-line-length
+            this.packageOptionalCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.Allowed && !item.IsMandatory);
+            this.packageAllCoverItems = data.CoversCollection[0].CoverItem;
+          }),
         catchError(err => this.HandleHttpError(err)),
     );
   }
