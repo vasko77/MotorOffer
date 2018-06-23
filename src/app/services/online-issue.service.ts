@@ -15,7 +15,6 @@ import { IQuotationRequest, IApplicationRequest } from '../models/online-issue-c
 import { ICoversResponse, ICoverItem } from '../models/online-issue-contracts/covers-response';
 import { ICoversRequest } from '../models/online-issue-contracts/covers-request';
 import { environment } from '../../environments/environment';
-import { IApplicationInputParams } from '../models/application-input-params';
 import { QuotationInputParams } from '../models/quotation-input-params';
 
 @Injectable({
@@ -51,6 +50,21 @@ export class OnlineIssueService {
     const request: IGetListItemsRequest = {
       Header: { CultureName: 'GR', ServiceVersion: '1' },
       ItemListSelector: 256
+    };
+
+    const url = environment.urlGetListItems;
+
+    return this.httpClient.post<IMotorItemsData>(url, request)
+      .pipe(
+        catchError(err => this.HandleHttpError(err)),
+    );
+  }
+
+  getTaxOffices(): Observable<IMotorItemsData | ErrorInfo> {
+
+    const request: IGetListItemsRequest = {
+      Header: { CultureName: 'GR', ServiceVersion: '1' },
+      ItemListSelector: 65536
     };
 
     const url = environment.urlGetListItems;

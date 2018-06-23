@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { ErrorInfo } from '../models/errorInfo';
 import { IApplicationResponse, IError } from '../models/online-issue-contracts/quotation-response';
+import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 
 @Component({
   templateUrl: './application-input.component.html',
@@ -19,32 +20,47 @@ export class ApplicationInputComponent implements OnInit {
   mouseOverSubmit: boolean;
   busyProposal: Subscription;
 
+  showSaveProposal: boolean;
+  applicationResponse: IApplicationResponse;
+  errors: IError[] = [];
+
   applicationInput: IApplicationInputParams;
-  errors: IError[];
+  taxOffices: IMotorItemsData;
 
   constructor(private onlineIssueService: OnlineIssueService,
     private mvpApiService: MvpApiService,
     private toastr: ToastrService,
     private router: Router,
     public authenticationService: AuthenticationService) {
-    this.applicationInput = {
-      firstName: 'ΒΑΣΙΛΗΣ',
-      lastName: 'ΚΟΝΤΟΠΑΝΟΣ',
-      fatherName: 'ΓΕΩΡΓΙΟΣ',
-      address: 'ΝΕΦΕΛΗΣ 6',
-      city: 'ΒΟΥΛΙΑΓΜΕΝΗ',
-      eMail: 'VASKO77@YAHOO.GR',
-      phone1: '2109303964',
-      profession: 'PROGRAMMER',
-      sex: 0,
-      taxNumber: '035447589',
+
+      this.applicationInput = {
+      firstName: '',
+      lastName: '',
+      fatherName: '',
+      address: '',
+      city: '',
+      eMail: '',
+      phone1: '',
+      profession: '',
+      gender: 0,
+      taxNumber: '',
       idCardNumber: '',
-      taxOffice: 'ΑΓ.ΔΗΜΗΤΡΙΟΥ',
-      zip: '16671'
+      taxOffice: 0,
+      zip: ''
     };
+
+    this.showSaveProposal = true;
    }
 
   ngOnInit() {
+    this.onlineIssueService.getTaxOffices()
+      .subscribe(
+        (data: IMotorItemsData) => { this.taxOffices = data; },
+        (err: any) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+        }
+      );
   }
 
   saveProposal(): void {
@@ -133,10 +149,21 @@ export class ApplicationInputComponent implements OnInit {
     this.busyProposal = this.onlineIssueService.insertProposal(applicationRequest)
       .subscribe(
         ( data: IApplicationResponse ) => {
-          if ( data.Sucess ) {
+
+          console.log( 'Applicaiton Response' );
+          console.log( data );
+
+          if ( data.Success ) {
+
+            this.applicationResponse = data;
+            this.showSaveProposal = false;
+
+            this.router.navigate(['/application-success', data.ProposalNumber]);
 
           } else {
+
             this.errors = data.Errors;
+            this.showSaveProposal = true;
           }
         },
         (err: ErrorInfo) => {
@@ -146,4 +173,13 @@ export class ApplicationInputComponent implements OnInit {
       );
 
   }
+
+  validateGender(event): boolean {
+    return this.applicationInput.gender !== 0;
+  }
+
+  validateTaxOffice(event): boolean {
+    return this.applicationInput.taxOffice !== 0;
+  }
+
 }

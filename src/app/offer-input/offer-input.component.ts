@@ -487,7 +487,7 @@ export class OfferInputComponent implements OnInit {
       .subscribe(
         (data: IQuotationInfo) => {
           this.enterContactInfo = false;
-          this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
+          // this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
 
           // MVP contact data save
           const contactInfo: IContactInfo = {
@@ -500,7 +500,9 @@ export class OfferInputComponent implements OnInit {
 
           this.mvpApiService.postContact(contactInfo)
             .subscribe(
-              () => { },
+              () => {
+                this.router.navigate(['/offer-success']);
+              },
               (err: ErrorInfo) => {
                 console.error('Component log: ' + JSON.stringify(err));
                 this.toastr.error(err.friendlyMessage, 'Σφάλμα');

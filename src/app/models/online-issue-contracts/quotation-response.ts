@@ -6,7 +6,7 @@ export interface IQuotationResponse {
 }
 
 export interface IApplicationResponse {
-    Sucess: boolean;
+    Success: boolean;
     Header: IHeader;
     Errors: IError[];
     ProposalNumber: number;

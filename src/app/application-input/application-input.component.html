@@ -4,7 +4,7 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': lastName?.invalid && ( lastName?.touched || mouseOverSubmit === true ) }">
         <label for="lastName">Επώνυμο</label>
         <em class="text-danger" *ngIf="lastName.invalid && ( lastName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -13,7 +13,11 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': firstName?.invalid && ( firstName?.touched || mouseOverSubmit === true ) }">
         <label for="firstName">Όνομα</label>
         <em class="text-danger" *ngIf="firstName.invalid && ( firstName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -22,7 +26,11 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': fatherName?.invalid && ( fatherName?.touched || mouseOverSubmit === true ) }">
         <label for="fatherName">Πατρώνυμο</label>
         <em class="text-danger" *ngIf="fatherName.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -35,7 +43,25 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-offset-4 col-sm-4" [class.has-error]="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">
+      <label class="control-label">Φύλο</label>
+      <em *ngIf="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">Απαιτείται</em>
+      <div class="">
+        <select #gender="ngModel" name="gender" class="form-control" [(ngModel)]="applicationInput.gender" (blur)="validateGender($event)"
+          (change)="validateGender($event)">
+          <option value="0">ΕΠΙΛΕΞΤΕ</option>
+          <option value="1">ΑΝΔΡΑΣ</option>
+          <option value="2">ΓΥΝΑΙΚΑ</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': taxNumber?.invalid && ( taxNumber?.touched || mouseOverSubmit === true ) }">
         <label for="taxNumber">Α.Φ.Μ.</label>
         <em class="text-danger" *ngIf="taxNumber.invalid && ( taxNumber.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -44,16 +70,26 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
-      <div class="form-group has-error" [ngClass]="{'has-error': taxOffice?.invalid && ( taxOffice?.touched || mouseOverSubmit === true ) }">
-        <label for="taxOffice">Δ.Ο.Υ.</label>
-        <em class="text-danger" *ngIf="taxOffice.invalid && ( taxOffice.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #taxOffice="ngModel" id="taxOffice" name="taxOffice" [(ngModel)]="applicationInput.taxOffice" class="form-control"
-          type="text" required>
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4" [class.has-error]="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">
+      <label class="control-label">Δ.Ο.Υ.</label>
+      <em *ngIf="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">Απαιτείται</em>
+      <div class="">
+        <select #taxOffice="ngModel" name="taxOffice" class="form-control" [(ngModel)]="applicationInput.taxOffice" (blur)="validateTaxOffice($event)"
+          (change)="validateTaxOffice($event)">
+          <option *ngFor="let taxOffice of taxOffices?.MotorItems" [value]="taxOffice.ItemCode">{{ taxOffice.ItemName }}</option>
+        </select>
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <!--div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': profession?.invalid && ( profession?.touched || mouseOverSubmit === true ) }">
         <label for="profession">Επάγγελμα</label>
         <em class="text-danger" *ngIf="profession.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -62,11 +98,11 @@
       </div>
     </div>
 
-  </div>
+  </div-->
 
   <div class="row">
 
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': address?.invalid && ( address?.touched || mouseOverSubmit === true ) }">
         <label for="address">Οδός Αριθμός</label>
         <em class="text-danger" *ngIf="address.invalid && ( address.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -75,7 +111,11 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': city?.invalid && ( city?.touched || mouseOverSubmit === true ) }">
         <label for="city">Πόλη</label>
         <em class="text-danger" *ngIf="city.invalid && ( city.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -83,7 +123,11 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': zip?.invalid && ( zip?.touched || mouseOverSubmit === true ) }">
         <label for="zip">Ταχ. Κωδικός</label>
         <em class="text-danger" *ngIf="zip.invalid && ( zip.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -95,7 +139,7 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': phone1?.invalid && ( phone1?.touched || mouseOverSubmit === true ) }">
         <label for="phone1">Τηλέφωνο 1</label>
         <em class="text-danger" *ngIf="phone1.invalid && ( phone1.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -104,21 +148,25 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4">
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-sm-offset-4 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #eMail="ngModel" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" type="text" required>
+        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" />
       </div>
     </div>
 
   </div>
 
-  <!-- QUOTATION Button -->
+  <!-- PROPOOSAL Button -->
 
-  <div style="text-align: center">
+  <div style="text-align: center" *ngIf="showSaveProposal">
     <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="saveProposal()">Καταχώρηση Αίτησης</button>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
     </span>
   </div>
 
@@ -126,8 +174,8 @@
 
 <br/>
 
-<div *ngIf="!quotationResult?.Allow">
-  <div *ngFor="let error of errors" class="alert alert-danger" role="alert">
+<div *ngIf="!applicationResponse?.Success">
+  <div *ngFor="let error of errors" class="alert alert-danger col-sm-offset-3 col-sm-6" role="alert">
     <p>{{ error.ErrorCode }} - {{ error.ErrorString }}</p>
   </div>
 </div>

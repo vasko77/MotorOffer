@@ -32,6 +32,8 @@ import { OfferInputComponent } from './offer-input/offer-input.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GeneralInterceptor } from './services/general-interceptor';
 import { ApplicationInputComponent } from './application-input/application-input.component';
+import { ApplicationSuccessComponent } from './application-success/application-success.component';
+import { OfferSuccessComponent } from './offer-success/offer-success.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { ApplicationInputComponent } from './application-input/application-input
     FooterComponent,
     BodyComponent,
     OfferInputComponent,
-    ApplicationInputComponent
+    ApplicationInputComponent,
+    ApplicationSuccessComponent,
+    OfferSuccessComponent
   ],
   imports: [
     BrowserModule,

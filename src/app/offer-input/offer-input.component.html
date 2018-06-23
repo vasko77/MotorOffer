@@ -44,7 +44,7 @@
                     <div class="">
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
-                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName + ' - ' + marka.ItemCode }}</option>
+                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
                       </select>
                     </div>
                   </div>
@@ -323,7 +323,7 @@
                 <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                 <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums12 + coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}
                 </h1>
-              </div>
+              </div> 
               <div *ngIf="quotationInput.contractDuration === '6'">
                 <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                 <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>

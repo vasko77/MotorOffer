@@ -3,10 +3,10 @@ export interface IApplicationInputParams {
     firstName: string;
     fatherName: string;
     profession: string;
-    sex: number;
+    gender: number;
     taxNumber: string;
     idCardNumber: string;
-    taxOffice: string;
+    taxOffice: number;
     address: string;
     city: string;
     zip: string;
