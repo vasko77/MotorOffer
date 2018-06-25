@@ -2,13 +2,13 @@ export interface IQuotationInfo {
     PlateNo: string;
     BirthDate: Date;
     DriverLicenseYear: number;
-    MarkaCode: number;
+    MarkaCode: string;
+    MunicipalityCode: string;
     VehicleLicenseYear: number;
     VehiclePurchaseDate: Date;
     VehicleValue: number;
     CC: number;
     Zip: string;
-    County: string;
     ContractStartDate: Date;
     YoungestDriverBirthDate: Date;
     YoungestDriverLicenseYear: number;

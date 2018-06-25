@@ -14,6 +14,7 @@ export interface IApplicationRequest {
 export interface IMainDriverInfo {
     BirthDate: string;
     LicenseDate: string;
+    Municipality: string;
     PostalCode: string;
     TaxIdentificationNumber: string;
 }

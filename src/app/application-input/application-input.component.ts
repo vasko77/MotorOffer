@@ -78,13 +78,14 @@ export class ApplicationInputComponent implements OnInit {
           BirthDate: this.onlineIssueService.quotationInput.birthDate.toISOString().split('T')[0],
           LicenseDate: `${this.onlineIssueService.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.onlineIssueService.quotationInput.zip,
-          TaxIdentificationNumber: this.applicationInput.taxNumber
+          TaxIdentificationNumber: this.applicationInput.taxNumber,
+          Municipality: this.onlineIssueService.quotationInput.municipalityCode.toString()
         },
         VehicleInfo: {
           AssemblyDate: `${this.onlineIssueService.quotationInput.vehicleLicenseYear}-01-01`,
           PurchaseDate: this.onlineIssueService.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
           CC: this.onlineIssueService.quotationInput.cc.toString(),
-          EurotaxBrandCode: this.onlineIssueService.quotationInput.markaCode,
+          EurotaxBrandCode: +this.onlineIssueService.quotationInput.markaCode,
           EurotaxModelCode: 0,
           EurotaxModelGroupCode: 0,
           HasAlarmImmobilizer: false,

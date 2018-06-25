@@ -45,6 +45,21 @@ export class OnlineIssueService {
     );
   }
 
+  getMunicipalities(): Observable<IMotorItemsData | ErrorInfo> {
+
+    const request: IGetListItemsRequest = {
+      Header: { CultureName: 'GR', ServiceVersion: '1' },
+      ItemListSelector: 4
+    };
+
+    const url = environment.urlGetListItems;
+
+    return this.httpClient.post<IMotorItemsData>(url, request)
+      .pipe(
+        catchError(err => this.HandleHttpError(err)),
+    );
+  }
+
   getUniformed(): Observable<IMotorItemsData | ErrorInfo> {
 
     const request: IGetListItemsRequest = {

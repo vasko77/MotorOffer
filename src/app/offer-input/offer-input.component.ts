@@ -25,6 +25,7 @@ import { IContactInfo } from '../models/mvp-contracts/contact-info';
 export class OfferInputComponent implements OnInit {
 
   busyMarkes: Subscription;
+  busyMunicipalities: Subscription;
   busyUniformed: Subscription;
   busyQuotations: Subscription;
 
@@ -44,6 +45,7 @@ export class OfferInputComponent implements OnInit {
 
   markesData: IMotorItemsData;
   uniformedData: IMotorItemsData;
+  municipalityData: IMotorItemsData;
   quotationResult: ICalculatedQuotationsResult;
   setCovers: ICover[];
   optionalCovers: ICover[];
@@ -72,7 +74,8 @@ export class OfferInputComponent implements OnInit {
     private router: Router,
     public authenticationService: AuthenticationService) {
 
-    this.quotationInput.markaCode = 0;
+    this.quotationInput.markaCode = '0';
+    this.quotationInput.municipalityCode = '0';
     this.quotationInput.uniformedCode = 0;
     this.quotationInput.contractDuration = '12';
     this.maxDateBirth = new Date();
@@ -82,9 +85,9 @@ export class OfferInputComponent implements OnInit {
       this.quotationInput.birthDate = this.mvpApiService.quotationInfo.BirthDate;
       this.quotationInput.cc = this.mvpApiService.quotationInfo.CC;
       this.quotationInput.contractStartDate = this.mvpApiService.quotationInfo.ContractStartDate;
-      this.quotationInput.county = this.mvpApiService.quotationInfo.County;
       this.quotationInput.driverLicenseYear = this.mvpApiService.quotationInfo.DriverLicenseYear;
       this.quotationInput.markaCode = this.mvpApiService.quotationInfo.MarkaCode;
+      this.quotationInput.municipalityCode = this.mvpApiService.quotationInfo.MunicipalityCode;
       this.quotationInput.oldestDriverBirthDate = this.mvpApiService.quotationInfo.OldestDriverBirthDate;
       this.quotationInput.oldestDriverLicenseYear = this.mvpApiService.quotationInfo.OldestDriverLicenseYear;
       this.quotationInput.plateNo = this.mvpApiService.quotationInfo.PlateNo;
@@ -148,6 +151,15 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
+      this.busyMunicipalities = this.onlineIssueService.getMunicipalities()
+      .subscribe(
+        (data: IMotorItemsData) => { this.municipalityData = data; },
+        (err: any) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+        }
+      );
+
     this.busyUniformed = this.onlineIssueService.getUniformed()
       .subscribe(
         (data: IMotorItemsData) => { this.uniformedData = data; },
@@ -199,11 +211,11 @@ export class OfferInputComponent implements OnInit {
       .subscribe(
         (quot: IQuotationInfo) => {
           this.quotationInput.markaCode = quot.MarkaCode;
+          this.quotationInput.municipalityCode = quot.MunicipalityCode;
           this.quotationInput.birthDate = new Date(quot.BirthDate);
           this.quotationInput.cc = quot.CC;
           this.quotationInput.contractStartDate = new Date(quot.ContractStartDate);
           this.quotationInput.vehiclePurchaseDate = new Date(quot.VehiclePurchaseDate);
-          this.quotationInput.county = quot.County;
           this.quotationInput.driverLicenseYear = quot.DriverLicenseYear;
           if (quot.OldestDriverBirthDate) {
             this.quotationInput.oldestDriverBirthDate = new Date(quot.OldestDriverBirthDate);
@@ -223,6 +235,8 @@ export class OfferInputComponent implements OnInit {
           this.quotationInput.uniformedCode = quot.UniformedCode;
 
           this.quotationInput.contractDuration = quot.ContractDuration;
+
+          console.log( 'Municipality Code: ' + this.quotationInput.municipalityCode.toString() );
 
           this.quotation(quot.SelectedMotorCoverItems);
 
@@ -268,6 +282,7 @@ export class OfferInputComponent implements OnInit {
           BirthDate: this.quotationInput.birthDate.toISOString().split('T')[0],
           LicenseDate: `${this.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.quotationInput.zip,
+          Municipality: this.quotationInput.municipalityCode,
           TaxIdentificationNumber: ''
         },
         VehicleInfo: {
@@ -275,7 +290,7 @@ export class OfferInputComponent implements OnInit {
           AssemblyDate: `${this.quotationInput.vehicleLicenseYear}-01-01`,
           PurchaseDate: this.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
           CC: this.quotationInput.cc.toString(),
-          EurotaxBrandCode: this.quotationInput.markaCode,
+          EurotaxBrandCode: +this.quotationInput.markaCode,
           EurotaxModelCode: 0,
           EurotaxModelGroupCode: 0,
           HasAlarmImmobilizer: false,
@@ -446,10 +461,10 @@ export class OfferInputComponent implements OnInit {
       BirthDate: this.quotationInput.birthDate,
       CC: this.quotationInput.cc,
       ContractStartDate: this.quotationInput.contractStartDate,
-      County: this.quotationInput.county,
       DriverLicenseYear: this.quotationInput.driverLicenseYear,
       VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
       MarkaCode: this.quotationInput.markaCode,
+      MunicipalityCode: this.quotationInput.municipalityCode,
       OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
       PlateNo: this.quotationInput.plateNo,
@@ -523,10 +538,10 @@ export class OfferInputComponent implements OnInit {
       BirthDate: this.quotationInput.birthDate,
       CC: this.quotationInput.cc,
       ContractStartDate: this.quotationInput.contractStartDate,
-      County: this.quotationInput.county,
       DriverLicenseYear: this.quotationInput.driverLicenseYear,
       VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
       MarkaCode: this.quotationInput.markaCode,
+      MunicipalityCode: this.quotationInput.municipalityCode,
       OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
       PlateNo: this.quotationInput.plateNo,
@@ -610,7 +625,11 @@ export class OfferInputComponent implements OnInit {
   }
 
   validateMarka(event): boolean {
-    return this.quotationInput.markaCode !== 0;
+    return this.quotationInput.markaCode !== '0';
+  }
+
+  validateMunicipality(event): boolean {
+    return this.quotationInput.municipalityCode !== '0';
   }
 
   validateUniformed(event): boolean {
