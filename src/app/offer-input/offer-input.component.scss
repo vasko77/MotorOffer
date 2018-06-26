@@ -1,5 +1,7 @@
 .panel {
     margin: 20px;
+    background-color: #f5f5f5;
+    border: none;
 }
 
 em {
@@ -11,7 +13,128 @@ em {
 .panel-body {
     background-color: whitesmoke;
 }
-
+.coverPanel {
+  background-color: #0c6db3 !important;
+}
+.panelFlag {
+  float: left;
+  position: absolute;
+  font-size: 24px;
+  color: #fff;
+  left: 16px;
+  top: -36px;
+  background: #013c82;
+  padding: 20px 3px 12px;
+}
+.panelHeader {
+  margin-left: 48px;
+  margin-top: 12px;
+  color: #0E3E80;
+  font-size: 16px;
+}
+.pricingToolbar {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+.pricingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #173070;
+}
+.priceContainer {
+  margin: 8px;
+}
+.pricingLabel {
+  font-size: 14px;
+  color: white;
+}
+.priceInt {
+  color: white;
+  font-size: 22px;
+}
+.priceDecimals {
+  color: white;
+  font-size: 16px;
+}
+.infoTooltip {
+  padding: 0 10px;
+}
+.coverGroup {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.24);
+}
+.checkmark{
+  display:inline-block;
+  background-color: #0c6db3;
+  border-radius: 100px;
+  width: 5px;
+  height: 10px;
+  padding: 12px;
+  margin-left: 42px;
+  text-align: center;
+  &:after{
+    content: '';
+    margin: -5px -3px;
+    display: block;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+}
+.dropdown {
+  font-size: 22px;
+  height: auto !important;
+  font-weight: bold;
+}
+.freqContainer {
+  display: flex;
+  align-items: center;
+  padding: 14px 0px;
+  margin: 8px 0px;
+}
+.buttonContainer {
+  width: 30%;
+  background-color: white;
+  margin: auto;
+  margin-bottom: 64px;
+}
+.pricingButton {
+  width: 100%;
+  background-color: #C82F26;
+  color: white;
+  height: 62px;
+}
+.pricingButton:hover {
+  color: white;
+}
+.pricingButton:focus {
+  color: white;
+}
+.frequencySelect {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0px;
+  cursor: pointer;
+}
+.frequencySelect:focus {
+  box-shadow: none !important;
+  color: white !important;
+}
+.freqLabel {
+  font-weight: bold;
+  width: 100%;
+  padding: 4px;
+}
+.freqOption {
+  color: rgba(0,0,0,0.87);
+  padding: 8px;
+  cursor: pointer;
+}
 .k-tooltip{
     color: navy;
     background: yellow !important;

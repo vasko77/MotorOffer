@@ -17,9 +17,9 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-sm-11">
-                    <h1 style="float: left" class="bg-primary text-white">&nbsp;1&nbsp;</h1>
+                    <h1 class="bg-primary text-white panelFlag">&nbsp;1&nbsp;</h1>
                     <h1 style="float: left">&nbsp;</h1>
-                    <h4 style="margin-top: 30px">Για το αυτοκίνητό σας</h4>
+                    <h4 class="panelHeader">Για το αυτοκίνητό σας</h4>
                   </div>
                 </div>
               </div>
@@ -29,8 +29,8 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">
-                    <label class="control-label">Αριθμός Κυκλοφορίας</label>
-                    <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <label class="control-label">Αρ. Κυκλοφορίας</label>
+                    <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
                         (ngModelChange)="loadQuotationInfo($event)" [ngModel]="quotationInput.plateNo" autofocus/>
@@ -40,7 +40,7 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.markaCode === '0'  && ( marka?.touched || mouseOverSubmit )">
                     <label class="control-label">Μάρκα</label>
-                    <em *ngIf="quotationInput.markaCode === '0'  && ( marka?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="quotationInput.markaCode === '0'  && ( marka?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div class="">
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
@@ -55,14 +55,14 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος 1ης άδειας</label>
-                    <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
                       format="####" required></kendo-numerictextbox>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">
-                    <label class="control-label">Ημ. Αγοράς</label>
-                    <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <label class="control-label">Ημ/νία Αγοράς</label>
+                    <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
                       required></kendo-datepicker>
                   </div>
@@ -73,14 +73,14 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">
                     <label class="control-label">Τρέχουσα Αξία</label>
-                    <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
                       format="c0" required></kendo-numerictextbox>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
-                    <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
                   </div>
 
@@ -89,8 +89,8 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="zip.invalid && ( zip?.touched || mouseOverSubmit )">
-                    <label class="control-label">Ταχυδρομικός Κωδικός</label>
-                    <em *ngIf="zip.invalid && ( zip?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <label class="control-label">Τ.Κ.</label>
+                    <em *ngIf="zip.invalid && ( zip?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
                       <input #zip="ngModel" type="text" class="form-control" name="zip" [(ngModel)]="quotationInput.zip" required/>
                     </div>
@@ -98,7 +98,7 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.municipalityCode === '0' && ( municipality?.touched || mouseOverSubmit )">
                     <label class="control-label">Νομός</label>
-                    <em *ngIf="quotationInput.municipalityCode === '0'  && ( municipality?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="quotationInput.municipalityCode === '0'  && ( municipality?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <select #municipality="ngModel" name="municipalityCode" class="form-control" [(ngModel)]="quotationInput.municipalityCode" (blur)="validateMunicipality($event)"
                     (change)="validateMunicipality($event)">
                     <option *ngFor="let municipality of municipalityData?.MotorItems" [value]="municipality.ItemCode">{{ municipality.ItemName }}</option>
@@ -111,7 +111,7 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
-                    <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
                       required></kendo-datepicker>
                   </div>
@@ -129,9 +129,9 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-sm-11">
-                    <h1 style="float: left" class="bg-primary text-white">&nbsp;2&nbsp;</h1>
+                    <h1 class="bg-primary text-white panelFlag">&nbsp;2&nbsp;</h1>
                     <h1 style="float: left">&nbsp;</h1>
-                    <h4 style="margin-top: 30px">Για εσάς</h4>
+                    <h4 class="panelHeader">Για εσάς</h4>
                   </div>
                 </div>
               </div>
@@ -141,15 +141,15 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
-                    <label class="control-label">Ημερομηνία Γέννησης</label>
-                    <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <label class="control-label">Ημ/νία Γέννησης</label>
+                    <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
                       required></kendo-datepicker>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος άδειας οδήγησης</label>
-                    <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
                       format="####" required></kendo-numerictextbox>
                   </div>
@@ -167,9 +167,9 @@
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-sm-11">
-                    <h1 style="float: left" class="bg-primary text-white">&nbsp;3&nbsp;</h1>
+                    <h1 class="bg-primary text-white panelFlag">&nbsp;3&nbsp;</h1>
                     <h1 style="float: left">&nbsp;</h1>
-                    <h4 style="margin-top: 30px">Για τους υπόλοιπους οδηγούς του αυτοκινήτου σας</h4>
+                    <h4 class="panelHeader">Για τους υπόλοιπους οδηγούς του αυτοκινήτου σας</h4>
                   </div>
                 </div>
               </div>
@@ -179,7 +179,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημερομηνία Γέννησης νεότερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία Γέννησης νεότερου σε ηλικία οδηγού</label>
                     <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverBirthDate"
                       [max]="maxDateBirth" name="dateBirthYoungest"></kendo-datepicker>
                   </div>
@@ -195,7 +195,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημερομηνία Γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία Γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
                     <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" [max]="maxDateBirth"
                       name="dateBirthOldest"></kendo-datepicker>
                   </div>
@@ -217,9 +217,13 @@
             <div class="panel panel-default">
 
               <div class="panel-heading">
-                <h1 style="float: left" class="bg-primary text-white">&nbsp;4&nbsp;</h1>
-                <h1 style="float: left">&nbsp;</h1>
-                <h4 style="margin-top: 30px">Εκπτώσεις</h4>
+                <div class="row">
+                  <div class="col-sm-11">
+                    <h1 class="bg-primary text-white panelFlag">&nbsp;4&nbsp;</h1>
+                    <h1 style="float: left">&nbsp;</h1>
+                    <h4 class="panelHeader">Εκπτώσεις</h4>
+                  </div>
+                </div>
               </div>
 
               <div class="panel-body">
@@ -252,7 +256,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
                     *ngIf="uniformed.value">
                     <label class="control-label">Κατηγορία Ένστολου</label>
-                    <em *ngIf="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div class="">
                       <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" (blur)="validateUniformed($event)"
                         (change)="validateUniformed($event)">
@@ -272,8 +276,8 @@
                   </div>
 
                   <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
-                    <label class="control-label">Αριθμός Κυκλοφορίας</label>
-                    <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <label class="control-label">Αρ. Κυκλοφορίας</label>
+                    <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
                       <input #plateNo2="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo2"
                         [(ngModel)]="quotationInput.plateNo2" />
@@ -287,188 +291,105 @@
 
             </div>
 
-
-            <!-- QUOTATION Button -->
-
-            <div style="text-align: center">
-              <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-                <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success" (click)="quotation(undefined)">Τιμολόγηση</button>
-              </span>
-            </div>
-
-
             <br/>
             <br/>
-
-          </div>
-
-          <div class="panel panel-primary" *ngIf="quotationResult?.Allow">
-            <div class="panel-heading">
-              <h4>
-                <select name="duration" class="form-control" name="duration" [(ngModel)]="quotationInput.contractDuration">
-                  <option value="12">Ετήσιο</option>
-                  <option value="6">Εξαμηνιαίο</option>
-                  <option value="3">Τριμηνιαίο</option>
-                </select>
-              </h4>
-            </div>
-
-            <div class="panel-body">
-              <div>
-                <h3 class="col-sm-4" style="text-align: right;">Βασικά Ασφάλιστρα</h3>
-                <h3 class="col-sm-4" style="text-align: right;">Ασφάλιστρα Προαιρετικών</h3>
-                <h3 class="col-sm-4" style="text-align: right;">Συνολικά Ασφάλιστρα</h3>
-              </div>
-              <div *ngIf="quotationInput.contractDuration === '12'">
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums12 + coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                </h1>
-              </div> 
-              <div *ngIf="quotationInput.contractDuration === '6'">
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums6 + coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                </h1>
-              </div>
-              <div *ngIf="quotationInput.contractDuration === '3'">
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums3 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
-                <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums3 + coversAmount3 | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                </h1>
-              </div>
+            <div class="buttonContainer">
+              <button
+                (mouseenter)="mouseOverSubmit=true"
+                (mouseleave)="mouseOverSubmit=false" type="submit"
+                [disabled]="form.invalid" class="btn pricingButton"
+                (click)="quotation(undefined)">
+                Τιμολόγηση
+              </button>
             </div>
           </div>
 
-          <!-- MANDATORY COVERS -->
+          <!-- COVERS -->
 
-          <div *ngIf="quotationResult?.Allow">
+          <div *ngIf="quotationResult?.Allow"> <!--  -->
 
             <div class="row">
-
               <div class="col-sm-12">
                 <div class="panel panel-primary">
 
-                  <div class="panel-heading">
+                  <div class="panel-heading coverPanel">
                     <div class="row">
-                      <h4 class="col-sm-7">Καλύψεις Πακέτου</h4>
-                      <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
-                    </div>
-                  </div>
-
-                  <div class="panel-body">
-
-                    <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row">
-
-                      <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
-                        <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
-                          <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
-                        </div>
-                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                      </div>
-
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- OPTIONAL SET COVERS -->
-
-          <div *ngIf="quotationResult?.Allow">
-
-            <div class="row">
-
-              <div class="col-sm-12">
-                <div class="panel panel-primary">
-
-                  <div class="panel-heading">
-                    <div class="row">
-                      <h4 class="col-sm-7">Σετ Καλύψεων</h4>
-                      <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
-                      <h4 class="col-sm-2">Επιλογή</h4>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-2 col-sm-offset-10" style="text-align: center">
-                        <input type="checkbox" class="form-check-input" name="setCoversCheck" [ngModel]="setCoversCheck" (ngModelChange)="updateSetCovers($event)">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="panel-body">
-
-                    <div *ngFor="let cover of setCovers; let i = index;" class="row">
-
-                      <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
-                        <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
-                          <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
-                        </div>
-                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <input type="checkbox" class="form-check-input col-sm-2" name="{{'set'+cover+i.toString()}}" [(ngModel)]="cover.Selected"
-                          disabled="disabled">
-                      </div>
-
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- OPTIONAL COVERS -->
-
-          <div *ngIf="quotationResult?.Allow">
-
-            <div class="row">
-
-              <div class="col-sm-12">
-                <div class="panel panel-primary">
-
-                  <div class="panel-heading">
-                    <div class="row">
-                      <h4 class="col-sm-7">Προαιρετικές Καλύψεις</h4>
-                      <h4 class="col-sm-3">Τιμή Κάλυψης</h4>
+                      <h4 class="col-sm-5">Καλύψεις Πακέτου</h4>
+                      <h4 class="col-sm-1"></h4>
+                      <h4 class="col-sm-4" style="text-align: right;">Τιμή Κάλυψης</h4>
                       <h4 class="col-sm-2">Επιλογή</h4>
                     </div>
                     <div class="row">
                       <div class="col-sm-offset-10 col-sm-2" style="text-align: center">
                         <input type="checkbox" class="form-check-input" name="optionalCoversCheck" [ngModel]="optionalCoversCheck" (ngModelChange)="updateOptionalCovers($event)">
                       </div>
+                      </div>
                     </div>
-                  </div>
 
-                  <div class="panel-body">
+                    <div class="panel-body">
 
-                    <div *ngFor="let cover of optionalCovers; let i = index;" class="row">
+                      <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row coverGroup">
 
-                      <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
-                        <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
-                          <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                        <div class="form-group">
+                          <label class="col-sm-6">{{ cover.Description }}</label>
+                          <div class="col-sm-1 infoTooltip" kendoTooltip>
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                          </div>
+                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <div class="checkmark col-sm-2"></div>
                         </div>
-                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <input type="checkbox" class="form-check-input col-sm-2" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+
+                      </div>
+                      <div class="coverGroup">
+                        <div *ngFor="let cover of setCovers; let i = index;" class="row">
+                          <div class="form-group">
+                            <label class="col-sm-6">{{ cover.Description }}</label>
+                            <div class="col-sm-1 infoTooltip" kendoTooltip>
+                              <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                            </div>
+                            <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <input type="checkbox" class="form-check-input col-sm-2" name="{{'set'+cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                          </div>
+                      </div>
+                      </div>
+                      <div *ngFor="let cover of optionalCovers; let i = index;" class="row coverGroup">
+
+                        <div class="form-group">
+                          <label class="col-sm-6">{{ cover.Description }}</label>
+                          <div class="col-sm-1 infoTooltip" kendoTooltip>
+                            <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
+                          </div>
+                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <input type="checkbox" class="form-check-input col-sm-2" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                        </div>
+
+                      </div>
+                      <div class="row freqContainer">
+                        <div class="freqLabel col-sm-6">Συνολικά ασφάλιστρα</div>
+                        <div></div>
+                        <select name="duration" class="form-control dropdown col-sm-8" name="duration" [(ngModel)]="quotationInput.contractDuration">
+                          <option value="12" class="freqOption">
+                              <span class="priceInt">{{ (GrossPremiums12 + coversAmount12 || "0.00").toString().split(".")[0] }}</span>
+                              <span class="priceDecimals">,{{ ((GrossPremiums12 + coversAmount12).toFixed(2) || "0.00").toString().split(".")[1] }} €</span> /έτος
+                          </option>
+                          <option value="6" class="freqOption">
+                              <span class="priceInt">{{ (GrossPremiums6 + coversAmount6 || "0.00").toString().split(".")[0] }}</span>
+                              <span class="priceDecimals">,{{ ((GrossPremiums6 + coversAmount6).toFixed(2) || "0.00").toString().split(".")[1] }} €</span> /εξάμηνο
+                          </option>
+                          <option value="3" class="freqOption">
+                              <span class="priceInt">{{ (GrossPremiums3 + coversAmount3 || "0.00").toString().split(".")[0] }}</span>
+                              <span class="priceDecimals">,{{ ((GrossPremiums3 + coversAmount3).toFixed(2) || "0.00").toString().split(".")[1] }} €</span> /τρίμηνο
+                          </option>
+                        </select>
                       </div>
 
                     </div>
-
                   </div>
                 </div>
 
@@ -476,13 +397,15 @@
 
             </div>
 
+          <!-- OPTIONAL COVERS -->
+
+          <div *ngIf="quotationResult?.Allow">
             <div class="row" style="text-align: center" *ngIf="authenticationService?.authenticationInfo?.efginsUser">
               <div class="col-sm-12">
                 <!--a class="btn btn-lg btn-success" [routerLink]="['/application']">Δημιουργία Αίτησης</a-->
                 <button class="btn btn-lg btn-success" (click)="applicationInput()">Δημιουργία Αίτησης</button>
               </div>
             </div>
-
           </div>
 
           <br/>
@@ -513,13 +436,13 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="firstName.invalid && ( firstName?.touched || mouseOverSubmit )">
                     <label class="control-label">Όνομα</label>
-                    <em *ngIf="firstName.invalid && ( firstName?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="firstName.invalid && ( firstName?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <input #firstName="ngModel" class="form-control" [(ngModel)]="contactInput.firstName" name="firstName" required/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="lastName.invalid && ( lastName?.touched || mouseOverSubmit )">
                     <label class="control-label">Επώνυμο</label>
-                    <em *ngIf="lastName.invalid && ( lastName?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="lastName.invalid && ( lastName?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <input #lastName="ngModel" class="form-control" [(ngModel)]="contactInput.lastName" name="lastName" required/>
                   </div>
 
@@ -529,13 +452,13 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="phone.invalid && ( phone?.touched || mouseOverSubmit )">
                     <label class="control-label">Τηλέφωνο Επικοινωνίας</label>
-                    <em *ngIf="phone.invalid && ( phone?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="phone.invalid && ( phone?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" required/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
                     <label class="control-label">e-mail</label>
-                    <em *ngIf="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
+                    <em *ngIf="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" />
                   </div>
 
@@ -553,10 +476,7 @@
 
           </form>
         </div>
-
       </div>
-
-
       <!-- SIDEBAR -->
 
       <div class="col-sm-4">
@@ -637,9 +557,6 @@
         </div>
 
       </div>
-
     </div>
-
   </div>
-
 </div>

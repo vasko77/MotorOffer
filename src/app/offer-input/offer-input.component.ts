@@ -595,14 +595,17 @@ export class OfferInputComponent implements OnInit {
     this.router.navigate(['/application']);
   }
 
-  updateSetCovers(selected: boolean): void {
-    this.setCovers.forEach(cover => {
-      cover.Selected = selected;
-    });
-  }
+  // updateSetCovers(selected: boolean): void {
+  //   this.setCovers.forEach(cover => {
+  //     cover.Selected = selected;
+  //   });
+  // }
 
   updateOptionalCovers(selected: boolean): void {
     this.optionalCovers.forEach(cover => {
+      cover.Selected = selected;
+    });
+    this.setCovers.forEach(cover => {
       cover.Selected = selected;
     });
   }

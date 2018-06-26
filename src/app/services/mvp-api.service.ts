@@ -8,6 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { catchError, tap } from 'rxjs/operators';
 import { IContactInfo } from '../models/mvp-contracts/contact-info';
+import { of } from 'rxjs/observable/of';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class MvpApiService {
     const url = environment.urlMvpQuotation + plateNo;
 
     console.log(url);
-
+    const emptyQuotation: IQuotationInfo = undefined;
     return this.httpClient.get<IQuotationInfo>(url)
       .pipe(
         catchError(err => {
@@ -37,7 +38,7 @@ export class MvpApiService {
           if (err.status !== 404) {
             return this.HandleHttpError(err);
           } else {
-            return new EmptyObservable();
+            return of(emptyQuotation) // EmptyObservable();
           }
         })
       );
@@ -61,7 +62,7 @@ export class MvpApiService {
     const url = environment.urlMvpContact + plateNo;
 
     console.log(url);
-
+    const emptyQuotation: IQuotationInfo = undefined;
     return this.httpClient.get<IContactInfo>(url)
       .pipe(
         catchError(err => {
@@ -69,7 +70,7 @@ export class MvpApiService {
           if (err.status !== 404) {
             return this.HandleHttpError(err);
           } else {
-            return new EmptyObservable();
+            return of(emptyQuotation); // new EmptyObservable();
           }
         })
       );
