@@ -54,14 +54,14 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">
-                    <label class="control-label">Έτος 1ης άδειας</label>
+                    <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
                     <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
                       format="####" required></kendo-numerictextbox>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">
-                    <label class="control-label">Ημ/νία Αγοράς</label>
+                    <label class="control-label">Ημ/νία απόκτησης αυτοκινήτου</label>
                     <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
                       required></kendo-datepicker>
@@ -148,7 +148,7 @@
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
-                    <label class="control-label">Έτος άδειας οδήγησης</label>
+                    <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
                       format="####" required></kendo-numerictextbox>
@@ -229,13 +229,12 @@
               <div class="panel-body">
 
                 <div class="row">
-
                   <div class="col-sm-6">
 
                     <div class="form-check">
                       <input #publicServant="ngModel" type="checkbox" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
                         (ngModelChange)="updatePublicServant($event)">
-                      <label class="form-check-label" for="publicServant">&nbsp;Δημόσιος Υπάλληλος</label>
+                      <label class="form-check-label" for="publicServant">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</label>
                     </div>
                   </div>
 
@@ -248,7 +247,7 @@
                     <div class="form-check">
                       <input #uniformed="ngModel" type="checkbox" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
                         [disabled]="!publicServant.value">
-                      <label class="form-check-label" for="uniformed">&nbsp;Ένστολος</label>
+                      <label class="form-check-label" for="uniformed">&nbsp;Ένστολος Υπάλληλος Δημοσίου</label>
                     </div>
 
                   </div>
@@ -299,7 +298,7 @@
                 (mouseleave)="mouseOverSubmit=false" type="submit"
                 [disabled]="form.invalid" class="btn pricingButton"
                 (click)="quotation(undefined)">
-                Τιμολόγηση
+                Υπολογισμός
               </button>
             </div>
           </div>
