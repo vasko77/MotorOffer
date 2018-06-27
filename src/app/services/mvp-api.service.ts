@@ -8,6 +8,7 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import { catchError, tap } from 'rxjs/operators';
 import { IContactInfo } from '../models/mvp-contracts/contact-info';
+import { INotificationInfo } from '../models/mvp-contracts/notification-info';
 
 @Injectable({
   providedIn: 'root'
@@ -73,6 +74,19 @@ export class MvpApiService {
           }
         })
       );
+  }
+
+  postNotification( notification: INotificationInfo ): Observable<INotificationInfo | ErrorInfo> {
+
+    const url = environment.urlMvpNotification;
+
+    console.log(url);
+
+    return this.httpClient.post<INotificationInfo>(url, notification)
+      .pipe(
+        catchError(err => this.HandleHttpError(err) )
+      );
+
   }
 
   postContact(contact: IContactInfo): Observable<IContactInfo | ErrorInfo> {

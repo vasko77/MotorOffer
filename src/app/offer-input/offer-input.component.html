@@ -33,7 +33,7 @@
                     <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                        (ngModelChange)="loadQuotationInfo($event)" [ngModel]="quotationInput.plateNo" autofocus/>
+                        (blur)="loadQuotationInfo(plateNo.value)" [(ngModel)]="quotationInput.plateNo" autofocus/>
                     </div>
 
                   </div>
@@ -99,11 +99,11 @@
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.municipalityCode === '0' && ( municipality?.touched || mouseOverSubmit )">
                     <label class="control-label">Νομός</label>
                     <em *ngIf="quotationInput.municipalityCode === '0'  && ( municipality?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
-                    <select #municipality="ngModel" name="municipalityCode" class="form-control" [(ngModel)]="quotationInput.municipalityCode" (blur)="validateMunicipality($event)"
-                    (change)="validateMunicipality($event)">
-                    <option *ngFor="let municipality of municipalityData?.MotorItems" [value]="municipality.ItemCode">{{ municipality.ItemName }}</option>
-                  </select>
-              </div>
+                    <select #municipality="ngModel" name="municipalityCode" class="form-control" [(ngModel)]="quotationInput.municipalityCode"
+                      (blur)="validateMunicipality($event)" (change)="validateMunicipality($event)">
+                      <option *ngFor="let municipality of municipalityData?.MotorItems" [value]="municipality.ItemCode">{{ municipality.ItemName }}</option>
+                    </select>
+                  </div>
 
                 </div>
 
@@ -324,7 +324,7 @@
                 <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                 <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums12 + coversAmount12 | currency:'EUR':'symbol-narrow':'1.2-2' }}
                 </h1>
-              </div> 
+              </div>
               <div *ngIf="quotationInput.contractDuration === '6'">
                 <h1 class="col-sm-4" style="text-align: right;">{{ GrossPremiums6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
                 <h1 class="col-sm-4" style="text-align: right;">{{ coversAmount6 | currency:'EUR':'symbol-narrow':'1.2-2' }}</h1>
@@ -361,7 +361,7 @@
                     <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row">
 
                       <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
+                        <label class="col-sm-6">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
                         <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -408,7 +408,7 @@
                     <div *ngFor="let cover of setCovers; let i = index;" class="row">
 
                       <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
+                        <label class="col-sm-6">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
                         <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -457,7 +457,7 @@
                     <div *ngFor="let cover of optionalCovers; let i = index;" class="row">
 
                       <div class="form-group">
-                        <label class="col-sm-6">{{ cover.Description }}</label>
+                        <label class="col-sm-6">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString()}}</label>
                         <div class="col-sm-1" kendoTooltip style="text-align: center; padding-top: 10px;">
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -498,6 +498,11 @@
         <!-- PANEL Contact Information -->
 
         <div *ngIf="quotationResult?.Allow && enterContactInfo">
+
+          <div class="form-check">
+            <input #personalData="ngModel" type="checkbox" class="form-check-input" name="personalData" [ngModel]="personalData">
+            <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των προσωπικών μου δεδομένων</label>
+          </div>
 
           <form #formContact="ngForm" novalidate>
 

@@ -7,5 +7,6 @@ export const environment = {
   urlMvpQuotation: 'http://eh017ins74/MvpApi/quotation/',
   urlMvpContact: 'http://eh017ins74/MvpApi/contact/',
   urlAuthentication: 'http://eh017ins74/MvpApi/authentication',
-  urlProposal: 'http://eh017ins178/MotorApiNoauth/api/Motor/SaveProposal'
+  urlProposal: 'http://eh017ins178/MotorApiNoauth/api/Motor/SaveProposal',
+  urlMvpNotification: 'http://eh017ins74/MvpApi/notifications'
 };

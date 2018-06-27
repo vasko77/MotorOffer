@@ -198,14 +198,12 @@ export class OfferInputComponent implements OnInit {
     console.log('plateNo: ' + plateNo);
     console.log('this.quotationInput.plateNo: ' + this.quotationInput.plateNo);
 
-    this.mvpApiService.plateNo = plateNo;
-
-    if (!this.authenticationService.authenticationInfo || !this.authenticationService.authenticationInfo.efginsUser || !plateNo) {
-      this.quotationInput.plateNo = plateNo;
+    if (!this.authenticationService.authenticationInfo
+     || !this.authenticationService.authenticationInfo.efginsUser
+     || !plateNo) {
       return;
     }
 
-    this.quotationInput.plateNo = plateNo;
 
     this.mvpApiService.getQuotation(this.quotationInput.plateNo)
       .subscribe(

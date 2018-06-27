@@ -10,6 +10,8 @@ import { AuthenticationService } from '../services/authentication.service';
 import { ErrorInfo } from '../models/errorInfo';
 import { IApplicationResponse, IError } from '../models/online-issue-contracts/quotation-response';
 import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
+import { environment } from '../../environments/environment';
+import { INotificationInfo } from '../models/mvp-contracts/notification-info';
 
 @Component({
   templateUrl: './application-input.component.html',
@@ -149,21 +151,28 @@ export class ApplicationInputComponent implements OnInit {
 
     this.busyProposal = this.onlineIssueService.insertProposal(applicationRequest)
       .subscribe(
-        ( data: IApplicationResponse ) => {
+        ( applicationResponse: IApplicationResponse ) => {
 
           console.log( 'Applicaiton Response' );
-          console.log( data );
+          console.log( applicationResponse );
 
-          if ( data.Success ) {
+          if ( applicationResponse.Success ) {
 
-            this.applicationResponse = data;
+            this.applicationResponse = applicationResponse;
             this.showSaveProposal = false;
 
-            this.router.navigate(['/application-success', data.ProposalNumber]);
+            console.log( 'Application Response' );
+            console.log( JSON.stringify(applicationResponse) );
+
+            if (this.applicationInput.eMail) {
+              this.sendEmail( applicationResponse );
+            }
+
+            this.router.navigate(['/application-success', applicationResponse.ProposalID]);
 
           } else {
 
-            this.errors = data.Errors;
+            this.errors = applicationResponse.Errors;
             this.showSaveProposal = true;
           }
         },
@@ -173,6 +182,28 @@ export class ApplicationInputComponent implements OnInit {
         }
       );
 
+  }
+
+  sendEmail(data: IApplicationResponse): void {
+
+    const notification: INotificationInfo = {
+      email: this.applicationInput.eMail,
+      birthDate: this.mvpApiService.quotationInfo.BirthDate.toISOString().split('T')[0],
+      fullName: this.applicationInput.lastName + ' ' + this.applicationInput.firstName,
+      gender: this.applicationInput.gender.toString(),
+      refNo: data.ReferenseNumber,
+      seqNo: data.AAReferenseID,
+      taxId: this.applicationInput.taxNumber
+    };
+
+    this.mvpApiService.postNotification( notification )
+      .subscribe(
+        ( notificationInfo: INotificationInfo ) => { },
+        (err: ErrorInfo) => {
+          console.error('Component log: ' + JSON.stringify(err));
+          this.toastr.error(err.friendlyMessage, 'Σφάλμα');
+        }
+      );
   }
 
   validateGender(event): boolean {
