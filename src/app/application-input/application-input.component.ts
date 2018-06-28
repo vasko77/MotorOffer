@@ -12,6 +12,7 @@ import { IApplicationResponse, IError } from '../models/online-issue-contracts/q
 import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { environment } from '../../environments/environment';
 import { INotificationInfo } from '../models/mvp-contracts/notification-info';
+import { date2String } from '../utilities/conversions';
 
 @Component({
   templateUrl: './application-input.component.html',
@@ -74,10 +75,10 @@ export class ApplicationInputComponent implements OnInit {
       },
 
       MotorQuotationParams: {
-        InsuranceStartDate: this.onlineIssueService.quotationInput.contractStartDate.toISOString().split('T')[0],
+        InsuranceStartDate: date2String( this.onlineIssueService.quotationInput.contractStartDate ),
         MotorInsurancePackage: 'MVP',
         MainDriverInfo: {
-          BirthDate: this.onlineIssueService.quotationInput.birthDate.toISOString().split('T')[0],
+          BirthDate: date2String( this.onlineIssueService.quotationInput.birthDate ),
           LicenseDate: `${this.onlineIssueService.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.onlineIssueService.quotationInput.zip,
           TaxIdentificationNumber: this.applicationInput.taxNumber,
@@ -85,7 +86,7 @@ export class ApplicationInputComponent implements OnInit {
         },
         VehicleInfo: {
           AssemblyDate: `${this.onlineIssueService.quotationInput.vehicleLicenseYear}-01-01`,
-          PurchaseDate: this.onlineIssueService.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
+          PurchaseDate: date2String( this.onlineIssueService.quotationInput.vehiclePurchaseDate ),
           CC: this.onlineIssueService.quotationInput.cc.toString(),
           EurotaxBrandCode: +this.onlineIssueService.quotationInput.markaCode,
           EurotaxModelCode: 0,
@@ -114,13 +115,15 @@ export class ApplicationInputComponent implements OnInit {
         AmountPayable: this.onlineIssueService.amountPayable,
         HasAcceptedConditions: true,
         InsuranceDuration: this.onlineIssueService.quotationInput.contractDuration,
-        InitialPaymentType: 3 // Cach
+        InitialPaymentType: 3, // Cach
+        ContractBySMS_Email: '1',
+        BirthDate: new Date( this.onlineIssueService.quotationInput.birthDate )
       }
     };
 
     if (this.onlineIssueService.quotationInput.youngestDriverBirthDate) {
       applicationRequest.MotorQuotationParams.OtherDrivers.push({
-        BirthDate: this.onlineIssueService.quotationInput.youngestDriverBirthDate.toISOString().split('T')[0],
+        BirthDate: date2String( this.onlineIssueService.quotationInput.youngestDriverBirthDate ),
         LicenseDate: `${this.onlineIssueService.quotationInput.youngestDriverLicenseYear}-01-01`,
         TypeOfDriver: 2
       });
@@ -128,7 +131,7 @@ export class ApplicationInputComponent implements OnInit {
 
     if (this.onlineIssueService.quotationInput.oldestDriverBirthDate) {
       applicationRequest.MotorQuotationParams.OtherDrivers.push({
-        BirthDate: this.onlineIssueService.quotationInput.oldestDriverBirthDate.toISOString().split('T')[0],
+        BirthDate: date2String( this.onlineIssueService.quotationInput.oldestDriverBirthDate ),
         LicenseDate: `${this.onlineIssueService.quotationInput.oldestDriverLicenseYear}-01-01`,
         TypeOfDriver: 3
       });
@@ -188,7 +191,7 @@ export class ApplicationInputComponent implements OnInit {
 
     const notification: INotificationInfo = {
       email: this.applicationInput.eMail,
-      birthDate: this.mvpApiService.quotationInfo.BirthDate.toISOString().split('T')[0],
+      birthDate: this.mvpApiService.quotationInfo.BirthDate,
       fullName: this.applicationInput.lastName + ' ' + this.applicationInput.firstName,
       gender: this.applicationInput.gender.toString(),
       refNo: data.ReferenseNumber,

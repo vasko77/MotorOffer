@@ -4,4 +4,5 @@ export interface IContactInfo {
     FirstName: string;
     Phone: string;
     EMail: string;
+    Premiums: number;
 }

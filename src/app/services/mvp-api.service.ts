@@ -48,7 +48,9 @@ export class MvpApiService {
 
     const url = environment.urlMvpQuotation;
 
+    console.log('POST Quotation');
     console.log(url);
+    console.log(quotation);
 
     return this.httpClient.post<IQuotationInfo>(url, quotation)
       .pipe(
@@ -93,7 +95,9 @@ export class MvpApiService {
 
     const url = environment.urlMvpContact;
 
+    console.log('POST Contact');
     console.log(url);
+    console.log(contact);
 
     return this.httpClient.post<IContactInfo>(url, contact)
       .pipe(

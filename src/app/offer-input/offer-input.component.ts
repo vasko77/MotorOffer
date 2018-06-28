@@ -15,6 +15,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { IAuthentication } from '../models/authentication';
 import { ContactInputParams } from '../models/contact-input-params';
 import { IContactInfo } from '../models/mvp-contracts/contact-info';
+import { date2String } from '../utilities/conversions';
 
 
 @Component({
@@ -82,13 +83,13 @@ export class OfferInputComponent implements OnInit {
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
 
     if (this.mvpApiService.quotationInfo) {
-      this.quotationInput.birthDate = this.mvpApiService.quotationInfo.BirthDate;
+      this.quotationInput.birthDate = new Date( this.mvpApiService.quotationInfo.BirthDate );
       this.quotationInput.cc = this.mvpApiService.quotationInfo.CC;
-      this.quotationInput.contractStartDate = this.mvpApiService.quotationInfo.ContractStartDate;
+      this.quotationInput.contractStartDate = new Date( this.mvpApiService.quotationInfo.ContractStartDate );
       this.quotationInput.driverLicenseYear = this.mvpApiService.quotationInfo.DriverLicenseYear;
       this.quotationInput.markaCode = this.mvpApiService.quotationInfo.MarkaCode;
       this.quotationInput.municipalityCode = this.mvpApiService.quotationInfo.MunicipalityCode;
-      this.quotationInput.oldestDriverBirthDate = this.mvpApiService.quotationInfo.OldestDriverBirthDate;
+      this.quotationInput.oldestDriverBirthDate = new Date( this.mvpApiService.quotationInfo.OldestDriverBirthDate );
       this.quotationInput.oldestDriverLicenseYear = this.mvpApiService.quotationInfo.OldestDriverLicenseYear;
       this.quotationInput.plateNo = this.mvpApiService.quotationInfo.PlateNo;
       this.quotationInput.publicServant = this.mvpApiService.quotationInfo.PublicServant;
@@ -96,7 +97,7 @@ export class OfferInputComponent implements OnInit {
       this.quotationInput.uniformed = this.mvpApiService.quotationInfo.Uniformed;
       this.quotationInput.vehicleLicenseYear = this.mvpApiService.quotationInfo.VehicleLicenseYear;
       this.quotationInput.vehicleValue = this.mvpApiService.quotationInfo.VehicleValue;
-      this.quotationInput.youngestDriverBirthDate = this.mvpApiService.quotationInfo.YoungestDriverBirthDate;
+      this.quotationInput.youngestDriverBirthDate = new Date( this.mvpApiService.quotationInfo.YoungestDriverBirthDate );
       this.quotationInput.youngestDriverLicenseYear = this.mvpApiService.quotationInfo.YoungestDriverLicenseYear;
       this.quotationInput.zip = this.mvpApiService.quotationInfo.Zip;
     }
@@ -275,9 +276,9 @@ export class OfferInputComponent implements OnInit {
       },
       motorQuotationParams: {
         MotorInsurancePackage: 'MVP',
-        InsuranceStartDate: this.quotationInput.contractStartDate.toISOString().split('T')[0],
+        InsuranceStartDate: date2String( this.quotationInput.contractStartDate ),
         MainDriverInfo: {
-          BirthDate: this.quotationInput.birthDate.toISOString().split('T')[0],
+          BirthDate: date2String( this.quotationInput.birthDate ),
           LicenseDate: `${this.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.quotationInput.zip,
           Municipality: this.quotationInput.municipalityCode,
@@ -286,7 +287,7 @@ export class OfferInputComponent implements OnInit {
         VehicleInfo: {
           PlateNumber: this.quotationInput.plateNo,
           AssemblyDate: `${this.quotationInput.vehicleLicenseYear}-01-01`,
-          PurchaseDate: this.quotationInput.vehiclePurchaseDate.toISOString().split('T')[0],
+          PurchaseDate: date2String( this.quotationInput.vehiclePurchaseDate ),
           CC: this.quotationInput.cc.toString(),
           EurotaxBrandCode: +this.quotationInput.markaCode,
           EurotaxModelCode: 0,
@@ -307,7 +308,7 @@ export class OfferInputComponent implements OnInit {
 
     if (this.quotationInput.youngestDriverBirthDate) {
       quotationRerquest.motorQuotationParams.OtherDrivers.push({
-        BirthDate: this.quotationInput.youngestDriverBirthDate.toISOString().split('T')[0],
+        BirthDate: date2String( this.quotationInput.youngestDriverBirthDate ),
         LicenseDate: `${this.quotationInput.youngestDriverLicenseYear}-01-01`,
         TypeOfDriver: 2
       });
@@ -315,7 +316,7 @@ export class OfferInputComponent implements OnInit {
 
     if (this.quotationInput.oldestDriverBirthDate) {
       quotationRerquest.motorQuotationParams.OtherDrivers.push({
-        BirthDate: this.quotationInput.oldestDriverBirthDate.toISOString().split('T')[0],
+        BirthDate: date2String( this.quotationInput.oldestDriverBirthDate ),
         LicenseDate: `${this.quotationInput.oldestDriverLicenseYear}-01-01`,
         TypeOfDriver: 3
       });
@@ -357,6 +358,7 @@ export class OfferInputComponent implements OnInit {
       });
     });
     console.log('Quotation Request');
+    console.log(quotationRerquest);
     console.log(JSON.stringify(quotationRerquest));
 
     // Perform actual quotation
@@ -455,20 +457,24 @@ export class OfferInputComponent implements OnInit {
 
     // Prepare MVP quotation data save
 
+    // console.log('this.quotationInput');
+    // console.log(this.quotationInput);
+    // console.log(JSON.stringify(this.quotationInput));
+
     const mvpQuotation: IQuotationInfo = {
-      BirthDate: this.quotationInput.birthDate,
+      BirthDate: date2String(this.quotationInput.birthDate),
       CC: this.quotationInput.cc,
-      ContractStartDate: this.quotationInput.contractStartDate,
+      ContractStartDate: date2String(this.quotationInput.contractStartDate),
       DriverLicenseYear: this.quotationInput.driverLicenseYear,
-      VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
+      VehiclePurchaseDate: date2String(this.quotationInput.vehiclePurchaseDate),
       MarkaCode: this.quotationInput.markaCode,
       MunicipalityCode: this.quotationInput.municipalityCode,
-      OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
+      OldestDriverBirthDate: date2String(this.quotationInput.oldestDriverBirthDate),
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
       PlateNo: this.quotationInput.plateNo,
       VehicleLicenseYear: this.quotationInput.vehicleLicenseYear,
       VehicleValue: this.quotationInput.vehicleValue,
-      YoungestDriverBirthDate: this.quotationInput.youngestDriverBirthDate,
+      YoungestDriverBirthDate: date2String(this.quotationInput.youngestDriverBirthDate),
       YoungestDriverLicenseYear: this.quotationInput.youngestDriverLicenseYear,
       Zip: this.quotationInput.zip,
       PublicServant: this.quotationInput.publicServant,
@@ -491,8 +497,9 @@ export class OfferInputComponent implements OnInit {
       }
     });
 
-    console.log('mvpQuotation');
-    console.log(JSON.stringify(mvpQuotation));
+    // console.log('mvpQuotation');
+    // console.log(mvpQuotation);
+    // console.log(JSON.stringify(mvpQuotation));
 
     // MVP quotation data save
 
@@ -502,13 +509,22 @@ export class OfferInputComponent implements OnInit {
           this.enterContactInfo = false;
           // this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
 
+          let amountPayableTotal = 0;
+          switch ( this.quotationInput.contractDuration ) {
+            case '12': amountPayableTotal = this.GrossPremiums12 + this.coversAmount12; break;
+            case '6': amountPayableTotal = this.GrossPremiums6 + this.coversAmount6; break;
+            case '3': amountPayableTotal = this.GrossPremiums3 + this.coversAmount3; break;
+            default: amountPayableTotal = 0;
+          }
+
           // MVP contact data save
           const contactInfo: IContactInfo = {
             PlateNo: this.quotationInput.plateNo,
             FirstName: this.contactInput.firstName,
             LastName: this.contactInput.lastName,
             EMail: this.contactInput.eMail,
-            Phone: this.contactInput.phone
+            Phone: this.contactInput.phone,
+            Premiums: amountPayableTotal
           };
 
           this.mvpApiService.postContact(contactInfo)
@@ -533,19 +549,19 @@ export class OfferInputComponent implements OnInit {
 
   applicationInput(): void {
     const mvpQuotation: IQuotationInfo = {
-      BirthDate: this.quotationInput.birthDate,
+      BirthDate: date2String(this.quotationInput.birthDate),
       CC: this.quotationInput.cc,
-      ContractStartDate: this.quotationInput.contractStartDate,
+      ContractStartDate: date2String(this.quotationInput.contractStartDate),
       DriverLicenseYear: this.quotationInput.driverLicenseYear,
-      VehiclePurchaseDate: this.quotationInput.vehiclePurchaseDate,
+      VehiclePurchaseDate: date2String(this.quotationInput.vehiclePurchaseDate),
       MarkaCode: this.quotationInput.markaCode,
       MunicipalityCode: this.quotationInput.municipalityCode,
-      OldestDriverBirthDate: this.quotationInput.oldestDriverBirthDate,
+      OldestDriverBirthDate: date2String(this.quotationInput.oldestDriverBirthDate),
       OldestDriverLicenseYear: this.quotationInput.oldestDriverLicenseYear,
       PlateNo: this.quotationInput.plateNo,
       VehicleLicenseYear: this.quotationInput.vehicleLicenseYear,
       VehicleValue: this.quotationInput.vehicleValue,
-      YoungestDriverBirthDate: this.quotationInput.youngestDriverBirthDate,
+      YoungestDriverBirthDate: date2String(this.quotationInput.youngestDriverBirthDate),
       YoungestDriverLicenseYear: this.quotationInput.youngestDriverLicenseYear,
       Zip: this.quotationInput.zip,
       PublicServant: this.quotationInput.publicServant,
@@ -569,6 +585,7 @@ export class OfferInputComponent implements OnInit {
     });
 
     console.log('mvpQuotation');
+    console.log(mvpQuotation);
     console.log(JSON.stringify(mvpQuotation));
 
     // MVP quotation data save

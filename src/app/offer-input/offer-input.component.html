@@ -65,6 +65,7 @@
                     <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">Πεδίο απαραίτητο</em>
                     <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
                       required></kendo-datepicker>
+                      {{ quotationInput.vehiclePurchaseDate }}
                   </div>
 
                 </div>
@@ -498,11 +499,6 @@
         <!-- PANEL Contact Information -->
 
         <div *ngIf="quotationResult?.Allow && enterContactInfo">
-
-          <div class="form-check">
-            <input #personalData="ngModel" type="checkbox" class="form-check-input" name="personalData" [ngModel]="personalData">
-            <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των προσωπικών μου δεδομένων</label>
-          </div>
 
           <form #formContact="ngForm" novalidate>
 

@@ -72,4 +72,6 @@ export interface ICustomerDetails {
     TaxIdentificationNumber: string;
     HasAcceptedConditions: boolean;
     InitialPaymentType: number;
+    ContractBySMS_Email: string;
+    BirthDate: Date;
 }
