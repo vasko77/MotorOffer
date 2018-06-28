@@ -3,4 +3,6 @@ export class ContactInputParams {
     lastName: string;
     phone: string;
     eMail: string;
+    success: boolean;
+    open: boolean;
 }

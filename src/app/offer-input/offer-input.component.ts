@@ -253,7 +253,9 @@ export class OfferInputComponent implements OnInit {
             firstName: data.FirstName,
             lastName: data.LastName,
             phone: data.Phone,
-            eMail: data.EMail
+            eMail: data.EMail,
+            open: true,
+            success: false,
           };
           this.enterContactInfo = false;
           console.log('this.contactInput');
@@ -516,9 +518,11 @@ export class OfferInputComponent implements OnInit {
           this.mvpApiService.postContact(contactInfo)
             .subscribe(
               () => {
-                this.router.navigate(['/offer-success']);
+              //  this.router.navigate(['/offer-success']);
+              this.contactInput.success = true;
               },
               (err: ErrorInfo) => {
+                this.contactInput.success = false;
                 console.error('Component log: ' + JSON.stringify(err));
                 this.toastr.error(err.friendlyMessage, 'Σφάλμα');
               }
@@ -625,6 +629,10 @@ export class OfferInputComponent implements OnInit {
     if (!value) {
       this.quotationInput.plateNo2 = '';
     }
+  }
+
+  openContactInfoArea(value: boolean): void {
+    this.contactInput.open = value;
   }
 
   validateMarka(event): boolean {

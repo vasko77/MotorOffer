@@ -141,7 +141,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
-                    <label class="control-label">Ημ/νία Γέννησης</label>
+                    <label class="control-label">Ημ/νία γέννησης</label>
                     <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
                       required></kendo-datepicker>
@@ -179,7 +179,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημ/νία Γέννησης νεότερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία γέννησης νεότερου σε ηλικία οδηγού</label>
                     <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverBirthDate"
                       [max]="maxDateBirth" name="dateBirthYoungest"></kendo-datepicker>
                   </div>
@@ -195,7 +195,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημ/νία Γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
                     <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" [max]="maxDateBirth"
                       name="dateBirthOldest"></kendo-datepicker>
                   </div>
@@ -229,29 +229,25 @@
               <div class="panel-body">
 
                 <div class="row">
-                  <div class="col-sm-6">
-
-                    <div class="form-check">
-                      <input #publicServant="ngModel" type="checkbox" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
+                  <div class="col-sm-12 checkboxContainer">
+                    <div class="form-check round">
+                      <input #publicServant="ngModel" type="checkbox" id="publicServant" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
                         (ngModelChange)="updatePublicServant($event)">
-                      <label class="form-check-label" for="publicServant">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</label>
+                      <label for="publicServant"></label>
                     </div>
+                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</div>
                   </div>
-
                 </div>
 
                 <div class="row">
-
-                  <div class="col-sm-6">
-
-                    <div class="form-check">
-                      <input #uniformed="ngModel" type="checkbox" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
+                  <div class="col-sm-12 checkboxContainer">
+                    <div class="form-check round">
+                      <input #uniformed="ngModel" type="checkbox" id="uniformed" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
                         [disabled]="!publicServant.value">
-                      <label class="form-check-label" for="uniformed">&nbsp;Ένστολος Υπάλληλος Δημοσίου</label>
+                      <label for="uniformed"></label>
                     </div>
-
+                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Ένστολος Υπάλληλος Δημοσίου</div>
                   </div>
-
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
                     *ngIf="uniformed.value">
                     <label class="control-label">Κατηγορία Ένστολου</label>
@@ -263,17 +259,17 @@
                       </select>
                     </div>
                   </div>
-
                 </div>
 
                 <div class="row">
-
-                  <div class="form-check col-sm-6">
-                    <input #secondVehicle="ngModel" type="checkbox" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
-                      (ngModelChange)="updateSecondVehicle($event)">
-                    <label class="form-check-label" for="secondVehicle">&nbsp;Δεύτερο Αυτοκίνητο</label>
+                  <div class="col-sm-12 checkboxContainer">
+                    <div class="form-check round">
+                      <input #secondVehicle="ngModel" type="checkbox" id="secondVehicle" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
+                        (ngModelChange)="updateSecondVehicle($event)">
+                      <label for="secondVehicle"></label>
+                    </div>
+                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
                   </div>
-
                   <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
                     <label class="control-label">Αρ. Κυκλοφορίας</label>
                     <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">* απαραίτητο</em>
@@ -296,7 +292,7 @@
               <button
                 (mouseenter)="mouseOverSubmit=true"
                 (mouseleave)="mouseOverSubmit=false" type="submit"
-                [disabled]="form.invalid" class="btn pricingButton"
+                [disabled]="form.invalid" class="btn btn-lg pricingButton"
                 (click)="quotation(undefined)">
                 Υπολογισμός
               </button>
@@ -305,8 +301,11 @@
 
           <!-- COVERS -->
 
-          <div *ngIf="quotationResult?.Allow"> <!--  -->
-
+          <div *ngIf="quotationResult?.Allow">
+            <div class="description">
+              <span class='arrowRight'></span>
+              Επιλέξετε ποιες από τις πιο κάτω καλύψεις επιθυμείτε να προσθέσετε στο πρόγραμμά σας.
+            </div>
             <div class="row">
               <div class="col-sm-12">
                 <div class="panel panel-primary">
@@ -320,7 +319,10 @@
                     </div>
                     <div class="row">
                       <div class="col-sm-offset-10 col-sm-2" style="text-align: center">
-                        <input type="checkbox" class="form-check-input" name="optionalCoversCheck" [ngModel]="optionalCoversCheck" (ngModelChange)="updateOptionalCovers($event)">
+                        <div class="round" style="margin-left: 27px; margin-bottom: 8px;">
+                          <input type="checkbox" class="form-check-input" id="optionalCoversCheck" name="optionalCoversCheck" [ngModel]="optionalCoversCheck" (ngModelChange)="updateOptionalCovers($event)">
+                          <label for="optionalCoversCheck"></label>
+                        </div>
                       </div>
                       </div>
                     </div>
@@ -330,13 +332,13 @@
                       <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row coverGroup">
 
                         <div class="form-group">
-                          <label class="col-sm-6">{{ cover.Description }}</label>
+                          <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                           <div class="col-sm-1 infoTooltip" kendoTooltip>
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                           </div>
-                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                           <div class="checkmark col-sm-2"></div>
                         </div>
 
@@ -344,28 +346,44 @@
                       <div class="coverGroup">
                         <div *ngFor="let cover of setCovers; let i = index;" class="row">
                           <div class="form-group">
-                            <label class="col-sm-6">{{ cover.Description }}</label>
+                            <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                             <div class="col-sm-1 infoTooltip" kendoTooltip>
                               <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                             </div>
-                            <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                            <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                            <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                            <input type="checkbox" class="form-check-input col-sm-2" name="{{'set'+cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                            <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                            <div class="round col-sm-2" style="margin-left: 37px;">
+                              <input
+                                type="checkbox"
+                                id="{{'set'+cover+i.toString()}}"
+                                class="form-check-input"
+                                name="{{'set'+cover+i.toString()}}"
+                                [(ngModel)]="cover.Selected">
+                              <label for="{{'set'+cover+i.toString()}}"></label>
+                            </div>
                           </div>
                       </div>
                       </div>
                       <div *ngFor="let cover of optionalCovers; let i = index;" class="row coverGroup">
 
                         <div class="form-group">
-                          <label class="col-sm-6">{{ cover.Description }}</label>
+                          <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                           <div class="col-sm-1 infoTooltip" kendoTooltip>
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                           </div>
-                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                          <input type="checkbox" class="form-check-input col-sm-2" name="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                          <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <div class="round col-sm-2" style="margin-left: 37px;">
+                            <input
+                              type="checkbox"
+                              class="form-check-input col-sm-2"
+                              name="{{cover+i.toString()}}"
+                              id="{{cover+i.toString()}}"
+                              [(ngModel)]="cover.Selected">
+                            <label for="{{cover+i.toString()}}"></label>
+                          </div>
                         </div>
 
                       </div>
@@ -418,9 +436,18 @@
         </form>
 
         <!-- PANEL Contact Information -->
-
-        <div *ngIf="quotationResult?.Allow && enterContactInfo">
-
+        <div class="buttonContainer" style="margin-bottom: 52px" *ngIf="quotationResult?.Allow && enterContactInfo">
+          <button
+            class="btn btn-lg pricingButton"
+            (click)="openContactInfoArea(true)">
+            Ενδιαφέρομαι
+          </button>
+        </div>
+        <div *ngIf="contactInput.open">
+          <div class="description">
+            <span class='arrowRight'></span>
+            Συμπληρώστε τα στοιχεία σας και ένας συνεργάτης μας θα επικοινωνήσει μαζί σας για να ολοκληρώσετε την αγορά
+          </div>
           <form #formContact="ngForm" novalidate>
 
             <div class="panel panel-primary">
@@ -462,17 +489,23 @@
                   </div>
 
                 </div>
-
+                <div class="sendButtonContainer">
+                  <button
+                    (mouseenter)="mouseOverSubmit=true"
+                    (mouseleave)="mouseOverSubmit=false"
+                    type="submit"
+                    style="width: 100%"
+                    [disabled]="formContact.invalid"
+                    class="btn btn-lg btn-success"
+                    (click)="insertContact()">
+                    Αποστολή Στοιχείων
+                  </button>
+                </div>
+                <div *ngIf="contactInput.success" class="alert alert-success" style="text-align: center">
+                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας συνεργάτης μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε την αγορά ασφάλισης του αυτοκινήτου σας</p>
+                </div>
               </div>
-
             </div>
-
-            <div style="text-align: center">
-              <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-                <button type="submit" [disabled]="formContact.invalid" class="btn btn-lg btn-success" (click)="insertContact()">Ενδιαφέρον</button>
-              </span>
-            </div>
-
           </form>
         </div>
       </div>
