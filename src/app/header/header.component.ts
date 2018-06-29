@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
         },
         (err: any) => {
           console.error('Component log: ' + JSON.stringify(err));
-          setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
+          // setTimeout(() => this.toastr.error(err.friendlyMessage, 'Σφάλμα'));
         }
       );
   }
