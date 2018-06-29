@@ -387,18 +387,15 @@
                       <div></div>
                       <select name="duration" class="form-control dropdown col-sm-8" name="duration" [(ngModel)]="quotationInput.contractDuration">
                         <option value="12" class="freqOption">
-                          <span class="priceInt">{{ (GrossPremiums12 + coversAmount12 || "0.00").toString().split(".")[0] }}</span>
-                          <span class="priceDecimals">,{{ ((GrossPremiums12 + coversAmount12).toFixed(2) || "0.00").toString().split(".")[1] }} €</span>
+                          {{ (GrossPremiums12 + coversAmount12).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /έτος
                         </option>
                         <option value="6" class="freqOption">
-                          <span class="priceInt">{{ (GrossPremiums6 + coversAmount6 || "0.00").toString().split(".")[0] }}</span>
-                          <span class="priceDecimals">,{{ ((GrossPremiums6 + coversAmount6).toFixed(2) || "0.00").toString().split(".")[1] }} €</span>
+                          {{ (GrossPremiums6 + coversAmount6).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /εξάμηνο
                         </option>
                         <option value="3" class="freqOption">
-                          <span class="priceInt">{{ (GrossPremiums3 + coversAmount3 || "0.00").toString().split(".")[0] }}</span>
-                          <span class="priceDecimals">,{{ ((GrossPremiums3 + coversAmount3).toFixed(2) || "0.00").toString().split(".")[1] }} €</span>
+                          {{ (GrossPremiums3 + coversAmount3).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /τρίμηνο
                         </option>
                       </select>
