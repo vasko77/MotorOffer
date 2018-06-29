@@ -42,6 +42,8 @@ export class OfferInputComponent implements OnInit {
   GrossPremiums6: number;
   GrossPremiums3: number;
 
+  coverReplacementNotAllowed: boolean;
+
   quotationInput = new QuotationInputParams();
   contactInput = new ContactInputParams();
   mouseOverSubmit: boolean;
@@ -71,7 +73,7 @@ export class OfferInputComponent implements OnInit {
   }
 
   get amountPayable(): number {
-    switch ( this.quotationInput.contractDuration ) {
+    switch (this.quotationInput.contractDuration) {
       case '12': return this.GrossPremiums12 + this.coversAmount12;
       case '6': return this.GrossPremiums6 + this.coversAmount6;
       case '3': return this.GrossPremiums3 + this.coversAmount3;
@@ -105,7 +107,7 @@ export class OfferInputComponent implements OnInit {
   }
 
   get setCoversInitialAmount(): number {
-    switch ( this.quotationInput.contractDuration ) {
+    switch (this.quotationInput.contractDuration) {
       case '12': return this.setInitialCoversAmount12;
       case '6': return this.setInitialCoversAmount6;
       case '3': return this.setInitialCoversAmount3;
@@ -113,7 +115,7 @@ export class OfferInputComponent implements OnInit {
     }
   }
   get setCoversAmount(): number {
-    switch ( this.quotationInput.contractDuration ) {
+    switch (this.quotationInput.contractDuration) {
       case '12': return this.setCoversAmount12;
       case '6': return this.setCoversAmount6;
       case '3': return this.setCoversAmount3;
@@ -137,13 +139,13 @@ export class OfferInputComponent implements OnInit {
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
 
     if (this.mvpApiService.quotationInfo) {
-      this.quotationInput.birthDate = new Date( this.mvpApiService.quotationInfo.BirthDate );
+      this.quotationInput.birthDate = new Date(this.mvpApiService.quotationInfo.BirthDate);
       this.quotationInput.cc = this.mvpApiService.quotationInfo.CC;
-      this.quotationInput.contractStartDate = new Date( this.mvpApiService.quotationInfo.ContractStartDate );
+      this.quotationInput.contractStartDate = new Date(this.mvpApiService.quotationInfo.ContractStartDate);
       this.quotationInput.driverLicenseYear = this.mvpApiService.quotationInfo.DriverLicenseYear;
       this.quotationInput.markaCode = this.mvpApiService.quotationInfo.MarkaCode;
       this.quotationInput.municipalityCode = this.mvpApiService.quotationInfo.MunicipalityCode;
-      this.quotationInput.oldestDriverBirthDate = new Date( this.mvpApiService.quotationInfo.OldestDriverBirthDate );
+      this.quotationInput.oldestDriverBirthDate = new Date(this.mvpApiService.quotationInfo.OldestDriverBirthDate);
       this.quotationInput.oldestDriverLicenseYear = this.mvpApiService.quotationInfo.OldestDriverLicenseYear;
       this.quotationInput.plateNo = this.mvpApiService.quotationInfo.PlateNo;
       this.quotationInput.publicServant = this.mvpApiService.quotationInfo.PublicServant;
@@ -151,7 +153,7 @@ export class OfferInputComponent implements OnInit {
       this.quotationInput.uniformed = this.mvpApiService.quotationInfo.Uniformed;
       this.quotationInput.vehicleLicenseYear = this.mvpApiService.quotationInfo.VehicleLicenseYear;
       this.quotationInput.vehicleValue = this.mvpApiService.quotationInfo.VehicleValue;
-      this.quotationInput.youngestDriverBirthDate = new Date( this.mvpApiService.quotationInfo.YoungestDriverBirthDate );
+      this.quotationInput.youngestDriverBirthDate = new Date(this.mvpApiService.quotationInfo.YoungestDriverBirthDate);
       this.quotationInput.youngestDriverLicenseYear = this.mvpApiService.quotationInfo.YoungestDriverLicenseYear;
       this.quotationInput.zip = this.mvpApiService.quotationInfo.Zip;
     }
@@ -236,7 +238,7 @@ export class OfferInputComponent implements OnInit {
         }
       );
 
-      this.busyMunicipalities = this.onlineIssueService.getMunicipalities()
+    this.busyMunicipalities = this.onlineIssueService.getMunicipalities()
       .subscribe(
         (data: IMotorItemsData) => { this.municipalityData = data; },
         (err: any) => {
@@ -284,8 +286,8 @@ export class OfferInputComponent implements OnInit {
     console.log('this.quotationInput.plateNo: ' + this.quotationInput.plateNo);
 
     if (!this.authenticationService.authenticationInfo
-     || !this.authenticationService.authenticationInfo.efginsUser
-     || !plateNo) {
+      || !this.authenticationService.authenticationInfo.efginsUser
+      || !plateNo) {
       return;
     }
 
@@ -319,7 +321,7 @@ export class OfferInputComponent implements OnInit {
 
           this.quotationInput.contractDuration = quot.ContractDuration;
 
-          console.log( 'Municipality Code: ' + this.quotationInput.municipalityCode.toString() );
+          console.log('Municipality Code: ' + this.quotationInput.municipalityCode.toString());
 
           this.quotation(quot.SelectedMotorCoverItems);
 
@@ -360,9 +362,9 @@ export class OfferInputComponent implements OnInit {
       },
       motorQuotationParams: {
         MotorInsurancePackage: 'MVP',
-        InsuranceStartDate: date2String( this.quotationInput.contractStartDate ),
+        InsuranceStartDate: date2String(this.quotationInput.contractStartDate),
         MainDriverInfo: {
-          BirthDate: date2String( this.quotationInput.birthDate ),
+          BirthDate: date2String(this.quotationInput.birthDate),
           LicenseDate: `${this.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.quotationInput.zip,
           Municipality: this.quotationInput.municipalityCode,
@@ -371,7 +373,7 @@ export class OfferInputComponent implements OnInit {
         VehicleInfo: {
           PlateNumber: this.quotationInput.plateNo,
           AssemblyDate: `${this.quotationInput.vehicleLicenseYear}-01-01`,
-          PurchaseDate: date2String( this.quotationInput.vehiclePurchaseDate ),
+          PurchaseDate: date2String(this.quotationInput.vehiclePurchaseDate),
           CC: this.quotationInput.cc.toString(),
           EurotaxBrandCode: +this.quotationInput.markaCode,
           EurotaxModelCode: 0,
@@ -392,7 +394,7 @@ export class OfferInputComponent implements OnInit {
 
     if (this.quotationInput.youngestDriverBirthDate) {
       quotationRerquest.motorQuotationParams.OtherDrivers.push({
-        BirthDate: date2String( this.quotationInput.youngestDriverBirthDate ),
+        BirthDate: date2String(this.quotationInput.youngestDriverBirthDate),
         LicenseDate: `${this.quotationInput.youngestDriverLicenseYear}-01-01`,
         TypeOfDriver: 2
       });
@@ -400,7 +402,7 @@ export class OfferInputComponent implements OnInit {
 
     if (this.quotationInput.oldestDriverBirthDate) {
       quotationRerquest.motorQuotationParams.OtherDrivers.push({
-        BirthDate: date2String( this.quotationInput.oldestDriverBirthDate ),
+        BirthDate: date2String(this.quotationInput.oldestDriverBirthDate),
         LicenseDate: `${this.quotationInput.oldestDriverLicenseYear}-01-01`,
         TypeOfDriver: 3
       });
@@ -418,7 +420,7 @@ export class OfferInputComponent implements OnInit {
       quotationRerquest.motorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true, DiscountValue: this.quotationInput.plateNo2 });
     }
 
-    // 1st call to quotation wihtout Optional Covers
+    // 1st call to quotation wihtout Optional Covers to load Gross Premiums
     this.busyQuotations = this.onlineIssueService.getQuotation(quotationRerquest)
       .subscribe(
         (data: IQuotationResponse) => {
@@ -441,6 +443,7 @@ export class OfferInputComponent implements OnInit {
         Selected: true
       });
     });
+
     console.log('Quotation Request');
     console.log(quotationRerquest);
     console.log(JSON.stringify(quotationRerquest));
@@ -537,6 +540,23 @@ export class OfferInputComponent implements OnInit {
   }
 
   insertContact(): void {
+
+    if (this.optionalCovers && this.setCovers) {
+
+      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22  && c.Selected)
+      && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
+      && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
+        ) {
+        this.coverReplacementNotAllowed = true;
+        this.open = false;
+        return;
+      }
+    }
+
+    this.coverReplacementNotAllowed = false;
+    this.open = true;
+
+
     console.log(this.contactInput);
 
     // Prepare MVP quotation data save
@@ -609,7 +629,7 @@ export class OfferInputComponent implements OnInit {
             LastName: this.contactInput.lastName,
             EMail: this.contactInput.eMail,
             Phone: this.contactInput.phone,
-            Premiums: this.amountPayable
+            Premiums: +this.amountPayable.toFixed(2)
           };
 
           this.mvpApiService.postContact(contactInfo)
@@ -687,7 +707,7 @@ export class OfferInputComponent implements OnInit {
       );
 
     this.onlineIssueService.quotationInput = this.quotationInput;
-    this.onlineIssueService.amountPayable = this.amountPayable;
+    this.onlineIssueService.amountPayable = +this.amountPayable.toFixed(2);
 
     /*
     switch ( this.quotationInput.contractDuration ) {
@@ -750,7 +770,40 @@ export class OfferInputComponent implements OnInit {
     this.setCovers.forEach(cover => { cover.Selected = value; });
   }
 
-  openContactInfoArea(value: boolean): void {
-    this.open = value;
+
+  get foundReplacement(): boolean {
+    if (this.optionalCovers && this.setCovers) {
+      return this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22 && c.Selected) !== undefined;
+    } else {
+      return false;
+    }
+  }
+
+
+  get foundOther(): boolean {
+    if (this.optionalCovers && this.setCovers) {
+      return this.optionalCovers.find((c: ICover) => ( c.MotorCoverItem === 15 || c.MotorCoverItem === 19 ) && c.Selected  ) !== undefined;
+    } else {
+      return false;
+    }
+  }
+
+
+  openContactInfoArea(): void {
+
+    if (this.optionalCovers && this.setCovers) {
+
+      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22  && c.Selected)
+      && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
+      && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
+        ) {
+        this.coverReplacementNotAllowed = true;
+        this.open = false;
+        return;
+      }
+    }
+
+    this.coverReplacementNotAllowed = false;
+    this.open = true;
   }
 }

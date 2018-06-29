@@ -3,16 +3,19 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+
   production: false,
+
   urlGetListItems: 'http://eh017ins74/MotorApiNoauth/api/Motor/GetListItems',
   urlGetPackageCovers: 'http://eh017ins74/MotorApiNoauth/api/Motor/GetPackageCovers',
   urlFastQuotation: 'http://eh017ins74/MotorApiNoauth/api/Motor/FastQuotation',
   urlApplication: 'http://eh017ins74/MotorApiNoauth/api/Motor/SaveProposal',
+
   urlMvpQuotation: 'http://eh017ins74/MvpApiAgent/quotation/',
   urlMvpContact: 'http://eh017ins74/MvpApiAgent/contact/',
   urlAuthentication: 'http://eh017ins74/MvpApiAgent/authentication',
-  urlProposal: 'http://eh017ins74/MotorApiNoauth/api/Motor/SaveProposal',
   urlMvpNotification: 'http://eh017ins74/MvpApi/notifications'
+
 };
 
 /*

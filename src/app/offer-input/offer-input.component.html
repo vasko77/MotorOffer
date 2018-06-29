@@ -33,8 +33,8 @@
                     <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">* μη αποδεκτό</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                        pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$"
-                        (blur)="loadQuotationInfo(plateNo.value)" [(ngModel)]="quotationInput.plateNo" autofocus/>
+                        pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$" (blur)="loadQuotationInfo(plateNo.value)" [(ngModel)]="quotationInput.plateNo"
+                        autofocus/>
                     </div>
 
                   </div>
@@ -280,7 +280,6 @@
                     </div>
                   </div>
 
-
                 </div>
 
               </div>
@@ -358,8 +357,8 @@
                           <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                            -->
                           <div *ngIf="i === 1" class="round col-sm-2" style="margin-left: 37px;">
-                            <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}" 
-                                  [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" >
+                            <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}"
+                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)">
                             <label for="{{'set'+cover+i.toString()}}"></label>
                           </div>
                         </div>
@@ -424,8 +423,6 @@
             </div>
           </div>
 
-          {{ amountPayable }} 
-
           <br/>
 
           <div *ngIf="!quotationResult?.Allow">
@@ -438,10 +435,20 @@
 
         <!-- PANEL Contact Information -->
         <div class="buttonContainer" style="margin-bottom: 52px" *ngIf="quotationResult?.Allow && enterContactInfo">
-          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea(true)">
+          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()">
             Ενδιαφέρομαι
           </button>
         </div>
+
+        <div *ngIf="coverReplacementNotAllowed" class="alert alert-danger" role="alert">
+          <p>Η παροχή αυτοκινήτου αντικατάστασης θα πρέπει να δίνεται μόνο αν επιλεγεί κάποια από τις κάτωθι</p>
+          <ul>
+            <li>Πυρκαγιά</li>
+            <li>Σετ καλύψεων Κλοπής</li>
+            <li>Φυσικές Καταστροφές</li>
+          </ul>
+        </div>
+
         <div *ngIf="open">
           <div class="description">
             <span class='arrowRight'></span>

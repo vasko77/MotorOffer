@@ -117,7 +117,11 @@ export class ApplicationInputComponent implements OnInit {
         InsuranceDuration: this.onlineIssueService.quotationInput.contractDuration,
         InitialPaymentType: 3, // Cach
         ContractBySMS_Email: '1',
-        BirthDate: new Date(this.onlineIssueService.quotationInput.birthDate)
+        SameAsInsured: true,
+        BirthDate: new Date(this.onlineIssueService.quotationInput.birthDate),
+        AcceptedUsageOfPersonalData: true,
+        PromotionConcentEFG: true,
+        PromotionConcentOther: true
       }
     };
 

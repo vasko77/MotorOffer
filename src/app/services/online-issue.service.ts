@@ -35,7 +35,7 @@ export class OnlineIssueService {
 
     const request: IGetListItemsRequest = {
       Header: { CultureName: 'GR', ServiceVersion: '1' },
-      ItemListSelector: 32
+      ItemListSelector: 4194304
     };
 
     const url = environment.urlGetListItems;

@@ -1,12 +1,15 @@
 export const environment = {
+
   production: true,
-  urlGetListItems: 'http://eh017ins178/MotorApiNoauth/api/Motor/GetListItems',
-  urlGetPackageCovers: 'http://eh017ins178/MotorApiNoauth/api/Motor/GetPackageCovers',
-  urlFastQuotation: 'http://eh017ins178/MotorApiNoauth/api/Motor/FastQuotation',
-  urlApplication: 'http://eh017ins178/MotorApiNoauth/api/Motor/SaveProposal',
-  urlMvpQuotation: 'http://eh017ins74/MvpApi/quotation/',
-  urlMvpContact: 'http://eh017ins74/MvpApi/contact/',
-  urlAuthentication: 'http://eh017ins74/MvpApi/authentication',
-  urlProposal: 'http://eh017ins178/MotorApiNoauth/api/Motor/SaveProposal',
-  urlMvpNotification: 'http://eh017ins74/MvpApi/notifications'
+
+  urlGetListItems: 'https://motorinsuranceuat.eurolife.gr/MotorApiNoauth/api/Motor/GetListItems',
+  urlGetPackageCovers: 'https://motorinsuranceuat.eurolife.gr/MotorApiNoauth/api/Motor/GetPackageCovers',
+  urlFastQuotation: 'https://motorinsuranceuat.eurolife.gr/MotorApiNoauth/api/Motor/FastQuotation',
+  urlApplication: 'https://motorinsuranceuat.eurolife.gr/MotorApiNoauth/api/Motor/SaveProposal',
+
+  urlMvpQuotation: 'https:/motorinsuranceuat.eurolife.gr/MvpApi/quotation/',
+  urlMvpContact: 'https://motorinsuranceuat.eurolife.gr/MvpApi/contact/',
+  urlAuthentication: 'https://motorinsuranceuat.eurolife.gr/MvpApi/authentication',
+  urlMvpNotification: 'https://motorinsuranceuat.eurolife.gr/MvpApi/notifications'
+
 };
