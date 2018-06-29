@@ -30,13 +30,13 @@ export class ApplicationInputComponent implements OnInit {
   applicationInput: IApplicationInputParams;
   taxOffices: IMotorItemsData;
 
-  constructor(private onlineIssueService: OnlineIssueService,
+  constructor(public onlineIssueService: OnlineIssueService,
     private mvpApiService: MvpApiService,
     private toastr: ToastrService,
     private router: Router,
     public authenticationService: AuthenticationService) {
 
-      this.applicationInput = {
+    this.applicationInput = {
       firstName: '',
       lastName: '',
       fatherName: '',
@@ -53,7 +53,7 @@ export class ApplicationInputComponent implements OnInit {
     };
 
     this.showSaveProposal = true;
-   }
+  }
 
   ngOnInit() {
     this.onlineIssueService.getTaxOffices()
@@ -75,10 +75,10 @@ export class ApplicationInputComponent implements OnInit {
       },
 
       MotorQuotationParams: {
-        InsuranceStartDate: date2String( this.onlineIssueService.quotationInput.contractStartDate ),
+        InsuranceStartDate: date2String(this.onlineIssueService.quotationInput.contractStartDate),
         MotorInsurancePackage: 'MVP',
         MainDriverInfo: {
-          BirthDate: date2String( this.onlineIssueService.quotationInput.birthDate ),
+          BirthDate: date2String(this.onlineIssueService.quotationInput.birthDate),
           LicenseDate: `${this.onlineIssueService.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.onlineIssueService.quotationInput.zip,
           TaxIdentificationNumber: this.applicationInput.taxNumber,
@@ -86,13 +86,13 @@ export class ApplicationInputComponent implements OnInit {
         },
         VehicleInfo: {
           AssemblyDate: `${this.onlineIssueService.quotationInput.vehicleLicenseYear}-01-01`,
-          PurchaseDate: date2String( this.onlineIssueService.quotationInput.vehiclePurchaseDate ),
+          PurchaseDate: date2String(this.onlineIssueService.quotationInput.vehiclePurchaseDate),
           CC: this.onlineIssueService.quotationInput.cc.toString(),
           EurotaxBrandCode: +this.onlineIssueService.quotationInput.markaCode,
           EurotaxModelCode: 0,
           EurotaxModelGroupCode: 0,
-          HasAlarmImmobilizer: false,
-          IsKeptInGarage: false,
+          HasAlarmImmobilizer: true,
+          IsKeptInGarage: true,
           PlateNumber: this.onlineIssueService.quotationInput.plateNo,
           UsageType: '00',
           VehicleValue: this.onlineIssueService.quotationInput.vehicleValue
@@ -117,13 +117,13 @@ export class ApplicationInputComponent implements OnInit {
         InsuranceDuration: this.onlineIssueService.quotationInput.contractDuration,
         InitialPaymentType: 3, // Cach
         ContractBySMS_Email: '1',
-        BirthDate: new Date( this.onlineIssueService.quotationInput.birthDate )
+        BirthDate: new Date(this.onlineIssueService.quotationInput.birthDate)
       }
     };
 
     if (this.onlineIssueService.quotationInput.youngestDriverBirthDate) {
       applicationRequest.MotorQuotationParams.OtherDrivers.push({
-        BirthDate: date2String( this.onlineIssueService.quotationInput.youngestDriverBirthDate ),
+        BirthDate: date2String(this.onlineIssueService.quotationInput.youngestDriverBirthDate),
         LicenseDate: `${this.onlineIssueService.quotationInput.youngestDriverLicenseYear}-01-01`,
         TypeOfDriver: 2
       });
@@ -131,11 +131,25 @@ export class ApplicationInputComponent implements OnInit {
 
     if (this.onlineIssueService.quotationInput.oldestDriverBirthDate) {
       applicationRequest.MotorQuotationParams.OtherDrivers.push({
-        BirthDate: date2String( this.onlineIssueService.quotationInput.oldestDriverBirthDate ),
+        BirthDate: date2String(this.onlineIssueService.quotationInput.oldestDriverBirthDate),
         LicenseDate: `${this.onlineIssueService.quotationInput.oldestDriverLicenseYear}-01-01`,
         TypeOfDriver: 3
       });
     }
+
+    this.mvpApiService.quotationInfo.SelectedMotorCoverItems.forEach(cover => {
+      applicationRequest.MotorQuotationParams.MotorCovers.push({
+        MotorCoverItem: cover,
+        Selected: true
+      });
+    });
+
+    this.onlineIssueService.packageMandatoryCoverItems.forEach(cover => {
+      applicationRequest.MotorQuotationParams.MotorCovers.push({
+        MotorCoverItem: cover.MotorCoverItem,
+        Selected: true
+      });
+    });
 
     if (this.onlineIssueService.quotationInput.publicServant) {
       applicationRequest.MotorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 2, Selected: true, DiscountValue: '' });
@@ -149,26 +163,26 @@ export class ApplicationInputComponent implements OnInit {
       applicationRequest.MotorQuotationParams.MotorDiscounts.push({ MotorDiscountItem: 1, Selected: true, DiscountValue: this.onlineIssueService.quotationInput.plateNo2 });
     }
 
-    console.log( 'applicationRequest' );
-    console.log( JSON.stringify(applicationRequest) );
+    console.log('applicationRequest');
+    console.log(JSON.stringify(applicationRequest));
 
     this.busyProposal = this.onlineIssueService.insertProposal(applicationRequest)
       .subscribe(
-        ( applicationResponse: IApplicationResponse ) => {
+        (applicationResponse: IApplicationResponse) => {
 
-          console.log( 'Applicaiton Response' );
-          console.log( applicationResponse );
+          console.log('Applicaiton Response');
+          console.log(applicationResponse);
 
-          if ( applicationResponse.Success ) {
+          if (applicationResponse.Success) {
 
             this.applicationResponse = applicationResponse;
             this.showSaveProposal = false;
 
-            console.log( 'Application Response' );
-            console.log( JSON.stringify(applicationResponse) );
+            console.log('Application Response');
+            console.log(JSON.stringify(applicationResponse));
 
             if (this.applicationInput.eMail) {
-              this.sendEmail( applicationResponse );
+              this.sendEmail(applicationResponse);
             }
 
             this.router.navigate(['/application-success', applicationResponse.ProposalID]);
@@ -199,9 +213,9 @@ export class ApplicationInputComponent implements OnInit {
       taxId: this.applicationInput.taxNumber
     };
 
-    this.mvpApiService.postNotification( notification )
+    this.mvpApiService.postNotification(notification)
       .subscribe(
-        ( notificationInfo: INotificationInfo ) => { },
+        (notificationInfo: INotificationInfo) => { },
         (err: ErrorInfo) => {
           console.error('Component log: ' + JSON.stringify(err));
           this.toastr.error(err.friendlyMessage, 'Σφάλμα');

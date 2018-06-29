@@ -24,6 +24,7 @@ export class OnlineIssueService {
 
   // quotationResponse: IQuotationResponse;
   packageOptionalCoverItems: ICoverItem[];
+  packageMandatoryCoverItems: ICoverItem[];
   packageAllCoverItems: ICoverItem[];
   quotationInput: QuotationInputParams;
   amountPayable: number;
@@ -139,6 +140,8 @@ export class OnlineIssueService {
 
             // tslint:disable-next-line:max-line-length
             this.packageOptionalCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.Allowed && !item.IsMandatory);
+            // tslint:disable-next-line:max-line-length
+            this.packageMandatoryCoverItems = data.CoversCollection[0].CoverItem.filter((item: ICoverItem) => item.IsMandatory);
             this.packageAllCoverItems = data.CoversCollection[0].CoverItem;
           }),
         catchError(err => this.HandleHttpError(err)),

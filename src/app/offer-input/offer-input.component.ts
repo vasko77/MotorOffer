@@ -30,6 +30,9 @@ export class OfferInputComponent implements OnInit {
   busyUniformed: Subscription;
   busyQuotations: Subscription;
 
+  success: boolean;
+  open: boolean;
+
   // authenticationInfo: IAuthentication;
   enterContactInfo = true;
   setCoversCheck: boolean;
@@ -65,6 +68,57 @@ export class OfferInputComponent implements OnInit {
 
   get coversAmount3(): number {
     return this.calculateSum(2);
+  }
+
+  get amountPayable(): number {
+    switch ( this.quotationInput.contractDuration ) {
+      case '12': return this.GrossPremiums12 + this.coversAmount12;
+      case '6': return this.GrossPremiums6 + this.coversAmount6;
+      case '3': return this.GrossPremiums3 + this.coversAmount3;
+      default: return 0;
+    }
+  }
+
+
+  get setCoversAmount12(): number {
+    return this.calculateSumSetCovers(0);
+  }
+
+  get setCoversAmount6(): number {
+    return this.calculateSumSetCovers(1);
+  }
+
+  get setCoversAmount3(): number {
+    return this.calculateSumSetCovers(2);
+  }
+
+  get setInitialCoversAmount12(): number {
+    return this.calculateSumSetCoversInit(0);
+  }
+
+  get setInitialCoversAmount6(): number {
+    return this.calculateSumSetCoversInit(1);
+  }
+
+  get setInitialCoversAmount3(): number {
+    return this.calculateSumSetCoversInit(2);
+  }
+
+  get setCoversInitialAmount(): number {
+    switch ( this.quotationInput.contractDuration ) {
+      case '12': return this.setInitialCoversAmount12;
+      case '6': return this.setInitialCoversAmount6;
+      case '3': return this.setInitialCoversAmount3;
+      default: return 0;
+    }
+  }
+  get setCoversAmount(): number {
+    switch ( this.quotationInput.contractDuration ) {
+      case '12': return this.setCoversAmount12;
+      case '6': return this.setCoversAmount6;
+      case '3': return this.setCoversAmount3;
+      default: return 0;
+    }
   }
 
   maxDateBirth: Date;
@@ -119,6 +173,36 @@ export class OfferInputComponent implements OnInit {
       this.setCovers.forEach(cover => {
         // console.log( JSON.stringify( element ));
         if (cover.Selected && cover.CoverPremia.length >= duration && cover.CoverPremia[duration]) {
+          sum += cover.CoverPremia[duration].CoverPremium;
+        }
+      });
+    }
+
+    return sum;
+  }
+
+  private calculateSumSetCovers(duration: number): number {
+    let sum = 0;
+
+    if (this.setCovers) {
+      this.setCovers.forEach(cover => {
+        // console.log( JSON.stringify( element ));
+        if (cover.Selected && cover.CoverPremia.length >= duration && cover.CoverPremia[duration]) {
+          sum += cover.CoverPremia[duration].CoverPremium;
+        }
+      });
+    }
+
+    return sum;
+  }
+
+  private calculateSumSetCoversInit(duration: number): number {
+    let sum = 0;
+
+    if (this.setCovers) {
+      this.setCovers.forEach(cover => {
+        // console.log( JSON.stringify( element ));
+        if (cover.CoverPremia.length >= duration && cover.CoverPremia[duration]) {
           sum += cover.CoverPremia[duration].CoverPremium;
         }
       });
@@ -292,8 +376,8 @@ export class OfferInputComponent implements OnInit {
           EurotaxBrandCode: +this.quotationInput.markaCode,
           EurotaxModelCode: 0,
           EurotaxModelGroupCode: 0,
-          HasAlarmImmobilizer: false,
-          IsKeptInGarage: false,
+          HasAlarmImmobilizer: true,
+          IsKeptInGarage: true,
           UsageType: '00',
           VehicleValue: this.quotationInput.vehicleValue
         },
@@ -509,14 +593,15 @@ export class OfferInputComponent implements OnInit {
           this.enterContactInfo = false;
           // this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
 
-          let amountPayableTotal = 0;
+          // let amountPayableTotal = 0;
+          /*
           switch ( this.quotationInput.contractDuration ) {
-            case '12': amountPayableTotal = this.GrossPremiums12 + this.coversAmount12; break;
-            case '6': amountPayableTotal = this.GrossPremiums6 + this.coversAmount6; break;
-            case '3': amountPayableTotal = this.GrossPremiums3 + this.coversAmount3; break;
-            default: amountPayableTotal = 0;
+            case '12': this.amountPayableTotal = this.GrossPremiums12 + this.coversAmount12; break;
+            case '6': this.amountPayableTotal = this.GrossPremiums6 + this.coversAmount6; break;
+            case '3': this.amountPayableTotal = this.GrossPremiums3 + this.coversAmount3; break;
+            default: this.amountPayableTotal = 0;
           }
-
+          */
           // MVP contact data save
           const contactInfo: IContactInfo = {
             PlateNo: this.quotationInput.plateNo,
@@ -524,15 +609,17 @@ export class OfferInputComponent implements OnInit {
             LastName: this.contactInput.lastName,
             EMail: this.contactInput.eMail,
             Phone: this.contactInput.phone,
-            Premiums: amountPayableTotal
+            Premiums: this.amountPayable
           };
 
           this.mvpApiService.postContact(contactInfo)
             .subscribe(
               () => {
-                this.router.navigate(['/offer-success']);
+                // this.router.navigate(['/offer-success']);
+                this.success = true;
               },
               (err: ErrorInfo) => {
+                this.success = false;
                 console.error('Component log: ' + JSON.stringify(err));
                 this.toastr.error(err.friendlyMessage, 'Σφάλμα');
               }
@@ -600,12 +687,16 @@ export class OfferInputComponent implements OnInit {
       );
 
     this.onlineIssueService.quotationInput = this.quotationInput;
+    this.onlineIssueService.amountPayable = this.amountPayable;
+
+    /*
     switch ( this.quotationInput.contractDuration ) {
-      case '12': this.onlineIssueService.amountPayable = this.GrossPremiums12; break;
-      case '6': this.onlineIssueService.amountPayable = this.GrossPremiums6; break;
-      case '3': this.onlineIssueService.amountPayable = this.GrossPremiums3; break;
+      case '12': this.onlineIssueService.amountPayable = this.GrossPremiums12 + this.coversAmount12; break;
+      case '6': this.onlineIssueService.amountPayable = this.GrossPremiums6 + this.coversAmount6; break;
+      case '3': this.onlineIssueService.amountPayable = this.GrossPremiums3 + this.coversAmount3; break;
       default: this.onlineIssueService.amountPayable = 0;
     }
+    */
 
     this.router.navigate(['/application']);
   }
@@ -653,5 +744,13 @@ export class OfferInputComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  setCoversCheckAll(value: boolean): void {
+    this.setCovers.forEach(cover => { cover.Selected = value; });
+  }
+
+  openContactInfoArea(value: boolean): void {
+    this.open = value;
   }
 }
