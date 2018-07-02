@@ -37,6 +37,8 @@ export class OfferInputComponent implements OnInit {
   enterContactInfo = true;
   setCoversCheck: boolean;
   optionalCoversCheck: boolean;
+  personalData: boolean;
+  latinCharacters: boolean;
 
   GrossPremiums12: number;
   GrossPremiums6: number;
@@ -123,7 +125,9 @@ export class OfferInputComponent implements OnInit {
     }
   }
 
-  maxDateBirth: Date;
+  maxDateBirth = new Date();
+  minStartDate = new Date();
+  maxStartDate = new Date();
 
   constructor(private onlineIssueService: OnlineIssueService,
     private mvpApiService: MvpApiService,
@@ -137,6 +141,8 @@ export class OfferInputComponent implements OnInit {
     this.quotationInput.contractDuration = '12';
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
+    this.minStartDate.setDate(this.minStartDate.getDate() + 1);
+    this.maxStartDate.setMonth(this.minStartDate.getMonth() + 1);
 
     if (this.mvpApiService.quotationInfo) {
       this.quotationInput.birthDate = new Date(this.mvpApiService.quotationInfo.BirthDate);
@@ -476,7 +482,7 @@ export class OfferInputComponent implements OnInit {
               this.optionalCovers.forEach(cover => {
                 // tslint:disable-next-line:max-line-length
                 cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : true;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : false;
                 if (cover.Selected) {
                   this.optionalCoversCheck = true;
                 }
@@ -493,7 +499,7 @@ export class OfferInputComponent implements OnInit {
               this.setCovers.forEach(cover => {
                 // tslint:disable-next-line:max-line-length
                 cover.ShortDescription = this.packageAllCoverItems.find(c => c.MotorCoverItem === cover.MotorCoverItem).ShortDescription;
-                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : true;
+                cover.Selected = selectedMotorCoverItems ? selectedMotorCoverItems.indexOf(cover.MotorCoverItem) !== -1 : false;
                 if (cover.Selected) {
                   this.setCoversCheck = true;
                 }
@@ -731,6 +737,9 @@ export class OfferInputComponent implements OnInit {
     this.optionalCovers.forEach(cover => {
       cover.Selected = selected;
     });
+    this.setCovers.forEach(cover => {
+      cover.Selected = selected;
+    });
   }
 
   getContact(): void {
@@ -763,6 +772,14 @@ export class OfferInputComponent implements OnInit {
       return this.quotationInput.uniformedCode !== 0;
     } else {
       return true;
+    }
+  }
+
+  plateNoToUpper(value: string): void {
+    if (value.length > 0) {
+      this.quotationInput.plateNo = value.toUpperCase();
+    } else {
+      this.quotationInput.plateNo = value;
     }
   }
 

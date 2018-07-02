@@ -5,7 +5,7 @@ export const environment = {
   urlGetListItems: 'http://eh017ins74/MotorApiNoauth/api/Motor/GetListItems',
   urlGetPackageCovers: 'http://eh017ins74/MotorApiNoauth/api/Motor/GetPackageCovers',
   urlFastQuotation: 'http://eh017ins74/MotorApiNoauth/api/Motor/FastQuotation',
-  urlApplication: 'http://eh017ins174/MotorApiNoauth/api/Motor/SaveProposal',
+  urlApplication: 'http://eh017ins74/MotorApiNoauth/api/Motor/SaveProposal',
 
   urlMvpQuotation: 'http://eh017ins74/MvpApi/quotation/',
   urlMvpContact: 'http://eh017ins74/MvpApi/contact/',

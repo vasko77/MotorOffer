@@ -12,4 +12,6 @@ export interface IApplicationInputParams {
     zip: string;
     phone1: string;
     eMail: string;
+    PromotionConcentEFG: boolean;
+    PromotionConcentOther: boolean;
 }

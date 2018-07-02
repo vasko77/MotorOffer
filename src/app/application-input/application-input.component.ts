@@ -49,7 +49,9 @@ export class ApplicationInputComponent implements OnInit {
       taxNumber: '',
       idCardNumber: '',
       taxOffice: 0,
-      zip: ''
+      zip: '',
+      PromotionConcentEFG: false,
+      PromotionConcentOther: false
     };
 
     this.showSaveProposal = true;
@@ -120,8 +122,8 @@ export class ApplicationInputComponent implements OnInit {
         SameAsInsured: true,
         BirthDate: new Date(this.onlineIssueService.quotationInput.birthDate),
         AcceptedUsageOfPersonalData: true,
-        PromotionConcentEFG: true,
-        PromotionConcentOther: true
+        PromotionConcentEFG: this.applicationInput.PromotionConcentEFG,
+        PromotionConcentOther: this.applicationInput.PromotionConcentOther
       }
     };
 

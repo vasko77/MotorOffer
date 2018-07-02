@@ -1,12 +1,10 @@
-
-{{ 'amountPayable: ' + onlineIssueService.amountPayable }}
 <br/>
 
 <form #form="ngForm" (ngSubmit)="saveProposal()" autocomplete="off" novalidate [ngBusy]="busyProposal">
 
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': lastName?.invalid && ( lastName?.touched || mouseOverSubmit === true ) }">
         <label for="lastName">Επώνυμο</label>
         <em class="text-danger" *ngIf="lastName.invalid && ( lastName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -15,11 +13,7 @@
       </div>
     </div>
 
-  </div>
-
-  <div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': firstName?.invalid && ( firstName?.touched || mouseOverSubmit === true ) }">
         <label for="firstName">Όνομα</label>
         <em class="text-danger" *ngIf="firstName.invalid && ( firstName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -32,7 +26,7 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': fatherName?.invalid && ( fatherName?.touched || mouseOverSubmit === true ) }">
         <label for="fatherName">Πατρώνυμο</label>
         <em class="text-danger" *ngIf="fatherName.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -41,11 +35,7 @@
       </div>
     </div>
 
-  </div>
-
-  <div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4" [class.has-error]="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">
+    <div class="form-group col-sm-4" [class.has-error]="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">
       <label class="control-label">Φύλο</label>
       <em *ngIf="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">Απαιτείται</em>
       <div class="">
@@ -63,7 +53,7 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': taxNumber?.invalid && ( taxNumber?.touched || mouseOverSubmit === true ) }">
         <label for="taxNumber">Α.Φ.Μ.</label>
         <em class="text-danger" *ngIf="taxNumber.invalid && ( taxNumber.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -72,11 +62,7 @@
       </div>
     </div>
 
-  </div>
-
-  <div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4" [class.has-error]="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">
+    <div class="form-group col-sm-4" [class.has-error]="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">
       <label class="control-label">Δ.Ο.Υ.</label>
       <em *ngIf="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">Απαιτείται</em>
       <div class="">
@@ -89,22 +75,9 @@
 
   </div>
 
-  <!--div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4">
-      <div class="form-group has-error" [ngClass]="{'has-error': profession?.invalid && ( profession?.touched || mouseOverSubmit === true ) }">
-        <label for="profession">Επάγγελμα</label>
-        <em class="text-danger" *ngIf="profession.invalid && ( fatherName.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #profession="ngModel" id="profession" name="profession" [(ngModel)]="applicationInput.profession" class="form-control"
-          type="text" required>
-      </div>
-    </div>
-
-  </div-->
-
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': address?.invalid && ( address?.touched || mouseOverSubmit === true ) }">
         <label for="address">Οδός Αριθμός</label>
         <em class="text-danger" *ngIf="address.invalid && ( address.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -113,11 +86,7 @@
       </div>
     </div>
 
-  </div>
-
-  <div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': city?.invalid && ( city?.touched || mouseOverSubmit === true ) }">
         <label for="city">Πόλη</label>
         <em class="text-danger" *ngIf="city.invalid && ( city.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -127,9 +96,10 @@
 
   </div>
 
+
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': zip?.invalid && ( zip?.touched || mouseOverSubmit === true ) }">
         <label for="zip">Ταχ. Κωδικός</label>
         <em class="text-danger" *ngIf="zip.invalid && ( zip.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -137,11 +107,7 @@
       </div>
     </div>
 
-  </div>
-
-  <div class="row">
-
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': phone1?.invalid && ( phone1?.touched || mouseOverSubmit === true ) }">
         <label for="phone1">Τηλέφωνο 1</label>
         <em class="text-danger" *ngIf="phone1.invalid && ( phone1.touched || mouseOverSubmit === true )">Απαιτείται</em>
@@ -154,14 +120,34 @@
 
   <div class="row">
 
-    <div class="form-group col-sm-offset-4 col-sm-4">
+    <div class="form-group col-sm-offset-2 col-sm-4">
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" />
+        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+        />
       </div>
     </div>
 
+  </div>
+
+  <div class="row">
+
+    <p>
+      Δίνω τη συγκατάθεσή μου για την επεξεργασία των Προσωπικών μου Δεδομένων με σκοπό τη διενέργεια στοχευμένων δραστηριοτήτων
+      marketing ή εμπορικής προώθησης υπηρεσιών ή προϊόντων
+    </p>
+
+  </div>
+
+  <div class="form-check row">
+    <label class="form-check-label col-sm-7" for="PromotionConcentEFG">1. που προσφέρουν οι εταιρείες του Ομίλου EUROLIFE ERB</label>
+    <input class="form-check-input col-sm-1" type="checkbox" id="PromotionConcentEFG" name="PromotionConcentEFG" [(ngModel)]="applicationInput.PromotionConcentEFG">
+  </div>
+
+  <div class="form-check row">
+    <label class="form-check-label col-sm-7" for="PromotionConcentOther">2. που προσφέρουν τρίτοι συνεργαζόμενοι με τις ετιαρείες του Ομίλου EUROLIFE ERB</label>
+    <input class="form-check-input col-sm-1" type="checkbox" id="PromotionConcentOther" name="PromotionConcentOther" [(ngModel)]="applicationInput.PromotionConcentOther">
   </div>
 
   <!-- PROPOOSAL Button -->

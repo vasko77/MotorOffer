@@ -11,9 +11,9 @@ export const environment = {
   urlFastQuotation: 'http://eh017ins74/MotorApiNoauth/api/Motor/FastQuotation',
   urlApplication: 'http://eh017ins74/MotorApiNoauth/api/Motor/SaveProposal',
 
-  urlMvpQuotation: 'http://eh017ins74/MvpApiAgent/quotation/',
-  urlMvpContact: 'http://eh017ins74/MvpApiAgent/contact/',
-  urlAuthentication: 'http://eh017ins74/MvpApiAgent/authentication',
+  urlMvpQuotation: 'http://eh017ins74/MvpApi/quotation/',
+  urlMvpContact: 'http://eh017ins74/MvpApi/contact/',
+  urlAuthentication: 'http://eh017ins74/MvpApi/authentication',
   urlMvpNotification: 'http://eh017ins74/MvpApi/notifications'
 
 };

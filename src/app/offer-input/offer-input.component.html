@@ -30,10 +30,12 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">
                     <label class="control-label">Αρ. Κυκλοφορίας</label>
+                    <!--em *ngIf="latinCharacters">Δεν επιτέπονται λατινικοί χαρακτήρες</em-->
                     <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">* μη αποδεκτό</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
-                        pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$" (blur)="loadQuotationInfo(plateNo.value)" [(ngModel)]="quotationInput.plateNo"
+                        pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$" (blur)="loadQuotationInfo(plateNo.value)" [ngModel]="quotationInput.plateNo"
+                        (ngModelChange)="plateNoToUpper($event)"
                         autofocus/>
                     </div>
 
@@ -114,7 +116,7 @@
                     <label class="control-label">Έναρξη Συμβολαίου</label>
                     <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
-                      required></kendo-datepicker>
+                      [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
                   </div>
 
                 </div>
@@ -358,7 +360,7 @@
                            -->
                           <div *ngIf="i === 1" class="round col-sm-2" style="margin-left: 37px;">
                             <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}"
-                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)">
+                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" [disabled]="quotationInput.markaCode === '124'">
                             <label for="{{'set'+cover+i.toString()}}"></label>
                           </div>
                         </div>
@@ -387,15 +389,15 @@
                       <div></div>
                       <select name="duration" class="form-control dropdown col-sm-8" name="duration" [(ngModel)]="quotationInput.contractDuration">
                         <option value="12" class="freqOption">
-                          {{ (GrossPremiums12 + coversAmount12).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
+                          {{ (GrossPremiums12 + coversAmount12)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /έτος
                         </option>
                         <option value="6" class="freqOption">
-                          {{ (GrossPremiums6 + coversAmount6).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
+                          {{ (GrossPremiums6 + coversAmount6)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /εξάμηνο
                         </option>
                         <option value="3" class="freqOption">
-                          {{ (GrossPremiums3 + coversAmount3).toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
+                          {{ (GrossPremiums3 + coversAmount3)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
                           /τρίμηνο
                         </option>
                       </select>
@@ -430,18 +432,27 @@
 
         </form>
 
+        <div class="form-check" *ngIf="quotationResult?.Allow">
+          <input class="form-check-input" type="checkbox" value="" id="personalData" name="personalData" [(ngModel)]="personalData">
+          <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των 
+            <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a>
+          </label>
+        </div>
+
         <!-- PANEL Contact Information -->
         <div class="buttonContainer" style="margin-bottom: 52px" *ngIf="quotationResult?.Allow && enterContactInfo">
-          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()">
+          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()" [disabled]="!personalData">
             Ενδιαφέρομαι
           </button>
         </div>
 
         <div *ngIf="coverReplacementNotAllowed" class="alert alert-danger" role="alert">
-          <p>Η παροχή αυτοκινήτου αντικατάστασης θα πρέπει να δίνεται μόνο αν επιλεγεί κάποια από τις κάτωθι</p>
+          <p>Η παροχή αυτοκινήτου αντικατάστασης θα πρέπει να δίνεται μόνο αν επιλεγεί κάποια από τις κάτωθι:</p>
           <ul>
             <li>Πυρκαγιά</li>
-            <li>Σετ καλύψεων Κλοπής</li>
+            <li>Ολική Κλοπή</li>
+            <li>Μερική Κλοπή</li>
+            <li>Κατεστραμμένες κλειδαριές</li>
             <li>Φυσικές Καταστροφές</li>
           </ul>
         </div>
@@ -488,7 +499,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
                     <label class="control-label">e-mail</label>
                     <em *ngIf="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" />
+                    <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
                   </div>
 
                 </div>
