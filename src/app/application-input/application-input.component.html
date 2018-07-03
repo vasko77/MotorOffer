@@ -124,11 +124,16 @@
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
         />
       </div>
     </div>
 
+  </div>
+
+  <div class="form-check row">
+    <label class="form-check-label col-sm-7" for="peronalDataConcent">Δίνω τη συγκατάθεσή μου για την επεξεργασία των δεδομένων Υγείας και Περίθαλψης</label>
+    <input class="form-check-input col-sm-1" type="checkbox" id="peronalDataConcent" name="peronalDataConcent" [(ngModel)]="peronalDataConcent">
   </div>
 
   <div class="row">
@@ -146,7 +151,7 @@
   </div>
 
   <div class="form-check row">
-    <label class="form-check-label col-sm-7" for="PromotionConcentOther">2. που προσφέρουν τρίτοι συνεργαζόμενοι με τις ετιαρείες του Ομίλου EUROLIFE ERB</label>
+    <label class="form-check-label col-sm-7" for="PromotionConcentOther">2. που προσφέρουν τρίτοι συνεργαζόμενοι με τις εταιρείες του Ομίλου EUROLIFE ERB</label>
     <input class="form-check-input col-sm-1" type="checkbox" id="PromotionConcentOther" name="PromotionConcentOther" [(ngModel)]="applicationInput.PromotionConcentOther">
   </div>
 
@@ -154,7 +159,7 @@
 
   <div style="text-align: center" *ngIf="showSaveProposal">
     <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-      <button type="submit" [disabled]="form.invalid" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
+      <button type="submit" [disabled]="form.invalid || !peronalDataConcent" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
     </span>
   </div>
 

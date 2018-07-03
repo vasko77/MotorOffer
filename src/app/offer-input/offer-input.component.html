@@ -35,8 +35,7 @@
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
                         pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$" (blur)="loadQuotationInfo(plateNo.value)" [ngModel]="quotationInput.plateNo"
-                        (ngModelChange)="plateNoToUpper($event)"
-                        autofocus/>
+                        (ngModelChange)="plateNoToUpper($event)" autofocus/>
                     </div>
 
                   </div>
@@ -47,6 +46,7 @@
                     <div class="">
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
+                        <option value="0">ΕΠΙΛΕΞΤΕ</option>
                         <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName + ' - ' + marka.ItemCode }}</option>
                       </select>
                     </div>
@@ -67,7 +67,7 @@
                     <label class="control-label">Ημ/νία απόκτησης αυτοκινήτου</label>
                     <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
-                      required></kendo-datepicker>
+                      [max]="maxStartDate" required></kendo-datepicker>
                   </div>
 
                 </div>
@@ -116,7 +116,7 @@
                     <label class="control-label">Έναρξη Συμβολαίου</label>
                     <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
-                      [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
+                      required></kendo-datepicker>
                   </div>
 
                 </div>
@@ -146,8 +146,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">
                     <label class="control-label">Ημ/νία γέννησης</label>
                     <em *ngIf="dateBirth.invalid && ( dateBirth?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" [max]="maxDateBirth" name="dateBirth"
-                      required></kendo-datepicker>
+                    <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" name="dateBirth" required></kendo-datepicker>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
@@ -184,7 +183,7 @@
                   <div class="form-group col-sm-6">
                     <label class="control-label">Ημ/νία γέννησης νεότερου σε ηλικία οδηγού</label>
                     <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverBirthDate"
-                      [max]="maxDateBirth" name="dateBirthYoungest"></kendo-datepicker>
+                      name="dateBirthYoungest"></kendo-datepicker>
                   </div>
 
                   <div class="form-group col-sm-6">
@@ -199,8 +198,7 @@
 
                   <div class="form-group col-sm-6">
                     <label class="control-label">Ημ/νία γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
-                    <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" [max]="maxDateBirth"
-                      name="dateBirthOldest"></kendo-datepicker>
+                    <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" name="dateBirthOldest"></kendo-datepicker>
                   </div>
 
                   <div class="form-group col-sm-6">
@@ -250,6 +248,7 @@
                       <label for="uniformed"></label>
                     </div>
                     <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Ένστολος Υπάλληλος Δημοσίου</div>
+
                   </div>
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
                     *ngIf="uniformed.value">
@@ -296,6 +295,11 @@
                 Υπολογισμός
               </button>
             </div>
+          </div>
+
+
+          <div *ngIf="customError?.length > 0" class="alert alert-danger" role="alert">
+            <p>{{ customError }}</p>
           </div>
 
           <!-- COVERS -->
@@ -389,16 +393,13 @@
                       <div></div>
                       <select name="duration" class="form-control dropdown col-sm-8" name="duration" [(ngModel)]="quotationInput.contractDuration">
                         <option value="12" class="freqOption">
-                          {{ (GrossPremiums12 + coversAmount12)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                          /έτος
+                          {{ (GrossPremiums12 + coversAmount12)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }} /έτος
                         </option>
                         <option value="6" class="freqOption">
-                          {{ (GrossPremiums6 + coversAmount6)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                          /εξάμηνο
+                          {{ (GrossPremiums6 + coversAmount6)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }} /εξάμηνο
                         </option>
                         <option value="3" class="freqOption">
-                          {{ (GrossPremiums3 + coversAmount3)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }}
-                          /τρίμηνο
+                          {{ (GrossPremiums3 + coversAmount3)?.toFixed(2) | currency:'EUR':'symbol-narrow':'1.2-2' }} /τρίμηνο
                         </option>
                       </select>
                     </div>
@@ -434,7 +435,7 @@
 
         <div class="form-check" *ngIf="quotationResult?.Allow">
           <input class="form-check-input" type="checkbox" value="" id="personalData" name="personalData" [(ngModel)]="personalData">
-          <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των 
+          <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των
             <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a>
           </label>
         </div>
@@ -499,7 +500,8 @@
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
                     <label class="control-label">e-mail</label>
                     <em *ngIf="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
+                    <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+                    />
                   </div>
 
                 </div>

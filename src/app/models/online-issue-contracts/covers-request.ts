@@ -10,4 +10,5 @@ export interface ICoverParameter {
     MotorInsurancePackage: string;
     VehicleUsage: string;
     InsuranceStartDate: string;
+    IsVehicleBrandSmart: boolean;
 }

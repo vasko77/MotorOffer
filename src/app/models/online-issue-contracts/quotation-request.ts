@@ -64,6 +64,10 @@ export interface ICustomerDetails {
     LastName: string;
     FirstName: string;
     FatherName: string;
+    Address: string;
+    City: string;
+    PostalCode: string;
+    Sex: string;
     Email: string;
     PhoneNumber1: string;
     InsuranceDuration: string;

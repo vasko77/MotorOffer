@@ -42,6 +42,15 @@ export class OnlineIssueService {
 
     return this.httpClient.post<IMotorItemsData>(url, request)
       .pipe(
+        tap((data: IMotorItemsData) => {
+          data.MotorItems = data.MotorItems
+            .filter( (c: IMotorItem) => +c.ItemCode > 0 )
+            .sort((c1: IMotorItem, c2: IMotorItem) => {
+              if (c1.ItemName < c2.ItemName ) { return -1; }
+              if (c1.ItemName > c2.ItemName ) { return 1; }
+              return 0;
+            } );
+        }),
         catchError(err => this.HandleHttpError(err)),
     );
   }
@@ -113,7 +122,7 @@ export class OnlineIssueService {
     );
   }
 
-  getPackageCovers(): Observable<ICoversResponse | ErrorInfo> {
+  getPackageCovers(isSmart: boolean): Observable<ICoversResponse | ErrorInfo> {
 
     const url = environment.urlGetPackageCovers;
 
@@ -127,10 +136,14 @@ export class OnlineIssueService {
         {
           MotorInsurancePackage: 'MVP',
           VehicleUsage: '00',
-          InsuranceStartDate: '2018-06-30'
+          InsuranceStartDate: '2018-06-30',
+          IsVehicleBrandSmart: isSmart
         }
       ]
     };
+
+    console.log('getPackageCovers');
+    console.log(request);
 
     return this.httpClient.post<ICoversResponse>(url, request)
       .pipe(

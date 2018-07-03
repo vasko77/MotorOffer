@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { IQuotationRequest } from '../models/online-issue-contracts/quotation-request';
+import { IQuotationRequest, IMotorCover } from '../models/online-issue-contracts/quotation-request';
 import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { ToastrService } from 'ngx-toastr';
 import { IQuotationResponse, ICover, ICalculatedQuotationsResult, IError } from '../models/online-issue-contracts/quotation-response';
@@ -61,6 +61,7 @@ export class OfferInputComponent implements OnInit {
   packageOptionalCoverItems: ICoverItem[];
   packageAllCoverItems: ICoverItem[];
   errors: IError[];
+  customError: string;
 
   get coversAmount12(): number {
     return this.calculateSum(0);
@@ -151,7 +152,9 @@ export class OfferInputComponent implements OnInit {
       this.quotationInput.driverLicenseYear = this.mvpApiService.quotationInfo.DriverLicenseYear;
       this.quotationInput.markaCode = this.mvpApiService.quotationInfo.MarkaCode;
       this.quotationInput.municipalityCode = this.mvpApiService.quotationInfo.MunicipalityCode;
-      this.quotationInput.oldestDriverBirthDate = new Date(this.mvpApiService.quotationInfo.OldestDriverBirthDate);
+      this.quotationInput.vehiclePurchaseDate = new Date(this.mvpApiService.quotationInfo.VehiclePurchaseDate);
+      // tslint:disable-next-line:max-line-length
+      this.quotationInput.oldestDriverBirthDate = this.mvpApiService.quotationInfo.OldestDriverBirthDate ? new Date(this.mvpApiService.quotationInfo.OldestDriverBirthDate) : undefined;
       this.quotationInput.oldestDriverLicenseYear = this.mvpApiService.quotationInfo.OldestDriverLicenseYear;
       this.quotationInput.plateNo = this.mvpApiService.quotationInfo.PlateNo;
       this.quotationInput.publicServant = this.mvpApiService.quotationInfo.PublicServant;
@@ -159,7 +162,8 @@ export class OfferInputComponent implements OnInit {
       this.quotationInput.uniformed = this.mvpApiService.quotationInfo.Uniformed;
       this.quotationInput.vehicleLicenseYear = this.mvpApiService.quotationInfo.VehicleLicenseYear;
       this.quotationInput.vehicleValue = this.mvpApiService.quotationInfo.VehicleValue;
-      this.quotationInput.youngestDriverBirthDate = new Date(this.mvpApiService.quotationInfo.YoungestDriverBirthDate);
+      // tslint:disable-next-line:max-line-length
+      this.quotationInput.youngestDriverBirthDate = this.mvpApiService.quotationInfo.YoungestDriverBirthDate ? new Date(this.mvpApiService.quotationInfo.YoungestDriverBirthDate) : undefined;
       this.quotationInput.youngestDriverLicenseYear = this.mvpApiService.quotationInfo.YoungestDriverLicenseYear;
       this.quotationInput.zip = this.mvpApiService.quotationInfo.Zip;
     }
@@ -266,7 +270,7 @@ export class OfferInputComponent implements OnInit {
       this.packageOptionalCoverItems = this.onlineIssueService.packageOptionalCoverItems;
       this.packageAllCoverItems = this.onlineIssueService.packageAllCoverItems;
     } else {
-      this.busyQuotations = this.onlineIssueService.getPackageCovers()
+      this.busyQuotations = this.onlineIssueService.getPackageCovers(this.quotationInput.markaCode === '124')
         .subscribe(
           (data: ICoversResponse) => {
             // tslint:disable-next-line:max-line-length
@@ -359,6 +363,26 @@ export class OfferInputComponent implements OnInit {
 
   quotation(selectedMotorCoverItems: number[]): void {
 
+    this.customError = '';
+
+    if (this.quotationInput.contractStartDate > this.maxStartDate) {
+      this.customError = 'Δεν επιτρέπεται έκδοση μεγαλύτερη το μήνα';
+      return;
+    }
+
+    if (this.quotationInput.vehicleValue > 100000) {
+       // tslint:disable-next-line:max-line-length
+       this.customError = 'Για οχήματα με αξία πάνω από € 100.000, παρακαλούμε, επικοινωνήστε με την εξυπηρέτηση πελατών στο 210 9303800';
+       return;
+     }
+
+    if (this.quotationInput.vehicleValue > 35000
+     && this.setCoversCheck) {
+      // tslint:disable-next-line:max-line-length
+      this.customError = 'Για οχήματα με αξία πάνω από € 35.000 δεν μπορείτε να επιλέξετε τις καλύψεις Ολική Κλοπή, Μερική Κλοπή, Κατεστραμμένες Κλειδαριές. Για περισσότερες πληροφορίες, παρακαλούμε, επικοινωνήστε με την εξυπηρέτηση πελατών στο 210 9303800';
+      return;
+    }
+
     // Prepare quotation request
 
     const quotationRerquest: IQuotationRequest = {
@@ -446,7 +470,8 @@ export class OfferInputComponent implements OnInit {
     this.packageOptionalCoverItems.forEach(cover => {
       quotationRerquest.motorQuotationParams.MotorCovers.push({
         MotorCoverItem: cover.MotorCoverItem,
-        Selected: true
+        // tslint:disable-next-line:max-line-length
+        Selected: this.removeTheft(cover) ? false : true
       });
     });
 
@@ -518,6 +543,8 @@ export class OfferInputComponent implements OnInit {
               console.log(this.setCovers);
               console.log(this.optionalCovers);
 
+              this.customError = '';
+
               if (selectedMotorCoverItems) {
                 this.initialInfo = true;
               } else {
@@ -549,10 +576,10 @@ export class OfferInputComponent implements OnInit {
 
     if (this.optionalCovers && this.setCovers) {
 
-      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22  && c.Selected)
-      && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
-      && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
-        ) {
+      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22 && c.Selected)
+        && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
+        && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
+      ) {
         this.coverReplacementNotAllowed = true;
         this.open = false;
         return;
@@ -738,7 +765,12 @@ export class OfferInputComponent implements OnInit {
       cover.Selected = selected;
     });
     this.setCovers.forEach(cover => {
-      cover.Selected = selected;
+      // tslint:disable-next-line:max-line-length
+      if (this.removeTheft(cover)) {
+        cover.Selected = false;
+      } else {
+        cover.Selected = selected;
+      }
     });
   }
 
@@ -799,21 +831,20 @@ export class OfferInputComponent implements OnInit {
 
   get foundOther(): boolean {
     if (this.optionalCovers && this.setCovers) {
-      return this.optionalCovers.find((c: ICover) => ( c.MotorCoverItem === 15 || c.MotorCoverItem === 19 ) && c.Selected  ) !== undefined;
+      return this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected) !== undefined;
     } else {
       return false;
     }
   }
 
-
   openContactInfoArea(): void {
 
     if (this.optionalCovers && this.setCovers) {
 
-      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22  && c.Selected)
-      && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
-      && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
-        ) {
+      if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22 && c.Selected)
+        && !this.optionalCovers.find((c: ICover) => (c.MotorCoverItem === 15 || c.MotorCoverItem === 19) && c.Selected)
+        && !this.setCovers.find((c: ICover) => (c.MotorCoverItem === 8 || c.MotorCoverItem === 13 || c.MotorCoverItem === 14) && c.Selected)
+      ) {
         this.coverReplacementNotAllowed = true;
         this.open = false;
         return;
@@ -822,5 +853,11 @@ export class OfferInputComponent implements OnInit {
 
     this.coverReplacementNotAllowed = false;
     this.open = true;
+  }
+
+  private removeTheft(cover: IMotorCover): boolean {
+    // tslint:disable-next-line:max-line-length
+    return ( this.quotationInput.markaCode === '124' && (cover.MotorCoverItem === 8 || cover.MotorCoverItem === 13 || cover.MotorCoverItem === 14) )
+        || ( this.quotationInput.vehicleValue > 35000 );
   }
 }

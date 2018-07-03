@@ -22,6 +22,7 @@ export class ApplicationInputComponent implements OnInit {
 
   mouseOverSubmit: boolean;
   busyProposal: Subscription;
+  peronalDataConcent: boolean;
 
   showSaveProposal: boolean;
   applicationResponse: IApplicationResponse;
@@ -42,6 +43,7 @@ export class ApplicationInputComponent implements OnInit {
       fatherName: '',
       address: '',
       city: '',
+      zip: '',
       eMail: '',
       phone1: '',
       profession: '',
@@ -49,7 +51,6 @@ export class ApplicationInputComponent implements OnInit {
       taxNumber: '',
       idCardNumber: '',
       taxOffice: 0,
-      zip: '',
       PromotionConcentEFG: false,
       PromotionConcentOther: false
     };
@@ -111,6 +112,10 @@ export class ApplicationInputComponent implements OnInit {
         LastName: this.applicationInput.lastName,
         FatherName: this.applicationInput.fatherName,
         Email: this.applicationInput.eMail,
+        Address: this.applicationInput.address,
+        Sex: this.applicationInput.gender.toString(),
+        City: this.applicationInput.city,
+        PostalCode: this.applicationInput.zip,
         PhoneNumber1: this.applicationInput.phone1,
         IdentityNumber: this.applicationInput.idCardNumber,
         TaxIdentificationNumber: this.applicationInput.taxNumber,
