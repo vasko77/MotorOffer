@@ -74,6 +74,7 @@ export interface ICustomerDetails {
     AmountPayable: number;
     IdentityNumber: string;
     TaxIdentificationNumber: string;
+    DOY: string;
     HasAcceptedConditions: boolean;
     InitialPaymentType: number;
     ContractBySMS_Email: string;

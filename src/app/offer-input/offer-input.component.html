@@ -31,7 +31,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">
                     <label class="control-label">Αρ. Κυκλοφορίας</label>
                     <!--em *ngIf="latinCharacters">Δεν επιτέπονται λατινικοί χαρακτήρες</em-->
-                    <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">* μη αποδεκτό</em>
+                    <em *ngIf="plateNo.invalid && ( plateNo?.touched || mouseOverSubmit )">*αποδεκτοί μόνο Ελληνικοί χαρακτήρες</em>
                     <div>
                       <input #plateNo="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo"
                         pattern="^([ΑΒΕΖΗΙΚΜΝΟΡΤΥΧ]{3}?[0-9]{4})?$" (blur)="loadQuotationInfo(plateNo.value)" [ngModel]="quotationInput.plateNo"
@@ -67,7 +67,7 @@
                     <label class="control-label">Ημ/νία απόκτησης αυτοκινήτου</label>
                     <em *ngIf="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-datepicker #vehiclePurchaseDate="ngModel" class="form-control" [(ngModel)]="quotationInput.vehiclePurchaseDate" name="vehiclePurchaseDate"
-                      [max]="maxStartDate" required></kendo-datepicker>
+                      required></kendo-datepicker>
                   </div>
 
                 </div>
@@ -115,8 +115,8 @@
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
                     <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" name="dateStart"
-                      required></kendo-datepicker>
+                    <kendo-datepicker #startDate="ngModel" ngModel class="form-control" [(value)]="quotationInput.contractStartDate" name="dateStart"
+                      [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
                   </div>
 
                 </div>

@@ -142,7 +142,7 @@ export class OfferInputComponent implements OnInit {
     this.quotationInput.contractDuration = '12';
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
-    this.minStartDate.setDate(this.minStartDate.getDate() + 1);
+    this.minStartDate.setDate(this.minStartDate.getDate());
     this.maxStartDate.setMonth(this.minStartDate.getMonth() + 1);
 
     if (this.mvpApiService.quotationInfo) {
@@ -848,6 +848,9 @@ export class OfferInputComponent implements OnInit {
         this.coverReplacementNotAllowed = true;
         this.open = false;
         return;
+      } else {
+        this.coverReplacementNotAllowed = false;
+        this.open = true;
       }
     }
 

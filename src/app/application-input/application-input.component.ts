@@ -119,6 +119,7 @@ export class ApplicationInputComponent implements OnInit {
         PhoneNumber1: this.applicationInput.phone1,
         IdentityNumber: this.applicationInput.idCardNumber,
         TaxIdentificationNumber: this.applicationInput.taxNumber,
+        DOY: this.applicationInput.taxOffice.toString(),
         AmountPayable: this.onlineIssueService.amountPayable,
         HasAcceptedConditions: true,
         InsuranceDuration: this.onlineIssueService.quotationInput.contractDuration,
