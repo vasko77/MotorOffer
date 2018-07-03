@@ -433,16 +433,9 @@
 
         </form>
 
-        <div class="form-check" *ngIf="quotationResult?.Allow">
-          <input class="form-check-input" type="checkbox" value="" id="personalData" name="personalData" [(ngModel)]="personalData">
-          <label class="form-check-label" for="personalData">&nbsp;Ενημερώθηκα σχετικά με την επεξεργασία των
-            <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a>
-          </label>
-        </div>
-
         <!-- PANEL Contact Information -->
         <div class="buttonContainer" style="margin-bottom: 52px" *ngIf="quotationResult?.Allow && enterContactInfo">
-          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()" [disabled]="!personalData">
+          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()">
             Ενδιαφέρομαι
           </button>
         </div>
@@ -505,15 +498,26 @@
                   </div>
 
                 </div>
+                <div class="row">
+                  <div class="form-check">
+                    <div class="col-sm-12 checkboxContainer">
+                      <div class="form-check round">
+                        <input class="form-check-input" type="checkbox" value="" id="personalData" name="personalData" [(ngModel)]="personalData">
+                        <label for="personalData"></label>
+                      </div>
+                      <div class="form-check-label col-sm-10 checkboxLabel">Ενημερώθηκα σχετικά με την επεξεργασία των
+                        <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a></div>
+                    </div>
+                  </div>
+              </div>
                 <div class="sendButtonContainer">
-                  <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" style="width: 100%" [disabled]="formContact.invalid"
+                  <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" style="width: 100%" [disabled]="formContact.invalid || !personalData"
                     class="btn btn-lg btn-success" (click)="insertContact()">
                     Αποστολή Στοιχείων
                   </button>
                 </div>
                 <div *ngIf="success" class="alert alert-success" style="text-align: center">
-                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας συνεργάτης μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε
-                    την αγορά ασφάλισης του αυτοκινήτου σας</p>
+                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας εκπρόσωπός μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε την αγορά ασφάλισης του αυτοκινήτου σας. Το ωράριο λειτουργίας είναι Δευτέρα έως Παρασκευή, 9:00 με 17:00.</p>
                 </div>
               </div>
             </div>
@@ -533,6 +537,20 @@
             </div>
             <div style="float: left">
               <h4>210 93 03 800</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-12">
+                <div style="float: left;">
+                  <a href="http://www.eurolife.gr/el/odikh%20boh8eia">
+                    <h4>Δείτε αναλυτικά ποιες είναι οι καλύψεις και τι σας εξασφαλίζουν</h4>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
