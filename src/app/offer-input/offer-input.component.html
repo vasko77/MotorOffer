@@ -2,6 +2,13 @@
 
   <div class="panel-body" style="background-color: white">
 
+    <div class="container">
+      <div class="col-sm-8">
+        <h1 style="color: #0E3E80;">Υπολογισμός Ασφαλίστρων Αυτοκινήτου</h1>
+        <small>Ισχύει για επιβατηγά οχήματα</small>
+      </div>
+    </div>
+
     <div class="row">
 
       <div class="col-sm-8">
@@ -60,8 +67,8 @@
                     <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
                     <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
-                        format="####" type="year" required />
+                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear" format="####"
+                        type="year" required />
                     </div>
                   </div>
 
@@ -86,7 +93,8 @@
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
                     <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #cc="ngModel" class="form-control" [spinners]="false" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
+                    <kendo-numerictextbox #cc="ngModel" class="form-control" [spinners]="false" format="n0" name="cc" [(ngModel)]="quotationInput.cc"
+                      required></kendo-numerictextbox>
                   </div>
 
                 </div>
@@ -255,7 +263,7 @@
                   </div>
 
                   <div kendoTooltip [tooltipTemplate]="tooltipPublicServant" filter="span" style="padding-top: 10px;" class="col-sm-1">
-                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ></span>
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
 
                 </div>
@@ -271,7 +279,7 @@
                   </div>
 
                   <div kendoTooltip [tooltipTemplate]="tooltipPublicUniformed" filter="span" style="padding-top: 10px;" class="col-sm-1">
-                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ></span>
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
@@ -294,11 +302,11 @@
                         (ngModelChange)="updateSecondVehicle($event)">
                       <label for="secondVehicle"></label>
                     </div>
-                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
+                    <div class="form-check-label checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
                   </div>
 
                   <div kendoTooltip [tooltipTemplate]="tooltip2ndVehicle" filter="span" style="padding-top: 10px;" class="col-sm-1">
-                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ></span>
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
 
                   <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
@@ -317,7 +325,12 @@
             </div>
 
             <br/>
+
+            <p>Στο στάδιο αυτό η Eurolife ERB Ασφαλιστική θα χρησιμοποιήσει τα παραπάνω στοιχεία σας μόνο για τον παρόν υπολογισμό
+              και δεν θα προχωρήσει σε περαιτέρω επεξεργασία ή αποθήκευση</p>
+
             <br/>
+
             <div class="buttonContainer">
               <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" [disabled]="form.invalid"
                 class="btn btn-lg pricingButton" (click)="quotation(undefined)">
@@ -516,7 +529,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="phone.invalid && ( phone?.touched || mouseOverSubmit )">
                     <label class="control-label">Τηλέφωνο Επικοινωνίας</label>
                     <em *ngIf="phone.invalid && ( phone?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" required/>
+                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" type="number" required/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
@@ -659,16 +672,23 @@
 
 
 <ng-template #tooltip2ndVehicle let-anchor>
-  <p><strong>Παρέχεται έκπτωση </strong>στο δεύτερο αυτοκίνητο και ισχύει για Ε.Ι.Χ. αυτοκίνητα που ανήκουν σε φυσικά πρόσωπα, με τις πιο κάτω προϋποθέσεις:</p>
+  <p>
+    <strong>Παρέχεται έκπτωση </strong>στο δεύτερο αυτοκίνητο και ισχύει για Ε.Ι.Χ. αυτοκίνητα που ανήκουν σε φυσικά πρόσωπα, με
+    τις πιο κάτω προϋποθέσεις:</p>
   <ul>
-    <li>ασφάλιση στην εταιρεία δύο αυτοκινήτων (είτε δικό σας , είτε άλλου ατόμου ή άλλων ιδιοκτητών οι οποίοι ζουν μόνιμα μαζί σας κάτω από την ίδια στέγη)</li>
-    <li>o	αποκλειστικοί οδηγοί των αυτοκινήτων να είναι το παντρεμένο ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
-    <li>o	η έκπτωση μπορεί να δοθεί και στην περίπτωση που ασφαλίζονται ένα ΕΙΧ αυτοκίνητο που ανήκει σε φυσικό πρόσωπο και ένα σε εταιρεία, με την προϋπόθεση να μας δηλωθεί εγγράφως ότι αποκλειστικοί οδηγοί των αυτοκινήτων είναι είτε το παντρεμένο ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
+    <li>ασφάλιση στην εταιρεία δύο αυτοκινήτων (είτε δικό σας , είτε άλλου ατόμου ή άλλων ιδιοκτητών οι οποίοι ζουν μόνιμα μαζί
+      σας κάτω από την ίδια στέγη)</li>
+    <li>αποκλειστικοί οδηγοί των αυτοκινήτων να είναι το παντρεμένο ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
+    <li>η έκπτωση μπορεί να δοθεί και στην περίπτωση που ασφαλίζονται ένα ΕΙΧ αυτοκίνητο που ανήκει σε φυσικό πρόσωπο και ένα
+      σε εταιρεία, με την προϋπόθεση να μας δηλωθεί εγγράφως ότι αποκλειστικοί οδηγοί των αυτοκινήτων είναι είτε το παντρεμένο
+      ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
   </ul>
 </ng-template>
 
 <ng-template #tooltipPublicServant let-anchor>
-  <p><strong>Παρέχεται έκπτωση 10% </strong>στα ασφάλιστρα Αστικής Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Δημόσιο Υπάλληλο ή Υπάλληλο ΔΕΚΟ με την προϋπόθεση προσκόμισης στην εταιρεία ενός εκ των κάτωθι δικαιολογητικών:</p>
+  <p>
+    <strong>Παρέχεται έκπτωση 10% </strong>στα ασφάλιστρα Αστικής Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Δημόσιο Υπάλληλο
+    ή Υπάλληλο ΔΕΚΟ με την προϋπόθεση προσκόμισης στην εταιρεία ενός εκ των κάτωθι δικαιολογητικών:</p>
   <ul>
     <li>απόκομμα μισθοδοσίας</li>
     <li>βεβαίωση εργασίας από την υπηρεσία (με σφραγίδα και υπογραφή Δ/ντή)</li>
@@ -676,7 +696,11 @@
 </ng-template>
 
 <ng-template #tooltipPublicUniformed let-anchor>
-  <p><strong>Παρέχεται </strong>επιπλέον της έκπτωσης εν ενεργεία Δημοσίου Υπαλλήλου ή Υπαλλήλου ΔΕΚΟ, έκπτωση 7% στα ασφάλιστρα Αστικής Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Ένστολο Δημόσιο Υπάλληλο που υπηρετεί σε κάποιο από τα παρακάτω σώματα:</p>
+  <p>
+    <strong>Παρέχεται </strong>επιπλέον της έκπτωσης εν ενεργεία Δημοσίου Υπαλλήλου ή Υπαλλήλου ΔΕΚΟ, έκπτωση 7% στα ασφάλιστρα Αστικής
+    Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Ένστολο Δημόσιο Υπάλληλο που υπηρετεί σε κάποιο από τα παρακάτω
+    σώματα:
+  </p>
   <ul>
     <li>Ελληνική Αστυνομία</li>
     <li>Ελληνικό Στρατό</li>
@@ -687,4 +711,3 @@
     <li>Λιμενικό Σώμα</li>
   </ul>
 </ng-template>
-
