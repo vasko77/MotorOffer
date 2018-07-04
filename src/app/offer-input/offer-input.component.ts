@@ -331,8 +331,6 @@ export class OfferInputComponent implements OnInit {
 
           this.quotationInput.contractDuration = quot.ContractDuration;
 
-          console.log('Municipality Code: ' + this.quotationInput.municipalityCode.toString());
-
           this.quotation(quot.SelectedMotorCoverItems);
 
         },
@@ -858,9 +856,11 @@ export class OfferInputComponent implements OnInit {
     this.open = true;
   }
 
-  private removeTheft(cover: IMotorCover): boolean {
+  removeTheft(cover: IMotorCover): boolean {
     // tslint:disable-next-line:max-line-length
-    return ( this.quotationInput.markaCode === '124' && (cover.MotorCoverItem === 8 || cover.MotorCoverItem === 13 || cover.MotorCoverItem === 14) )
-        || ( this.quotationInput.vehicleValue > 35000 );
+    return (cover.MotorCoverItem === 8 || cover.MotorCoverItem === 13 || cover.MotorCoverItem === 14) &&
+         ( ( this.quotationInput.markaCode === '124' )
+        || ( this.quotationInput.vehicleValue > 35000 )
+        || (  this.minStartDate.getFullYear() - this.quotationInput.vehicleLicenseYear > 15 ) );
   }
 }

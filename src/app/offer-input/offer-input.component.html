@@ -47,7 +47,7 @@
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
                         <option value="0">ΕΠΙΛΕΞΤΕ</option>
-                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName + ' - ' + marka.ItemCode }}</option>
+                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
                       </select>
                     </div>
                   </div>
@@ -83,8 +83,8 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
-                    <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
+                    <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο έως 9000</em>
+                    <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" max="9000" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
                   </div>
 
                 </div>
@@ -336,7 +336,7 @@
                     <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -350,7 +350,7 @@
                     <div class="coverGroup">
                       <div *ngFor="let cover of setCovers; let i = index;" class="row">
                         <div class="form-group">
-                          <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                          <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                           <div class="col-sm-1 infoTooltip" kendoTooltip>
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                           </div>
@@ -364,7 +364,8 @@
                            -->
                           <div *ngIf="i === 1" class="round col-sm-2" style="margin-left: 37px;">
                             <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}"
-                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" [disabled]="quotationInput.markaCode === '124'">
+                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" 
+                              [disabled]="removeTheft(cover)">
                             <label for="{{'set'+cover+i.toString()}}"></label>
                           </div>
                         </div>
@@ -374,7 +375,7 @@
                     <div *ngFor="let cover of optionalCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -546,7 +547,7 @@
             <div class="row">
               <div class="col-sm-12">
                 <div style="float: left;">
-                  <a href="http://www.eurolife.gr/el/odikh%20boh8eia">
+                  <a target="_blank" href="https://www.eurobank.gr/el/retail/proionta-upiresies/proionta/asfaleia/autokinitou/euelikti-asfaleia-autokinitou">
                     <h4>Δείτε αναλυτικά ποιες είναι οι καλύψεις και τι σας εξασφαλίζουν</h4>
                   </a>
                 </div>
