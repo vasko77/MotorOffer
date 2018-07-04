@@ -815,6 +815,9 @@ export class OfferInputComponent implements OnInit {
 
   setCoversCheckAll(value: boolean): void {
     this.setCovers.forEach(cover => { cover.Selected = value; });
+    if (!value) {
+      this.optionalCovers.find( (cover: ICover) => cover.Code === '005' ).Selected = false;
+    }
   }
 
 

@@ -60,8 +60,8 @@
                     <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
                     <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear" format="####"
-                        required />
+                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
+                        format="####" type="year" required />
                     </div>
                   </div>
 
@@ -79,18 +79,14 @@
                   <div class="form-group col-sm-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">
                     <label class="control-label">Τρέχουσα Αξία</label>
                     <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <div>
-                      <input #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue" format="c0"
-                        required />
-                    </div>
+                    <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
+                      [spinners]="false" format="c0" required></kendo-numerictextbox>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
                     <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <div>
-                      <input #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required />
-                    </div>
+                    <kendo-numerictextbox #cc="ngModel" class="form-control" [spinners]="false" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
                   </div>
 
                 </div>
