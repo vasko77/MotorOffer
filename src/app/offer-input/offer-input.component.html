@@ -59,8 +59,10 @@
                   <div class="form-group col-sm-6" [class.has-error]="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
                     <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
-                      format="####" required></kendo-numerictextbox>
+                    <div>
+                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
+                        format="####" required />
+                    </div>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="vehiclePurchaseDate.invalid && ( vehiclePurchaseDate?.touched || mouseOverSubmit )">
@@ -77,14 +79,18 @@
                   <div class="form-group col-sm-6" [class.has-error]="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">
                     <label class="control-label">Τρέχουσα Αξία</label>
                     <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
-                      format="c0" required></kendo-numerictextbox>
+                    <div>
+                      <input #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
+                        format="c0" required />
+                    </div>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
                     <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
+                    <div>
+                      <input #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required />
+                    </div>
                   </div>
 
                 </div>
@@ -152,8 +158,10 @@
                   <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
-                      format="####" required></kendo-numerictextbox>
+                    <div>
+                      <input #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
+                        format="####" required />
+                    </div>
                   </div>
 
                 </div>
@@ -179,32 +187,41 @@
               <div class="panel-body">
 
                 <div class="row">
-
+                  <div class="form-group col-sm-12 subtitle">
+                      <span class='arrowRight'></span>
+                      Στοιχεία <b>νεότερου</b> σε ηλικία οδηγού:
+                  </div>
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημ/νία γέννησης νεότερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία γέννησης</label>
                     <kendo-datepicker #dateBirthYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverBirthDate"
                       name="dateBirthYoungest"></kendo-datepicker>
                   </div>
-
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Έτος απόκτησης άδειας οδήγησης νεότερου σε ηλικία οδηγού</label>
-                    <kendo-numerictextbox #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear"
-                      format="####" name="diplomaYearYoungest"></kendo-numerictextbox>
+                    <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
+                    <div>
+                      <input #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear"
+                        format="####" name="diplomaYearYoungest" />
+                    </div>
                   </div>
 
                 </div>
 
                 <div class="row">
-
+                  <div class="form-group col-sm-12 subtitle">
+                      <span class='arrowRight'></span>
+                      Στοιχεία <b>μεγαλύτερου</b> σε ηλικία οδηγού:
+                  </div>
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Ημ/νία γέννησης μεγαλύτερου σε ηλικία οδηγού</label>
+                    <label class="control-label">Ημ/νία γέννησης</label>
                     <kendo-datepicker #dateBirthOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverBirthDate" name="dateBirthOldest"></kendo-datepicker>
                   </div>
 
                   <div class="form-group col-sm-6">
-                    <label class="control-label">Έτος απόκτησης άδειας οδήγησης μεγαλύτερου σε ηλικία οδηγού</label>
-                    <kendo-numerictextbox #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear"
-                      name="diplomaYearOldest" format="####"></kendo-numerictextbox>
+                    <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
+                    <div>
+                      <input #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear"
+                        name="diplomaYearOldest" format="####" />
+                    </div>
                   </div>
 
                 </div>
@@ -549,7 +566,7 @@
                   <a
                    target="_blank"
                    href="https://www.eurobank.gr/el/retail/proionta-upiresies/proionta/asfaleia/autokinitou/euelikti-asfaleia-autokinitou">
-                    <h4>Δείτε αναλυτικά ποιες είναι οι καλύψεις και τι σας εξασφαλίζουν</h4>
+                    <h4 style="font-size: 16px">Δείτε αναλυτικά ποιες είναι οι καλύψεις και τι σας εξασφαλίζουν</h4>
                   </a>
                 </div>
               </div>
