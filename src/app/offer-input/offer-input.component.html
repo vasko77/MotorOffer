@@ -2,6 +2,13 @@
 
   <div class="panel-body" style="background-color: white">
 
+    <div class="container">
+      <div class="col-sm-8">
+        <h1 style="color: #0E3E80;">Υπολογισμός Ασφαλίστρων Αυτοκινήτου</h1>
+        <small>Ισχύει για επιβατηγά οχήματα</small>
+      </div>
+    </div>
+
     <div class="row">
 
       <div class="col-sm-8">
@@ -47,7 +54,7 @@
                       <select #marka="ngModel" name="marka" class="form-control" [(ngModel)]="quotationInput.markaCode" (blur)="validateMarka($event)"
                         (change)="validateMarka($event)">
                         <option value="0">ΕΠΙΛΕΞΤΕ</option>
-                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName + ' - ' + marka.ItemCode }}</option>
+                        <option *ngFor="let marka of markesData?.MotorItems" [value]="marka.ItemCode">{{ marka.ItemName }}</option>
                       </select>
                     </div>
                   </div>
@@ -60,8 +67,8 @@
                     <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
                     <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear"
-                        format="####" type="year" required />
+                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear" format="####"
+                        type="year" required />
                     </div>
                   </div>
 
@@ -80,13 +87,14 @@
                     <label class="control-label">Τρέχουσα Αξία</label>
                     <em *ngIf="vehicleValue.invalid && ( vehicleValue?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <kendo-numerictextbox #vehicleValue="ngModel" name="vehicleValue" class="form-control" [(ngModel)]="quotationInput.vehicleValue"
-                      format="c0" required></kendo-numerictextbox>
+                      [spinners]="false" format="c0" required></kendo-numerictextbox>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="cc.invalid && ( cc?.touched || mouseOverSubmit )">
                     <label class="control-label">Κυβισμός</label>
                     <em *ngIf="cc.invalid && ( cc?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <kendo-numerictextbox #cc="ngModel" class="form-control" format="n0" name="cc" [(ngModel)]="quotationInput.cc" required></kendo-numerictextbox>
+                    <kendo-numerictextbox #cc="ngModel" class="form-control" [spinners]="false" format="n0" name="cc" [(ngModel)]="quotationInput.cc"
+                      required></kendo-numerictextbox>
                   </div>
 
                 </div>
@@ -155,8 +163,8 @@
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear"
-                        format="####" required />
+                      <input #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear" format="####"
+                        required />
                     </div>
                   </div>
 
@@ -184,8 +192,9 @@
 
                 <div class="row">
                   <div class="form-group col-sm-12 subtitle">
-                      <span class='arrowRight'></span>
-                      Στοιχεία <b>νεότερου</b> σε ηλικία οδηγού:
+                    <span class='arrowRight'></span>
+                    Στοιχεία
+                    <b>νεότερου</b> σε ηλικία οδηγού:
                   </div>
                   <div class="form-group col-sm-6">
                     <label class="control-label">Ημ/νία γέννησης</label>
@@ -195,8 +204,8 @@
                   <div class="form-group col-sm-6">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <div>
-                      <input #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear"
-                        format="####" name="diplomaYearYoungest" />
+                      <input #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear" format="####"
+                        name="diplomaYearYoungest" />
                     </div>
                   </div>
 
@@ -204,8 +213,9 @@
 
                 <div class="row">
                   <div class="form-group col-sm-12 subtitle">
-                      <span class='arrowRight'></span>
-                      Στοιχεία <b>μεγαλύτερου</b> σε ηλικία οδηγού:
+                    <span class='arrowRight'></span>
+                    Στοιχεία
+                    <b>μεγαλύτερου</b> σε ηλικία οδηγού:
                   </div>
                   <div class="form-group col-sm-6">
                     <label class="control-label">Ημ/νία γέννησης</label>
@@ -215,8 +225,8 @@
                   <div class="form-group col-sm-6">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <div>
-                      <input #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear"
-                        name="diplomaYearOldest" format="####" />
+                      <input #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear" name="diplomaYearOldest"
+                        format="####" />
                     </div>
                   </div>
 
@@ -243,26 +253,35 @@
               <div class="panel-body">
 
                 <div class="row">
-                  <div class="col-sm-12 checkboxContainer">
+                  <div class="col-sm-5 checkboxContainer">
                     <div class="form-check round">
                       <input #publicServant="ngModel" type="checkbox" id="publicServant" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
                         (ngModelChange)="updatePublicServant($event)">
                       <label for="publicServant"></label>
                     </div>
-                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</div>
+                    <div class="form-check-label checkboxLabel">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</div>
                   </div>
+
+                  <div kendoTooltip [tooltipTemplate]="tooltipPublicServant" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                  </div>
+
                 </div>
 
                 <div class="row">
-                  <div class="col-sm-12 checkboxContainer">
+                  <div class="col-sm-5 checkboxContainer">
                     <div class="form-check round">
                       <input #uniformed="ngModel" type="checkbox" id="uniformed" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
                         [disabled]="!publicServant.value">
                       <label for="uniformed"></label>
                     </div>
-                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Ένστολος Υπάλληλος Δημοσίου</div>
-
+                    <div class="form-check-label checkboxLabel">&nbsp;Ένστολος Υπάλληλος Δημοσίου</div>
                   </div>
+
+                  <div kendoTooltip [tooltipTemplate]="tooltipPublicUniformed" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                  </div>
+
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
                     *ngIf="uniformed.value">
                     <label class="control-label">Κατηγορία Ένστολου</label>
@@ -277,14 +296,19 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-sm-12 checkboxContainer">
+                  <div class="col-sm-5 checkboxContainer">
                     <div class="form-check round">
                       <input #secondVehicle="ngModel" type="checkbox" id="secondVehicle" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
                         (ngModelChange)="updateSecondVehicle($event)">
                       <label for="secondVehicle"></label>
                     </div>
-                    <div class="form-check-label col-sm-8 checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
+                    <div class="form-check-label checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
                   </div>
+
+                  <div kendoTooltip [tooltipTemplate]="tooltip2ndVehicle" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                  </div>
+
                   <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
                     <label class="control-label">Αρ. Κυκλοφορίας</label>
                     <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">* απαραίτητο</em>
@@ -301,7 +325,12 @@
             </div>
 
             <br/>
+
+            <p>Στο στάδιο αυτό η Eurolife ERB Ασφαλιστική θα χρησιμοποιήσει τα παραπάνω στοιχεία σας μόνο για τον παρόν υπολογισμό
+              και δεν θα προχωρήσει σε περαιτέρω επεξεργασία ή αποθήκευση</p>
+
             <br/>
+
             <div class="buttonContainer">
               <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" [disabled]="form.invalid"
                 class="btn btn-lg pricingButton" (click)="quotation(undefined)">
@@ -349,7 +378,7 @@
                     <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -363,7 +392,7 @@
                     <div class="coverGroup">
                       <div *ngFor="let cover of setCovers; let i = index;" class="row">
                         <div class="form-group">
-                          <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                          <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                           <div class="col-sm-1 infoTooltip" kendoTooltip>
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                           </div>
@@ -377,7 +406,7 @@
                            -->
                           <div *ngIf="i === 1" class="round col-sm-2" style="margin-left: 37px;">
                             <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}"
-                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" [disabled]="quotationInput.markaCode === '124'">
+                              [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" [disabled]="removeTheft(cover)">
                             <label for="{{'set'+cover+i.toString()}}"></label>
                           </div>
                         </div>
@@ -387,7 +416,7 @@
                     <div *ngFor="let cover of optionalCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description + ' - ' + cover.MotorCoverItem.toString() }}</label>
+                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
@@ -500,7 +529,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="phone.invalid && ( phone?.touched || mouseOverSubmit )">
                     <label class="control-label">Τηλέφωνο Επικοινωνίας</label>
                     <em *ngIf="phone.invalid && ( phone?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" required/>
+                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" type="number" required/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
@@ -519,10 +548,11 @@
                         <label for="personalData"></label>
                       </div>
                       <div class="form-check-label col-sm-10 checkboxLabel">Ενημερώθηκα σχετικά με την επεξεργασία των
-                        <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a></div>
+                        <a href="assets/PersonalData.pdf" target="_blank">προσωπικών μου δεδομένων</a>
+                      </div>
                     </div>
                   </div>
-              </div>
+                </div>
                 <div class="sendButtonContainer">
                   <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" style="width: 100%" [disabled]="formContact.invalid || !personalData"
                     class="btn btn-lg btn-success" (click)="insertContact()">
@@ -530,7 +560,8 @@
                   </button>
                 </div>
                 <div *ngIf="success" class="alert alert-success" style="text-align: center">
-                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας εκπρόσωπός μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε την αγορά ασφάλισης του αυτοκινήτου σας. Το ωράριο λειτουργίας είναι Δευτέρα έως Παρασκευή, 9:00 με 17:00.</p>
+                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας εκπρόσωπός μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε
+                    την αγορά ασφάλισης του αυτοκινήτου σας. Το ωράριο λειτουργίας είναι Δευτέρα έως Παρασκευή, 9:00 με 17:00.</p>
                 </div>
               </div>
             </div>
@@ -559,9 +590,7 @@
             <div class="row">
               <div class="col-sm-12">
                 <div style="float: left;">
-                  <a
-                   target="_blank"
-                   href="https://www.eurobank.gr/el/retail/proionta-upiresies/proionta/asfaleia/autokinitou/euelikti-asfaleia-autokinitou">
+                  <a target="_blank" href="https://www.eurobank.gr/el/retail/proionta-upiresies/proionta/asfaleia/autokinitou/euelikti-asfaleia-autokinitou">
                     <h4 style="font-size: 16px">Δείτε αναλυτικά ποιες είναι οι καλύψεις και τι σας εξασφαλίζουν</h4>
                   </a>
                 </div>
@@ -579,9 +608,7 @@
               <div class="col-sm-6">
 
                 <div style="float: left;">
-                  <a
-                   target="_blank"
-                   href="http://www.eurolife.gr/el/odikh%20boh8eia">
+                  <a target="_blank" href="http://www.eurolife.gr/el/odikh%20boh8eia">
                     <ul>
                       <li>Φροντίδα ατυχήματος AutoAssist</li>
                     </ul>
@@ -642,3 +669,45 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #tooltip2ndVehicle let-anchor>
+  <p>
+    <strong>Παρέχεται έκπτωση </strong>στο δεύτερο αυτοκίνητο και ισχύει για Ε.Ι.Χ. αυτοκίνητα που ανήκουν σε φυσικά πρόσωπα, με
+    τις πιο κάτω προϋποθέσεις:</p>
+  <ul>
+    <li>ασφάλιση στην εταιρεία δύο αυτοκινήτων (είτε δικό σας , είτε άλλου ατόμου ή άλλων ιδιοκτητών οι οποίοι ζουν μόνιμα μαζί
+      σας κάτω από την ίδια στέγη)</li>
+    <li>αποκλειστικοί οδηγοί των αυτοκινήτων να είναι το παντρεμένο ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
+    <li>η έκπτωση μπορεί να δοθεί και στην περίπτωση που ασφαλίζονται ένα ΕΙΧ αυτοκίνητο που ανήκει σε φυσικό πρόσωπο και ένα
+      σε εταιρεία, με την προϋπόθεση να μας δηλωθεί εγγράφως ότι αποκλειστικοί οδηγοί των αυτοκινήτων είναι είτε το παντρεμένο
+      ζευγάρι ή γονέας και ανύπαντρο παιδί ή ανύπαντρα αδέλφια</li>
+  </ul>
+</ng-template>
+
+<ng-template #tooltipPublicServant let-anchor>
+  <p>
+    <strong>Παρέχεται έκπτωση 10% </strong>στα ασφάλιστρα Αστικής Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Δημόσιο Υπάλληλο
+    ή Υπάλληλο ΔΕΚΟ με την προϋπόθεση προσκόμισης στην εταιρεία ενός εκ των κάτωθι δικαιολογητικών:</p>
+  <ul>
+    <li>απόκομμα μισθοδοσίας</li>
+    <li>βεβαίωση εργασίας από την υπηρεσία (με σφραγίδα και υπογραφή Δ/ντή)</li>
+  </ul>
+</ng-template>
+
+<ng-template #tooltipPublicUniformed let-anchor>
+  <p>
+    <strong>Παρέχεται </strong>επιπλέον της έκπτωσης εν ενεργεία Δημοσίου Υπαλλήλου ή Υπαλλήλου ΔΕΚΟ, έκπτωση 7% στα ασφάλιστρα Αστικής
+    Ευθύνης στο ΕΙΧ αυτοκίνητο που ανήκει σε εν ενεργεία Ένστολο Δημόσιο Υπάλληλο που υπηρετεί σε κάποιο από τα παρακάτω
+    σώματα:
+  </p>
+  <ul>
+    <li>Ελληνική Αστυνομία</li>
+    <li>Ελληνικό Στρατό</li>
+    <li>Αγροφυλακή</li>
+    <li>Πολεμικό Ναυτικό</li>
+    <li>Πολεμική Αεροπορία</li>
+    <li>Πυροσβεστικό Σώμα</li>
+    <li>Λιμενικό Σώμα</li>
+  </ul>
+</ng-template>

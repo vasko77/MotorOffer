@@ -13,6 +13,7 @@ import { IMotorItemsData } from '../models/online-issue-contracts/motor-item';
 import { environment } from '../../environments/environment';
 import { INotificationInfo } from '../models/mvp-contracts/notification-info';
 import { date2String } from '../utilities/conversions';
+import { ICoverItem } from '../models/online-issue-contracts/covers-response';
 
 @Component({
   templateUrl: './application-input.component.html',
@@ -126,7 +127,7 @@ export class ApplicationInputComponent implements OnInit {
         InitialPaymentType: 3, // Cach
         ContractBySMS_Email: '1',
         SameAsInsured: true,
-        BirthDate: new Date(this.onlineIssueService.quotationInput.birthDate),
+        BirthDate: date2String(this.onlineIssueService.quotationInput.birthDate),
         AcceptedUsageOfPersonalData: true,
         PromotionConcentEFG: this.applicationInput.PromotionConcentEFG,
         PromotionConcentOther: this.applicationInput.PromotionConcentOther
@@ -241,6 +242,18 @@ export class ApplicationInputComponent implements OnInit {
 
   validateTaxOffice(event): boolean {
     return this.applicationInput.taxOffice !== 0;
+  }
+
+  get personalAccident(): number {
+    if ( this.onlineIssueService && this.onlineIssueService ) {
+      return this.mvpApiService.quotationInfo.SelectedMotorCoverItems.find( (cover: number) =>  cover === 21 );
+    } else {
+      return undefined;
+    }
+  }
+
+  showPersonalDataConcent(): boolean {
+    return this.personalAccident !== undefined;
   }
 
 }

@@ -7,9 +7,9 @@ export const environment = {
   urlFastQuotation: 'http://eh017ins75/MotorApiNoauth/api/Motor/FastQuotation',
   urlApplication: 'http://eh017ins75/MotorApiNoauth/api/Motor/SaveProposal',
 
-  urlMvpQuotation: 'http://eh017ins75/MvpApiAgent/quotation/',
-  urlMvpContact: 'http://eh017ins75/MvpApiAgent/contact/',
-  urlAuthentication: 'http://eh017ins75/MvpApiAgent/authentication',
-  urlMvpNotification: 'http://eh017ins75/MvpApiAgent/notifications'
+  urlMvpQuotation: 'http://eh017ins75/MvpApi/quotation/',
+  urlMvpContact: 'http://eh017ins75/MvpApi/contact/',
+  urlAuthentication: 'http://eh017ins75/MvpApi/authentication',
+  urlMvpNotification: 'http://eh017ins75/MvpApi/notifications'
 
 };

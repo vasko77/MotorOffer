@@ -78,7 +78,7 @@ export interface ICustomerDetails {
     HasAcceptedConditions: boolean;
     InitialPaymentType: number;
     ContractBySMS_Email: string;
-    BirthDate: Date;
+    BirthDate: string;
     SameAsInsured: boolean;
     AcceptedUsageOfPersonalData: boolean;
     PromotionConcentEFG: boolean;
