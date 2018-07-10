@@ -131,7 +131,7 @@
 
   </div>
 
-  <div class="form-check row">
+  <div class="form-check row" *ngIf="showPersonalDataConcent()">
     <label class="form-check-label col-sm-7" for="peronalDataConcent">Δίνω τη συγκατάθεσή μου για την επεξεργασία των δεδομένων Υγείας και Περίθαλψης</label>
     <input class="form-check-input col-sm-1" type="checkbox" id="peronalDataConcent" name="peronalDataConcent" [(ngModel)]="peronalDataConcent">
   </div>
@@ -159,7 +159,7 @@
 
   <div style="text-align: center" *ngIf="showSaveProposal">
     <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-      <button type="submit" [disabled]="form.invalid || !peronalDataConcent" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
+      <button type="submit" [disabled]="form.invalid || ( showPersonalDataConcent() && !peronalDataConcent )" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
     </span>
   </div>
 

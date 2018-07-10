@@ -128,7 +128,7 @@ export class ApplicationInputComponent implements OnInit {
         ContractBySMS_Email: '1',
         SameAsInsured: true,
         BirthDate: date2String(this.onlineIssueService.quotationInput.birthDate),
-        AcceptedUsageOfPersonalData: true,
+        AcceptedUsageOfPersonalData: this.showPersonalDataConcent() ? this.peronalDataConcent : null,
         PromotionConcentEFG: this.applicationInput.PromotionConcentEFG,
         PromotionConcentOther: this.applicationInput.PromotionConcentOther
       }
@@ -245,7 +245,7 @@ export class ApplicationInputComponent implements OnInit {
   }
 
   get personalAccident(): number {
-    if ( this.onlineIssueService && this.onlineIssueService ) {
+    if ( this.onlineIssueService && this.onlineIssueService && this.mvpApiService.quotationInfo ) {
       return this.mvpApiService.quotationInfo.SelectedMotorCoverItems.find( (cover: number) =>  cover === 21 );
     } else {
       return undefined;

@@ -29,6 +29,7 @@ export class OfferInputComponent implements OnInit {
   busyMunicipalities: Subscription;
   busyUniformed: Subscription;
   busyQuotations: Subscription;
+  busyInterest: Subscription;
 
   success: boolean;
   open: boolean;
@@ -369,13 +370,13 @@ export class OfferInputComponent implements OnInit {
     }
 
     if (this.quotationInput.vehicleValue > 100000) {
-       // tslint:disable-next-line:max-line-length
-       this.customError = 'Για οχήματα με αξία πάνω από € 100.000, παρακαλούμε, επικοινωνήστε με την εξυπηρέτηση πελατών στο 210 9303800';
-       return;
-     }
+      // tslint:disable-next-line:max-line-length
+      this.customError = 'Για οχήματα με αξία πάνω από € 100.000, παρακαλούμε, επικοινωνήστε με την εξυπηρέτηση πελατών στο 210 9303800';
+      return;
+    }
 
     if (this.quotationInput.vehicleValue > 35000
-     && this.setCoversCheck) {
+      && this.setCoversCheck) {
       // tslint:disable-next-line:max-line-length
       this.customError = 'Για οχήματα με αξία πάνω από € 35.000 δεν μπορείτε να επιλέξετε τις καλύψεις Ολική Κλοπή, Μερική Κλοπή, Κατεστραμμένες Κλειδαριές. Για περισσότερες πληροφορίες, παρακαλούμε, επικοινωνήστε με την εξυπηρέτηση πελατών στο 210 9303800';
       return;
@@ -638,7 +639,7 @@ export class OfferInputComponent implements OnInit {
 
     // MVP quotation data save
 
-    this.mvpApiService.postQuotation(mvpQuotation)
+    this.busyInterest = this.mvpApiService.postQuotation(mvpQuotation)
       .subscribe(
         (data: IQuotationInfo) => {
           this.enterContactInfo = false;
@@ -797,11 +798,12 @@ export class OfferInputComponent implements OnInit {
     return this.quotationInput.municipalityCode !== '0';
   }
 
+
   validateUniformed(event): boolean {
-    if (this.quotationInput.uniformed) {
-      return this.quotationInput.uniformedCode !== 0;
-    } else {
+    if (this.quotationInput.uniformed === undefined || !this.quotationInput.uniformed) {
       return true;
+    } else {
+      return this.quotationInput.uniformedCode.toString() !== '0';
     }
   }
 
@@ -816,7 +818,7 @@ export class OfferInputComponent implements OnInit {
   setCoversCheckAll(value: boolean): void {
     this.setCovers.forEach(cover => { cover.Selected = value; });
     if (!value) {
-      this.optionalCovers.find( (cover: ICover) => cover.Code === '005' ).Selected = false;
+      this.optionalCovers.find((cover: ICover) => cover.Code === '005').Selected = false;
     }
   }
 
@@ -862,8 +864,8 @@ export class OfferInputComponent implements OnInit {
   removeTheft(cover: IMotorCover): boolean {
     // tslint:disable-next-line:max-line-length
     return (cover.MotorCoverItem === 8 || cover.MotorCoverItem === 13 || cover.MotorCoverItem === 14) &&
-         ( ( this.quotationInput.markaCode === '124' )
-        || ( this.quotationInput.vehicleValue > 35000 )
-        || (  this.minStartDate.getFullYear() - this.quotationInput.vehicleLicenseYear > 15 ) );
+      ((this.quotationInput.markaCode === '124')
+        || (this.quotationInput.vehicleValue > 35000)
+        || (this.minStartDate.getFullYear() - this.quotationInput.vehicleLicenseYear > 15));
   }
 }

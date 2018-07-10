@@ -1,4 +1,4 @@
-<div class="panel panel-default" [ngBusy]="[busyMarkes,busyUniformed,busyQuotations,busyMunicipalities]">
+<div class="panel panel-default" [ngBusy]="[busyMarkes,busyUniformed,busyQuotations,busyMunicipalities,busyInterest]">
 
   <div class="panel-body" style="background-color: white">
 
@@ -13,7 +13,7 @@
 
       <div class="col-sm-8">
 
-        <form #form="ngForm" novalidate>
+        <form #form="ngForm" (ngSubmit)="quotation(undefined)" novalidate>
 
           <div *ngIf="initialInfo">
 
@@ -124,7 +124,7 @@
 
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
-                    <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                    <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητη εντός 30 ημερών</em>
                     <kendo-datepicker #startDate="ngModel" ngModel class="form-control" [(value)]="quotationInput.contractStartDate" name="dateStart"
                       [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
                   </div>
@@ -285,7 +285,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
                     *ngIf="uniformed.value">
                     <label class="control-label">Κατηγορία Ένστολου</label>
-                    <em *ngIf="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                    <em *ngIf="quotationInput.uniformedCode.toString() === '0'  && ( uniformedCode?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div class="">
                       <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" (blur)="validateUniformed($event)"
                         (change)="validateUniformed($event)">
@@ -332,10 +332,11 @@
             <br/>
 
             <div class="buttonContainer">
-              <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" [disabled]="form.invalid"
-                class="btn btn-lg pricingButton" (click)="quotation(undefined)">
-                Υπολογισμός
-              </button>
+              <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
+                <button type="submit" [disabled]="form.invalid || !validateUniformed() || !validateMunicipality() || !validateMarka()" class="btn btn-lg pricingButton">
+                  Υπολογισμός
+                </button>
+              </span>
             </div>
           </div>
 
@@ -486,9 +487,7 @@
           <p>Η παροχή αυτοκινήτου αντικατάστασης θα πρέπει να δίνεται μόνο αν επιλεγεί κάποια από τις κάτωθι:</p>
           <ul>
             <li>Πυρκαγιά</li>
-            <li>Ολική Κλοπή</li>
-            <li>Μερική Κλοπή</li>
-            <li>Κατεστραμμένες κλειδαριές</li>
+            <li>Ολική Κλοπή, μερική κλοπή, κατεστραμμένες κλειδαριές</li>
             <li>Φυσικές Καταστροφές</li>
           </ul>
         </div>
