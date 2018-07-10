@@ -12,6 +12,15 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122030805-1"></script>
+  <script>
+    if (document.location.hostname == 'motorinsurance.eurolife.gr') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-122030805-1');
+    }
+  </script>
   <app-root></app-root>
 </body>
 </html>
