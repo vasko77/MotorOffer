@@ -35,9 +35,9 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4" [class.has-error]="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">
+    <div class="form-group col-sm-4" [class.has-error]="applicationInput.gender.toString() === '0'  && ( gender?.touched || mouseOverSubmit )">
       <label class="control-label">Φύλο</label>
-      <em *ngIf="applicationInput.gender === 0  && ( gender?.touched || mouseOverSubmit )">Απαιτείται</em>
+      <em *ngIf="applicationInput.gender.toString() === '0'  && ( gender?.touched || mouseOverSubmit )">Απαιτείται</em>
       <div class="">
         <select #gender="ngModel" name="gender" class="form-control" [(ngModel)]="applicationInput.gender" (blur)="validateGender($event)"
           (change)="validateGender($event)">
@@ -62,9 +62,9 @@
       </div>
     </div>
 
-    <div class="form-group col-sm-4" [class.has-error]="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">
+    <div class="form-group col-sm-4" [class.has-error]="applicationInput.taxOffice === '0'  && ( taxOffice?.touched || mouseOverSubmit )">
       <label class="control-label">Δ.Ο.Υ.</label>
-      <em *ngIf="applicationInput.taxOffice === 0  && ( taxOffice?.touched || mouseOverSubmit )">Απαιτείται</em>
+      <em *ngIf="applicationInput.taxOffice === '0'  && ( taxOffice?.touched || mouseOverSubmit )">Απαιτείται</em>
       <div class="">
         <select #taxOffice="ngModel" name="taxOffice" class="form-control" [(ngModel)]="applicationInput.taxOffice" (blur)="validateTaxOffice($event)"
           (change)="validateTaxOffice($event)">
@@ -124,8 +124,8 @@
       <div class="form-group has-error" [ngClass]="{'has-error': eMail?.invalid && ( eMail?.touched || mouseOverSubmit === true ) }">
         <label for="eMail">e-mail</label>
         <em class="text-danger" *ngIf="eMail.invalid && ( eMail.touched || mouseOverSubmit === true )">Απαιτείται</em>
-        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
-        />
+        <input #eMail="ngModel" type="text" id="eMail" name="eMail" [(ngModel)]="applicationInput.eMail" class="form-control" 
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" required />
       </div>
     </div>
 
@@ -159,7 +159,7 @@
 
   <div style="text-align: center" *ngIf="showSaveProposal">
     <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-      <button type="submit" [disabled]="form.invalid || ( showPersonalDataConcent() && !peronalDataConcent )" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
+      <button type="submit" [disabled]="form.invalid || ( showPersonalDataConcent() && !peronalDataConcent ) || !validateTaxOffice() || !validateGender()" class="btn btn-lg btn-success">Καταχώρηση Αίτησης</button>
     </span>
   </div>
 

@@ -6,7 +6,7 @@ export interface IApplicationInputParams {
     gender: number;
     taxNumber: string;
     idCardNumber: string;
-    taxOffice: number;
+    taxOffice: string;
     address: string;
     city: string;
     zip: string;

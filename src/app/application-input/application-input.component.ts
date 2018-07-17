@@ -51,7 +51,7 @@ export class ApplicationInputComponent implements OnInit {
       gender: 0,
       taxNumber: '',
       idCardNumber: '',
-      taxOffice: 0,
+      taxOffice: '0',
       PromotionConcentEFG: false,
       PromotionConcentOther: false
     };
@@ -237,11 +237,11 @@ export class ApplicationInputComponent implements OnInit {
   }
 
   validateGender(event): boolean {
-    return this.applicationInput.gender !== 0;
+    return this.applicationInput.gender.toString() !== '0';
   }
 
   validateTaxOffice(event): boolean {
-    return this.applicationInput.taxOffice !== 0;
+    return this.applicationInput.taxOffice !== '0';
   }
 
   get personalAccident(): number {

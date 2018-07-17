@@ -144,6 +144,7 @@ export class OfferInputComponent implements OnInit {
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
     this.minStartDate.setDate(this.minStartDate.getDate());
+    this.minStartDate.setHours(0, 0, 0);
     this.maxStartDate.setMonth(this.minStartDate.getMonth() + 1);
 
     if (this.mvpApiService.quotationInfo) {

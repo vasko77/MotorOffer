@@ -125,7 +125,7 @@
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
                     <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητη εντός 30 ημερών</em>
-                    <kendo-datepicker #startDate="ngModel" ngModel class="form-control" [(value)]="quotationInput.contractStartDate" name="dateStart"
+                    <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" [(value)]="quotationInput.contractStartDate" name="dateStart"
                       [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
                   </div>
 
