@@ -31,6 +31,8 @@ export class OfferInputComponent implements OnInit {
   busyQuotations: Subscription;
   busyInterest: Subscription;
 
+  years: number[] = new Array(60);
+
   success: boolean;
   open: boolean;
 
@@ -141,11 +143,19 @@ export class OfferInputComponent implements OnInit {
     this.quotationInput.municipalityCode = '0';
     this.quotationInput.uniformedCode = 0;
     this.quotationInput.contractDuration = '12';
+    this.quotationInput.vehicleLicenseYear = 0;
+    this.quotationInput.driverLicenseYear = 0;
+    this.quotationInput.youngestDriverLicenseYear = 0;
+    this.quotationInput.oldestDriverLicenseYear = 0;
     this.maxDateBirth = new Date();
     this.maxDateBirth.setFullYear(this.maxDateBirth.getFullYear() - 18);
     this.minStartDate.setDate(this.minStartDate.getDate());
     this.minStartDate.setHours(0, 0, 0);
     this.maxStartDate.setMonth(this.minStartDate.getMonth() + 1);
+
+    for ( let i = 0; i < 61; i++) {
+      this.years[i] = this.minStartDate.getFullYear() - i;
+    }
 
     if (this.mvpApiService.quotationInfo) {
       this.quotationInput.birthDate = new Date(this.mvpApiService.quotationInfo.BirthDate);
@@ -398,7 +408,8 @@ export class OfferInputComponent implements OnInit {
           LicenseDate: `${this.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.quotationInput.zip,
           Municipality: this.quotationInput.municipalityCode,
-          TaxIdentificationNumber: ''
+          TaxIdentificationNumber: '',
+          Sex: ''
         },
         VehicleInfo: {
           PlateNumber: this.quotationInput.plateNo,
@@ -789,6 +800,10 @@ export class OfferInputComponent implements OnInit {
     if (!value) {
       this.quotationInput.plateNo2 = '';
     }
+  }
+
+  validateYear(event): boolean {
+    return this.quotationInput.vehicleLicenseYear !== 0;
   }
 
   validateMarka(event): boolean {

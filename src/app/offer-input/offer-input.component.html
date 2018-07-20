@@ -63,12 +63,15 @@
 
                 <div class="row">
 
-                  <div class="form-group col-sm-6" [class.has-error]="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">
+                  <div class="form-group col-sm-6" [class.has-error]="quotationInput.vehicleLicenseYear.toString() === '0' && ( licenseYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος 1ης άδειας κυκλοφορίας</label>
-                    <em *ngIf="licenseYear.invalid && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                    <em *ngIf="quotationInput.vehicleLicenseYear.toString() === '0' && ( licenseYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #licenseYear="ngModel" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear" name="licenseYear" format="####"
-                        type="year" required />
+                      <select #licenseYear="ngModel" id="licenseYear" name="licenseYear" class="form-control" [(ngModel)]="quotationInput.vehicleLicenseYear"
+                        (blur)="validateYear($event)" (change)="validateYear($event)">
+                        <option value="0" default>ΠΑΡΑΚΑΛΩ ΕΠΙΛΕΞΤΕ</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                      </select>
                     </div>
                   </div>
 
@@ -125,8 +128,8 @@
                   <div class="form-group col-sm-6" [class.has-error]="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">
                     <label class="control-label">Έναρξη Συμβολαίου</label>
                     <em *ngIf="startDate.invalid && ( startDate?.touched || mouseOverSubmit )">* απαραίτητη εντός 30 ημερών</em>
-                    <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" [(value)]="quotationInput.contractStartDate" name="dateStart"
-                      [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
+                    <kendo-datepicker #startDate="ngModel" class="form-control" [(ngModel)]="quotationInput.contractStartDate" [(value)]="quotationInput.contractStartDate"
+                      name="dateStart" [min]="minStartDate" [max]="maxStartDate" required></kendo-datepicker>
                   </div>
 
                 </div>
@@ -159,12 +162,16 @@
                     <kendo-datepicker #dateBirth="ngModel" class="form-control" [(ngModel)]="quotationInput.birthDate" name="dateBirth" required></kendo-datepicker>
                   </div>
 
-                  <div class="form-group col-sm-6" [class.has-error]="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">
+                  <div class="form-group col-sm-6" [class.has-error]="quotationInput.driverLicenseYear.toString() === '0' && ( diplomaYear?.touched || mouseOverSubmit )">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
-                    <em *ngIf="diplomaYear.invalid && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                    <em *ngIf="quotationInput.driverLicenseYear.toString() === '0' && ( diplomaYear?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <div>
-                      <input #diplomaYear="ngModel" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear" name="diplomaYear" format="####"
-                        required />
+                      <select #diplomaYear="ngModel" id="diplomaYear" name="diplomaYear" class="form-control" [(ngModel)]="quotationInput.driverLicenseYear"
+                        (blur)="validateYear($event)" (change)="validateYear($event)">
+                        <option value="0" default>ΠΑΡΑΚΑΛΩ ΕΠΙΛΕΞΤΕ</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                      </select>
+
                     </div>
                   </div>
 
@@ -204,8 +211,10 @@
                   <div class="form-group col-sm-6">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <div>
-                      <input #diplomaYearYoungest="ngModel" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear" format="####"
-                        name="diplomaYearYoungest" />
+                      <select #diplomaYearYoungest="ngModel" id="diplomaYearYoungest" name="diplomaYearYoungest" class="form-control" [(ngModel)]="quotationInput.youngestDriverLicenseYear"
+                        (blur)="validateYear($event)" (change)="validateYear($event)">
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                      </select>
                     </div>
                   </div>
 
@@ -225,8 +234,10 @@
                   <div class="form-group col-sm-6">
                     <label class="control-label">Έτος απόκτησης άδειας οδήγησης</label>
                     <div>
-                      <input #diplomaYearOldest="ngModel" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear" name="diplomaYearOldest"
-                        format="####" />
+                      <select #diplomaYearOldest="ngModel" id="diplomaYearOldest" name="diplomaYearOldest" class="form-control" [(ngModel)]="quotationInput.oldestDriverLicenseYear"
+                        (blur)="validateYear($event)" (change)="validateYear($event)">
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                      </select>
                     </div>
                   </div>
 
@@ -333,7 +344,8 @@
 
             <div class="buttonContainer">
               <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
-                <button type="submit" [disabled]="form.invalid || !validateUniformed() || !validateMunicipality() || !validateMarka()" class="btn btn-lg pricingButton">
+                <button type="submit" [disabled]="form.invalid || !validateUniformed() || !validateMunicipality() || !validateMarka() || !validateYear()"
+                  class="btn btn-lg pricingButton">
                   Υπολογισμός
                 </button>
               </span>

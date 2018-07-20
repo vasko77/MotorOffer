@@ -17,6 +17,7 @@ export interface IMainDriverInfo {
     Municipality: string;
     PostalCode: string;
     TaxIdentificationNumber: string;
+    Sex: string;
 }
 
 export interface IMotorCover {

@@ -86,7 +86,8 @@ export class ApplicationInputComponent implements OnInit {
           LicenseDate: `${this.onlineIssueService.quotationInput.driverLicenseYear}-01-01`,
           PostalCode: this.onlineIssueService.quotationInput.zip,
           TaxIdentificationNumber: this.applicationInput.taxNumber,
-          Municipality: this.onlineIssueService.quotationInput.municipalityCode.toString()
+          Municipality: this.onlineIssueService.quotationInput.municipalityCode.toString(),
+          Sex: this.applicationInput.gender.toString()
         },
         VehicleInfo: {
           AssemblyDate: `${this.onlineIssueService.quotationInput.vehicleLicenseYear}-01-01`,
