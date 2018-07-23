@@ -64,6 +64,10 @@ em {
 .coverGroup {
   padding: 10px 0;
   border-bottom: 1px solid rgba(0,0,0,0.24);
+  margin: 0 !important;
+}
+.coverGroup > .row {
+  margin: 0 !important;
 }
 .checkmark{
   display:inline-block;
@@ -188,20 +192,13 @@ label {
    margin: 7px 0;
  }
 
- .coverCheckbox {
-   margin-left: 39px !important;
- }
-
- .selectAllCheckbox {
-   margin-left: 29px !important;
- }
-
 // checkbox
 
 .round {
   position: relative;
   margin-left: 20px;
   width: 24px;
+  min-width: 24px;
 }
 
 .round label {
@@ -248,18 +245,10 @@ label {
   cursor: not-allowed;
 }
 .coverPanelHeader {
-    display: flex;
+  margin: 0 !important;
 }
-
-@media (max-width: 1200px) {
-  .coverCheckbox {
-    margin-left: 29px !important;
-  }
-
-  .selectAllCheckbox {
-    margin-left: 19px !important;
-  }
-
+.image {
+  margin-left: 12px;
 }
 
 @media (max-width: 768px) {
