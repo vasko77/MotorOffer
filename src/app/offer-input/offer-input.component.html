@@ -263,8 +263,8 @@
 
               <div class="panel-body">
 
-                <div class="row discounts">
-                  <div class="col-sm-8 checkboxContainer">
+                <div class="row">
+                  <div class="col-xs-8 checkboxContainer">
                     <div class="form-check round">
                       <input #publicServant="ngModel" type="checkbox" id="publicServant" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
                         (ngModelChange)="updatePublicServant($event)">
@@ -273,14 +273,14 @@
                     <div class="form-check-label checkboxLabel">&nbsp;Υπάλληλος Δημοσίου/ΔΕΚΟ</div>
                   </div>
 
-                  <div kendoTooltip [tooltipTemplate]="tooltipPublicServant" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                  <div kendoTooltip [tooltipTemplate]="tooltipPublicServant" filter="span" style="padding-top: 10px;" class="col-xs-1">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
 
                 </div>
 
-                <div class="row discounts">
-                  <div class="col-sm-8 checkboxContainer">
+                <div class="row">
+                  <div class="col-xs-8 checkboxContainer">
                     <div class="form-check round">
                       <input #uniformed="ngModel" type="checkbox" id="uniformed" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
                         [disabled]="!publicServant.value">
@@ -289,7 +289,7 @@
                     <div class="form-check-label checkboxLabel">&nbsp;Ένστολος Υπάλληλος Δημοσίου</div>
                   </div>
 
-                  <div kendoTooltip [tooltipTemplate]="tooltipPublicUniformed" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                  <div kendoTooltip [tooltipTemplate]="tooltipPublicUniformed" filter="span" style="padding-top: 10px;" class="col-xs-1">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
                 </div>
@@ -305,8 +305,8 @@
                   </div>
                 </div>
 
-                <div class="row discounts">
-                  <div class="col-sm-8 checkboxContainer">
+                <div class="row">
+                  <div class="col-xs-8 checkboxContainer">
                     <div class="form-check round">
                       <input #secondVehicle="ngModel" type="checkbox" id="secondVehicle" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
                         (ngModelChange)="updateSecondVehicle($event)">
@@ -315,7 +315,7 @@
                     <div class="form-check-label checkboxLabel">&nbsp;Δεύτερο Αυτοκίνητο</div>
                   </div>
 
-                  <div kendoTooltip [tooltipTemplate]="tooltip2ndVehicle" filter="span" style="padding-top: 10px;" class="col-sm-1">
+                  <div kendoTooltip [tooltipTemplate]="tooltip2ndVehicle" filter="span" style="padding-top: 10px;" class="col-xs-1">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
                 </div>
