@@ -4,7 +4,7 @@
 
     <div class="container">
       <div class="col-sm-8">
-        <h1 style="color: #0E3E80;">Υπολογισμός Ασφαλίστρων Αυτοκινήτου</h1>
+        <h2 style="color: #0E3E80;">Υπολογισμός Ασφαλίστρων Αυτοκινήτου</h2>
         <small>Ισχύει για επιβατηγά οχήματα</small>
       </div>
     </div>
@@ -263,8 +263,8 @@
 
               <div class="panel-body">
 
-                <div class="row">
-                  <div class="col-sm-5 checkboxContainer">
+                <div class="row discounts">
+                  <div class="col-sm-8 checkboxContainer">
                     <div class="form-check round">
                       <input #publicServant="ngModel" type="checkbox" id="publicServant" class="form-check-input" name="publicServant" [ngModel]="quotationInput.publicServant"
                         (ngModelChange)="updatePublicServant($event)">
@@ -279,8 +279,8 @@
 
                 </div>
 
-                <div class="row">
-                  <div class="col-sm-5 checkboxContainer">
+                <div class="row discounts">
+                  <div class="col-sm-8 checkboxContainer">
                     <div class="form-check round">
                       <input #uniformed="ngModel" type="checkbox" id="uniformed" class="form-check-input" name="uniformed" [(ngModel)]="quotationInput.uniformed"
                         [disabled]="!publicServant.value">
@@ -292,22 +292,21 @@
                   <div kendoTooltip [tooltipTemplate]="tooltipPublicUniformed" filter="span" style="padding-top: 10px;" class="col-sm-1">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
-
-                  <div class="form-group col-sm-6" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
-                    *ngIf="uniformed.value">
-                    <label class="control-label">Κατηγορία Ένστολου</label>
-                    <em *ngIf="quotationInput.uniformedCode.toString() === '0'  && ( uniformedCode?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <div class="">
-                      <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" (blur)="validateUniformed($event)"
-                        (change)="validateUniformed($event)">
-                        <option *ngFor="let uniformed of uniformedData?.MotorItems" [value]="uniformed.ItemCode">{{ uniformed.ItemName }}</option>
-                      </select>
-                    </div>
+                </div>
+                <div class="form-group col-sm-8" [class.has-error]="quotationInput.uniformedCode === 0  && ( uniformedCode?.touched || mouseOverSubmit )"
+                  *ngIf="uniformed.value">
+                  <label class="control-label">Κατηγορία Ένστολου</label>
+                  <em *ngIf="quotationInput.uniformedCode.toString() === '0'  && ( uniformedCode?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                  <div class="">
+                    <select #uniformedCode="ngModel" name="uniformedCode" class="form-control" [(ngModel)]="quotationInput.uniformedCode" (blur)="validateUniformed($event)"
+                      (change)="validateUniformed($event)">
+                      <option *ngFor="let uniformed of uniformedData?.MotorItems" [value]="uniformed.ItemCode">{{ uniformed.ItemName }}</option>
+                    </select>
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-sm-5 checkboxContainer">
+                <div class="row discounts">
+                  <div class="col-sm-8 checkboxContainer">
                     <div class="form-check round">
                       <input #secondVehicle="ngModel" type="checkbox" id="secondVehicle" class="form-check-input" name="secondVehicle" [ngModel]="quotationInput.secondVehicle"
                         (ngModelChange)="updateSecondVehicle($event)">
@@ -319,16 +318,14 @@
                   <div kendoTooltip [tooltipTemplate]="tooltip2ndVehicle" filter="span" style="padding-top: 10px;" class="col-sm-1">
                     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
                   </div>
-
-                  <div class="form-group col-sm-6" *ngIf="secondVehicle.value">
-                    <label class="control-label">Αρ. Κυκλοφορίας</label>
-                    <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <div>
-                      <input #plateNo2="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo2"
-                        [(ngModel)]="quotationInput.plateNo2" />
-                    </div>
+                </div>
+                <div class="form-group col-sm-8" *ngIf="secondVehicle.value">
+                  <label class="control-label">Αρ. Κυκλοφορίας</label>
+                  <em *ngIf="!quotationInput.plateNo2  && ( plateNo2?.touched || mouseOverSubmit )">* απαραίτητο</em>
+                  <div>
+                    <input #plateNo2="ngModel" type="text" required minlength="" maxlength="10" class="form-control has-danger" name="plateNo2"
+                      [(ngModel)]="quotationInput.plateNo2" />
                   </div>
-
                 </div>
 
               </div>
@@ -369,15 +366,12 @@
                 <div class="panel panel-primary">
 
                   <div class="panel-heading coverPanel">
-                    <div class="row">
-                      <h4 class="col-sm-5">Καλύψεις Πακέτου</h4>
-                      <h4 class="col-sm-1"></h4>
-                      <h4 class="col-sm-4" style="text-align: right;">Τιμή Κάλυψης</h4>
-                      <h4 class="col-sm-2">Επιλογή</h4>
-                    </div>
-                    <div class="row">
-                      <div class="col-sm-offset-10 col-sm-2" style="text-align: center">
-                        <div class="round" style="margin-left: 27px; margin-bottom: 8px;">
+                    <div class="row coverPanelHeader">
+                      <h4 class="col-sm-6">Καλύψεις Πακέτου</h4>
+                      <h4 class="col-sm-4" style="text-align: right">Τιμή Κάλυψης</h4>
+                      <div class="col-sm-2" style="text-align: center">
+                        <h4>Επιλογή</h4>
+                        <div class="round selectAllCheckbox">
                           <input type="checkbox" class="form-check-input" id="optionalCoversCheck" name="optionalCoversCheck" [ngModel]="optionalCoversCheck"
                             (ngModelChange)="updateOptionalCovers($event)">
                           <label for="optionalCoversCheck"></label>
@@ -391,33 +385,33 @@
                     <div *ngFor="let cover of mandatoryCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
+                        <label class="col-sm-5 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
-                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <div class="checkmark col-sm-2"></div>
+                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <div class="col-sm-2" style="text-align: center"><div class="checkmark"></div></div>
                       </div>
 
                     </div>
                     <div class="coverGroup">
                       <div *ngFor="let cover of setCovers; let i = index;" class="row">
                         <div class="form-group">
-                          <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
+                          <label class="col-sm-5 coverLabel">{{ cover.Description }}</label>
                           <div class="col-sm-1 infoTooltip" kendoTooltip>
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                           </div>
 
-                          <label *ngIf="i === 1" class="col-sm-3 coverPrice" style="text-align: right;">{{ setCoversInitialAmount | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                          <label *ngIf="i === 1" class="col-sm-4 coverPrice" style="text-align: right;">{{ setCoversInitialAmount | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
 
                           <!--
                           <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                           <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                           <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
                            -->
-                          <div *ngIf="i === 1" class="round col-sm-2" style="margin-left: 37px;">
+                          <div *ngIf="i === 1" class="round col-sm-2 coverCheckbox">
                             <input #setCover="ngModel" type="checkbox" id="{{'set'+cover+i.toString()}}" class="form-check-input" name="{{'set'+cover+i.toString()}}"
                               [ngModel]="cover.Selected" (ngModelChange)="setCoversCheckAll(setCover.value)" [disabled]="removeTheft(cover)">
                             <label for="{{'set'+cover+i.toString()}}"></label>
@@ -429,14 +423,14 @@
                     <div *ngFor="let cover of optionalCovers; let i = index;" class="row coverGroup">
 
                       <div class="form-group">
-                        <label class="col-sm-6 coverLabel">{{ cover.Description }}</label>
+                        <label class="col-sm-5 coverLabel">{{ cover.Description }}</label>
                         <div class="col-sm-1 infoTooltip" kendoTooltip>
                           <span class="glyphicon glyphicon-info-sign" aria-hidden="true" [title]="cover.ShortDescription"></span>
                         </div>
-                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-3 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
-                        <div class="round col-sm-2" style="margin-left: 37px;">
+                        <label *ngIf="quotationInput.contractDuration === '12'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[0]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="quotationInput.contractDuration === '6'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[1]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <label *ngIf="quotationInput.contractDuration === '3'" class="col-sm-4 coverPrice" style="text-align: right;">{{ cover.CoverPremia[2]?.CoverPremium | currency:'EUR':'symbol-narrow':'1.2-2' }}</label>
+                        <div class="round col-sm-2 coverCheckbox">
                           <input type="checkbox" class="form-check-input col-sm-2" name="{{cover+i.toString()}}" id="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
                           <label for="{{cover+i.toString()}}"></label>
                         </div>
@@ -467,7 +461,6 @@
 
           </div>
 
-          <!-- OPTIONAL COVERS -->
 
           <div *ngIf="quotationResult?.Allow">
             <div class="row" style="text-align: center" *ngIf="authenticationService?.authenticationInfo?.efginsUser">

@@ -72,7 +72,6 @@ em {
   width: 5px;
   height: 10px;
   padding: 12px;
-  margin-left: 42px;
   text-align: center;
   &:after{
     content: '';
@@ -165,6 +164,7 @@ em {
 }
 .checkboxLabel {
   margin-top: 8px;
+  margin-left: 4px;
 }
 label {
   font-weight: 500;
@@ -178,7 +178,8 @@ label {
 .k-tooltip{
     color: white;
     background: #52B147 !important;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
  }
 
  .checkboxContainer {
@@ -187,11 +188,19 @@ label {
    margin: 7px 0;
  }
 
+ .coverCheckbox {
+   margin-left: 39px !important;
+ }
+
+ .selectAllCheckbox {
+   margin-left: 29px !important;
+ }
+
 // checkbox
 
 .round {
   position: relative;
-  margin-left: 17px;
+  margin-left: 20px;
   width: 24px;
 }
 
@@ -237,4 +246,44 @@ label {
 .round input[type="checkbox"][disabled] + label {
   opacity: 0.38;
   cursor: not-allowed;
+}
+.coverPanelHeader {
+    display: flex;
+}
+
+@media (max-width: 1200px) {
+  .coverCheckbox {
+    margin-left: 29px !important;
+  }
+
+  .selectAllCheckbox {
+    margin-left: 19px !important;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .discounts {
+    display: flex;
+    align-items: center;
+  }
+  .infoTooltip {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 1000px) {
+  .panel {
+    margin: 0;
+    margin-top: 14px;
+  }
+  .container {
+    padding: 0;
+  }
+  .panel-body {
+    padding: 8px !important;
+  }
+  h1 {
+    font-size: 26px;
+  }
 }
