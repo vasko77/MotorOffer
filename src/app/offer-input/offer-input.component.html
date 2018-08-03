@@ -334,15 +334,16 @@
 
             <br/>
 
-            <p>Στο στάδιο αυτό η Eurolife ERB Ασφαλιστική θα χρησιμοποιήσει τα παραπάνω στοιχεία σας μόνο για τον παρόν υπολογισμό και δεν θα προχωρήσει σε περαιτέρω επεξεργασία ή αποθήκευση.</p>
+            <p style="padding: 0 24px">Στο στάδιο αυτό η Eurolife ERB Ασφαλιστική θα χρησιμοποιήσει τα στοιχεία που συμπληρώσατε μόνο για τον υπολογισμό των ασφαλίστρων του αυτοκινήτου σας. Δεν θα προχωρήσει σε άλλη επεξεργασία ή αποθήκευση των δεδομένων σας.</p>
 
             <br/>
 
             <div class="buttonContainer">
               <span (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false">
                 <button type="submit" [disabled]="form.invalid || !validateUniformed() || !validateMunicipality() || !validateMarka() || !validateYear()"
-                  class="btn btn-lg pricingButton">
-                  Υπολογισμός
+                  class="btn btn-lg button">
+                  <div>ΥΠΟΛΟΓΙΣΜΟΣ</div>
+                  <div>ασφαλίστρων</div>
                 </button>
               </span>
             </div>
@@ -358,7 +359,7 @@
           <div *ngIf="quotationResult?.Allow">
             <div class="description">
               <span class='arrowRight'></span>
-              Επιλέξετε ποιες από τις πιο κάτω καλύψεις επιθυμείτε να προσθέσετε στο πρόγραμμά σας.
+              Επιλέξτε τις καλύψεις που θέλετε για την ασφάλεια του αυτοκινήτου σας:
             </div>
             <div class="row">
               <div class="col-xs-12">
@@ -366,9 +367,10 @@
 
                   <div class="panel-heading coverPanel">
                     <div class="row coverPanelHeader">
-                      <h4 class="col-xs-6">Καλύψεις Πακέτου</h4>
-                      <h4 class="col-xs-4" style="text-align: right">Τιμή</h4>
+                      <h4 class="coverPanelTitle col-xs-6">Ασφαλιστικές καλύψεις</h4>
+                      <h4 class="coverPanelTitle titlePadding col-xs-4">Ασφάλιστρα ανά κάλυψη</h4>
                       <div class="col-xs-2" style="text-align: center">
+                        <h4 class="coverPanelTitle titlePadding">Επιλογή όλων</h4>
                         <div class="round" style="margin: auto">
                           <input type="checkbox" class="form-check-input" id="optionalCoversCheck" name="optionalCoversCheck" [ngModel]="optionalCoversCheck"
                             (ngModelChange)="updateOptionalCovers($event)">
@@ -433,7 +435,7 @@
 
                         <div class="col-xs-2" style="text-align: center">
                           <div class="round" style="margin: auto">
-                            <input type="checkbox" class="form-check-input col-xs-2" name="{{cover+i.toString()}}" id="{{cover+i.toString()}}" [(ngModel)]="cover.Selected">
+                            <input type="checkbox" class="form-check-input col-xs-2" name="{{cover+i.toString()}}" id="{{cover+i.toString()}}" [(ngModel)]="cover.Selected" (ngModelChange)="closeContactInfoArea()">
                             <label for="{{cover+i.toString()}}"></label>
                           </div>
                         </div>
@@ -467,9 +469,11 @@
 
           <div *ngIf="quotationResult?.Allow">
             <div class="row" style="text-align: center" *ngIf="authenticationService?.authenticationInfo?.efginsUser">
-              <div class="col-sm-12">
+              <div class="buttonContainer" style="margin-bottom: 52px">
                 <!--a class="btn btn-lg btn-success" [routerLink]="['/application']">Δημιουργία Αίτησης</a-->
-                <button class="btn btn-lg btn-success" (click)="applicationInput()">Δημιουργία Αίτησης</button>
+                <button class="btn btn-lg button" (click)="applicationInput()">
+                  Δημιουργία Αίτησης
+                </button>
               </div>
             </div>
           </div>
@@ -485,10 +489,17 @@
         </form>
 
         <!-- PANEL Contact Information -->
-        <div class="buttonContainer" style="margin-bottom: 52px" *ngIf="quotationResult?.Allow && enterContactInfo">
-          <button class="btn btn-lg pricingButton" (click)="openContactInfoArea()">
-            Ενδιαφέρομαι
-          </button>
+        <div *ngIf="quotationResult?.Allow && !open">
+          <div class="description">
+            <span class='arrowRight'></span>
+            Μπορείτε να κλειδώσετε αυτήν την προσφορά τώρα, αλλά και να επιλέξετε άλλες καλύψεις όταν επικοινωνήσει μαζί σας ο συνεργάτης μας για να ολοκληρώσετε την αγορά.
+          </div>
+          <div class="buttonContainer" style="margin-bottom: 52px">
+            <button class="btn btn-lg button" (click)="openContactInfoArea()">
+              <div>ΘΕΛΩ</div>
+              <div>αυτήν την προσφορά</div>
+            </button>
+          </div>
         </div>
 
         <div *ngIf="coverReplacementNotAllowed" class="alert alert-danger" role="alert">
@@ -503,15 +514,11 @@
         <div *ngIf="open">
           <div class="description">
             <span class='arrowRight'></span>
-            Συμπληρώστε τα στοιχεία σας και ένας συνεργάτης μας θα επικοινωνήσει μαζί σας για να ολοκληρώσετε την αγορά
+            Ένας συνεργάτης μας θα επικοινωνήσει μαζί σας για να αποκτήσετε αυτήν την ασφάλεια αυτοκινήτου. Συμπληρώστε εδώ τα στοιχεία σας:
           </div>
           <form #formContact="ngForm" novalidate>
 
             <div class="panel panel-primary">
-
-              <div class="panel-heading">
-                <h4>Στοιχεία Επικοινωνίας</h4>
-              </div>
 
               <div class="panel-body">
 
@@ -520,13 +527,13 @@
                   <div class="form-group col-sm-6" [class.has-error]="firstName.invalid && ( firstName?.touched || mouseOverSubmit )">
                     <label class="control-label">Όνομα</label>
                     <em *ngIf="firstName.invalid && ( firstName?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #firstName="ngModel" class="form-control" [(ngModel)]="contactInput.firstName" name="firstName" required/>
+                    <input #firstName="ngModel" class="form-control" [(ngModel)]="contactInput.firstName" name="firstName" required (ngModelChange)="contactFormChanged()"/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="lastName.invalid && ( lastName?.touched || mouseOverSubmit )">
                     <label class="control-label">Επώνυμο</label>
                     <em *ngIf="lastName.invalid && ( lastName?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #lastName="ngModel" class="form-control" [(ngModel)]="contactInput.lastName" name="lastName" required/>
+                    <input #lastName="ngModel" class="form-control" [(ngModel)]="contactInput.lastName" name="lastName" required (ngModelChange)="contactFormChanged()"/>
                   </div>
 
                 </div>
@@ -536,14 +543,14 @@
                   <div class="form-group col-sm-6" [class.has-error]="phone.invalid && ( phone?.touched || mouseOverSubmit )">
                     <label class="control-label">Τηλέφωνο Επικοινωνίας</label>
                     <em *ngIf="phone.invalid && ( phone?.touched || mouseOverSubmit )">* απαραίτητο</em>
-                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" type="number" required/>
+                    <input #phone="ngModel" class="form-control" [(ngModel)]="contactInput.phone" name="phone" type="number" required (ngModelChange)="contactFormChanged()"/>
                   </div>
 
                   <div class="form-group col-sm-6" [class.has-error]="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">
                     <label class="control-label">e-mail</label>
                     <em *ngIf="eMail.invalid && ( eMail?.touched || mouseOverSubmit )">* απαραίτητο</em>
                     <input #eMail="ngModel" class="form-control" [(ngModel)]="contactInput.eMail" name="eMail" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
-                    />
+                    (ngModelChange)="contactFormChanged()" />
                   </div>
 
                 </div>
@@ -560,15 +567,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="sendButtonContainer">
+                <div class="sendButtonContainer" *ngIf="!success">
                   <button (mouseenter)="mouseOverSubmit=true" (mouseleave)="mouseOverSubmit=false" type="submit" style="width: 100%" [disabled]="formContact.invalid || !personalData"
-                    class="btn btn-lg btn-success" (click)="insertContact()">
-                    Αποστολή Στοιχείων
+                    class="btn btn-lg button" (click)="insertContact()">
+                    <div>ΕΠΙΚΟΙΝΩΝΗΣΤΕ</div>
+                     <div>μαζί μου</div>
                   </button>
                 </div>
-                <div *ngIf="success" class="alert alert-success" style="text-align: center">
-                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας εκπρόσωπός μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε
-                    την αγορά ασφάλισης του αυτοκινήτου σας. Το ωράριο λειτουργίας είναι Δευτέρα έως Παρασκευή, 9:00 με 17:00.</p>
+                <div *ngIf="success" class="alert alert-success" style="text-align: center; margin-top: 24px">
+                  <p>Τα στοιχεία σας καταχωρήθηκαν. Ένας εκπρόσωπός μας θα επικοινωνήσει σύντομα μαζί σας προκειμένου να ολοκληρώσετε την αγορά ασφάλισης του αυτοκινήτου σας. Το ωράριο λειτουργίας είναι Δευτέρα έως Παρασκευή, 9:00 με 17:00.</p>
                 </div>
               </div>
             </div>

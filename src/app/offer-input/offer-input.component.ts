@@ -37,7 +37,6 @@ export class OfferInputComponent implements OnInit {
   open: boolean;
 
   // authenticationInfo: IAuthentication;
-  enterContactInfo = true;
   setCoversCheck: boolean;
   optionalCoversCheck: boolean;
   personalData: boolean;
@@ -183,7 +182,6 @@ export class OfferInputComponent implements OnInit {
 
   private calculateSum(duration: number): number {
     let sum = 0;
-
     if (this.optionalCovers) {
       this.optionalCovers.forEach(cover => {
         // console.log( JSON.stringify( element ));
@@ -207,7 +205,6 @@ export class OfferInputComponent implements OnInit {
 
   private calculateSumSetCovers(duration: number): number {
     let sum = 0;
-
     if (this.setCovers) {
       this.setCovers.forEach(cover => {
         // console.log( JSON.stringify( element ));
@@ -360,7 +357,6 @@ export class OfferInputComponent implements OnInit {
             phone: data.Phone,
             eMail: data.EMail
           };
-          this.enterContactInfo = false;
           console.log('this.contactInput');
           console.log(this.contactInput);
         },
@@ -373,6 +369,7 @@ export class OfferInputComponent implements OnInit {
 
   quotation(selectedMotorCoverItems: number[]): void {
 
+    this.open = false;
     this.customError = '';
 
     if (this.quotationInput.contractStartDate > this.maxStartDate) {
@@ -553,7 +550,6 @@ export class OfferInputComponent implements OnInit {
               console.log('Covers returned');
               console.log(this.setCovers);
               console.log(this.optionalCovers);
-
               this.customError = '';
 
               if (selectedMotorCoverItems) {
@@ -654,7 +650,6 @@ export class OfferInputComponent implements OnInit {
     this.busyInterest = this.mvpApiService.postQuotation(mvpQuotation)
       .subscribe(
         (data: IQuotationInfo) => {
-          this.enterContactInfo = false;
           // this.toastr.success('Το ενδιαφέρον σας καταχωρήθηκε');
 
           // let amountPayableTotal = 0;
@@ -765,13 +760,19 @@ export class OfferInputComponent implements OnInit {
     this.router.navigate(['/application']);
   }
 
+  contactFormChanged(): void {
+    this.success = false;
+  }
+
   updateSetCovers(selected: boolean): void {
+    this.open = false;
     this.setCovers.forEach(cover => {
       cover.Selected = selected;
     });
   }
 
   updateOptionalCovers(selected: boolean): void {
+    this.open = false;
     this.optionalCovers.forEach(cover => {
       cover.Selected = selected;
     });
@@ -832,6 +833,7 @@ export class OfferInputComponent implements OnInit {
   }
 
   setCoversCheckAll(value: boolean): void {
+    this.open = false;
     this.setCovers.forEach(cover => { cover.Selected = value; });
     if (!value) {
       this.optionalCovers.find((cover: ICover) => cover.Code === '005').Selected = false;
@@ -857,7 +859,7 @@ export class OfferInputComponent implements OnInit {
   }
 
   openContactInfoArea(): void {
-
+    this.success = false; // reset contact area message
     if (this.optionalCovers && this.setCovers) {
 
       if (this.optionalCovers.find((c: ICover) => c.MotorCoverItem === 22 && c.Selected)
@@ -875,6 +877,10 @@ export class OfferInputComponent implements OnInit {
 
     this.coverReplacementNotAllowed = false;
     this.open = true;
+  }
+
+  closeContactInfoArea(): void {
+    this.open = false;
   }
 
   removeTheft(cover: IMotorCover): boolean {
